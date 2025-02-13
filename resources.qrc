@@ -1,0 +1,25 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/pantallaPrincipal/Fondo.png</file>
+        <file>images/pantallaPrincipal/divisor.png</file>
+        <file>images/pantallaPrincipal/Fondo Barra Abajo.png</file>
+        <file>images/pantallaPrincipal/velocimetro.png</file>
+        <file>images/pantallaPrincipal/aguja.png</file>
+        <file>images/pantallaPrincipal/temp_icono_vacia.png</file>
+        <file>images/pantallaPrincipal/temp_icono_media.png</file>
+        <file>images/pantallaPrincipal/temp_icono_baja.png</file>
+        <file>images/pantallaPrincipal/temp_icono_alta.png</file>
+        <file>images/pantallaPrincipal/barra_lateral_bateria.png</file>
+        <file>images/pantallaPrincipal/bat_icono.png</file>
+        <file>images/pantallaPrincipal/bat_relleno_medio.png</file>
+        <file>images/pantallaPrincipal/bat_relleno_bajo.png</file>
+        <file>images/pantallaPrincipal/bat_relleno_alto.png</file>
+        <file>images/pantallaPrincipal/barra_notificaciones.png</file>
+        <file>images/pantallaPrincipal/configIcon.png</file>
+        <file>images/pantallaPrincipal/deb.png</file>
+    </qresource>
+    <qresource prefix="/panelConfiguracion">
+        <file>images/panelConfiguracion/engineIcon.png</file>
+        <file>images/panelConfiguracion/conversorIcon.png</file>
+    </qresource>
+</RCC>
