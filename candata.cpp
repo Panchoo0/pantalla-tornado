@@ -25,7 +25,7 @@ void CANData::receiveMessage(unsigned char sourceAddress, unsigned int pgn, uint
         engineTorque = Utils::getShiftedData(12, 12, receivedData);
         engineVoltage = Utils::getShiftedData(24, 12, receivedData);
         rpm = Utils::getShiftedData(36, 12, receivedData);
-        setpoint = Utils::getShiftedData(48, 12, receivedData);
+        setpoint = Utils::getShiftedData(48, 16, receivedData);
 
         emit message2();
         break;
@@ -96,8 +96,8 @@ void CANData::receiveMessage(unsigned char sourceAddress, unsigned int pgn, uint
         couldntPowerOnBMS = Utils::getShiftedData(33, 1, receivedData);
         bessPowerOffHv = Utils::getShiftedData(34, 1, receivedData);
         requiredHvOff = Utils::getShiftedData(35, 1, receivedData);
-        pedal1Anormal = Utils::getShiftedData(36, 1, receivedData);
-        pedal2Anormal = Utils::getShiftedData(37, 1, receivedData);
+        pedal2Anormal = Utils::getShiftedData(36, 1, receivedData);
+        pedal1Anormal = Utils::getShiftedData(37, 1, receivedData);
         hvilPdu = Utils::getShiftedData(38, 1, receivedData);
         hvilObc = Utils::getShiftedData(39, 1, receivedData);
         hvilEds = Utils::getShiftedData(40, 1, receivedData);
@@ -199,267 +199,338 @@ void CANData::receiveMessage(unsigned char sourceAddress, unsigned int pgn, uint
 
 }
 
-void CANData::assertMessage1(int current, int voltage, int soc) {
-    assert(this->batteryCurrent == current);
-    assert(this->batteryVoltage == voltage);
-    assert(this->SOC == soc);
-}
-
-void CANData::assertMessage2(int engineCurrent, int engineTorque, int engineVoltage, int rpm, int setpoint) {
-    assert(this->engineCurrent == engineCurrent);
-    assert(this->engineTorque == engineTorque);
-    assert(this->engineVoltage == engineVoltage);
-    assert(this->rpm == rpm);
-    assert(this->setpoint == setpoint);
-}
-
-void CANData::assertMessage3(int engineTemp, int inversorTemp, int batTemp, int batMaxTemp, int batMinTemp) {
-    assert(this->engineTemp == engineTemp);
-    assert(this->inversorTemp == inversorTemp);
-    assert(this->batTemp == batTemp);
-    assert(this->batMaxTemp == batMaxTemp);
-    assert(this->batMinTemp == batMinTemp);
-}
-
-void CANData::assertMessage4(int dcdc1Current, int dcdc2Current, int dcdc1HVCurrent, int dcdc2HVCurrent) {
-    assert(this->dcdc1Current == dcdc1Current);
-    assert(this->dcdc2Current == dcdc2Current);
-    assert(this->dcdc1HVCurrent == dcdc1HVCurrent);
-    assert(this->dcdc2HVCurrent == dcdc2HVCurrent);
-}
-
-void CANData::assertMessage5(int dcdc1OutputVoltage, int dcdc2OutputVoltage, int dcdc1InputVoltage, int dcdc2InputVoltage) {
-    assert(this->dcdc1OutputVoltage == dcdc1OutputVoltage);
-    assert(this->dcdc2OutputVoltage == dcdc2OutputVoltage);
-    assert(this->dcdc1InputVoltage == dcdc1InputVoltage);
-    assert(this->dcdc2InputVoltage == dcdc2InputVoltage);
-}
-
-void CANData::assertMessage6(int posResistanceSIM100, int negResistanceSIM100, int posResistanceBMU, int negResistanceBMU) {
-    assert(this->posResistanceSIM100 == posResistanceSIM100);
-    assert(this->negResistanceSIM100 == negResistanceSIM100);
-    assert(this->posResistanceBMU == posResistanceBMU);
-    assert(this->negResistanceBMU == negResistanceBMU);
-
-}
-
-void CANData::assertBess1(int trama, int v1, int v2, int v3) {
-    assert(this->voltageCells[trama * 3] == v1);
-    assert(this->voltageCells[trama * 3 + 1] == v2);
-    assert(this->voltageCells[trama * 3 + 2] == v3);
-}
-
-void CANData::assertBess2(int trama, int t1, int t2, int t3, int t4, int t5, int t6) {
-    assert(this->tempCells[trama * 6] == t1);
-    assert(this->tempCells[trama * 6 + 1] == t2);
-    assert(this->tempCells[trama * 6 + 2] == t3);
-    assert(this->tempCells[trama * 6 + 3] == t4);
-    assert(this->tempCells[trama * 6 + 4] == t5);
-    assert(this->tempCells[trama * 6 + 5] == t6);
-}
-
-void CANData::assertBess3(int chargeEnergyAcumulated, int dischargeEnergyAcumulated, int energyOneCharge) {
-    assert(this->chargeEnergyAcumulated == chargeEnergyAcumulated);
-    assert(this->dischargeEnergyAcumulated == dischargeEnergyAcumulated);
-    assert(this->energyOneCharge == energyOneCharge);
-}
-
-
-
-void CANData::assertBess4(int SOC, int SOH, int minVoltage, int maxVoltage, int meanVoltage) {
-    assert(this->SOC == SOC);
-    assert(this->SOH == SOH);
-    assert(this->maxVoltage == maxVoltage);
-    assert(this->minVoltage == minVoltage);
-    assert(this->meanVoltage == meanVoltage);
-}
-
-void CANData::assertBess5(int posChargeTempDC, int negChargeTempDC, int dcConected, int bmsChargingMode, int coolingState, int heatState, int bmuContactor, int bmsFailures) {
-    assert(this->posChargeTempDC == posChargeTempDC);
-    assert(this->negChargeTempDC == negChargeTempDC);
-    assert(this->dcConected == dcConected);
-    assert(this->bmsChargingMode == bmsChargingMode);
-    assert(this->coolingState == coolingState);
-    assert(this->heatState == heatState);
-    assert(this->bmuContactor == bmuContactor);
-    assert(this->bmsFailures == bmsFailures);
-}
-
-void CANData::assertEmix1(int edsFailures, int dcdc1Failures, int dcdc2Failures, int sim100Failures, int obcFailures, int emixFailures) {
-    assert(this->edsFailures == edsFailures);
-    assert(this->dcdc1Failures == dcdc1Failures);
-    assert(this->dcdc2Failures == dcdc2Failures);
-    assert(this->sim100Failures == sim100Failures);
-    assert(this->obcFailures == obcFailures);
-    assert(this->emixFailures == emixFailures);
-}
-
-void CANData::assertFaults1(int dcdc1ErrorCode, int dcdc2ErrorCode) {
-    assert(this->dcdc1ErrorCode == dcdc1ErrorCode);
-    assert(this->dcdc2ErrorCode == dcdc2ErrorCode);
-}
-
-void CANData::assertFaults2(int edsErrorCode, int obcErrorCode) {
-    assert(this->edsErrorCode == edsErrorCode);
-    assert(this->obcErrorCode == obcErrorCode);
-}
-
 // Dado el id de un error lo agrega a los errores DTC recibidos por el bus CAN
 void CANData::addError(int id) {
     DTCCanError error = DTCCanError::fromInt(id);
     this->canErrors.push_back(error);
 }
 
-CANData* CANData::clone(CANData obj) {
+CANData* CANData::clone() {
     CANData* data = new CANData();
 
-    data->speed = obj.speed;
+    data->speed = this->speed;
 
     // Message 1
-    data->batteryCurrent = obj.batteryCurrent;
-    data->batteryVoltage = obj.batteryVoltage;
-    data->SOC = obj.SOC;
+    data->batteryCurrent = this->batteryCurrent;
+    data->batteryVoltage = this->batteryVoltage;
+    data->SOC = this->SOC;
 
     // Message 2
-    data->engineCurrent = obj.engineCurrent;
-    data->engineTorque = obj.engineTorque;
-    data->engineVoltage = obj.engineVoltage;
-    data->rpm = obj.rpm;
-    data->setpoint = obj.setpoint;
+    data->engineCurrent = this->engineCurrent;
+    data->engineTorque = this->engineTorque;
+    data->engineVoltage = this->engineVoltage;
+    data->rpm = this->rpm;
+    data->setpoint = this->setpoint;
 
     // Message 3
-    data->engineTemp = obj.engineTemp;
-    data->inversorTemp = obj.inversorTemp;
-    data->batTemp = obj.batTemp;
-    data->batMaxTemp = obj.batMaxTemp;
-    data->batMinTemp = obj.batMinTemp;
+    data->engineTemp = this->engineTemp;
+    data->inversorTemp = this->inversorTemp;
+    data->batTemp = this->batTemp;
+    data->batMaxTemp = this->batMaxTemp;
+    data->batMinTemp = this->batMinTemp;
 
     // Message 4
-    data->dcdc1Current = obj.dcdc1Current;
-    data->dcdc2Current = obj.dcdc2Current;
-    data->dcdc1HVCurrent = obj.dcdc1HVCurrent;
-    data->dcdc2HVCurrent = obj.dcdc2HVCurrent;
+    data->dcdc1Current = this->dcdc1Current;
+    data->dcdc2Current = this->dcdc2Current;
+    data->dcdc1HVCurrent = this->dcdc1HVCurrent;
+    data->dcdc2HVCurrent = this->dcdc2HVCurrent;
 
     // Message 5
-    data->dcdc1OutputVoltage = obj.dcdc1OutputVoltage;
-    data->dcdc2OutputVoltage = obj.dcdc2OutputVoltage;
-    data->dcdc1InputVoltage = obj.dcdc1InputVoltage;
-    data->dcdc2InputVoltage = obj.dcdc2InputVoltage;
+    data->dcdc1OutputVoltage = this->dcdc1OutputVoltage;
+    data->dcdc2OutputVoltage = this->dcdc2OutputVoltage;
+    data->dcdc1InputVoltage = this->dcdc1InputVoltage;
+    data->dcdc2InputVoltage = this->dcdc2InputVoltage;
 
     // Message 6
-    data->posResistanceSIM100 = obj.posResistanceSIM100;
-    data->negResistanceSIM100 = obj.negResistanceSIM100;
-    data->posResistanceBMU = obj.posResistanceBMU;
-    data->negResistanceBMU = obj.negResistanceBMU;
+    data->posResistanceSIM100 = this->posResistanceSIM100;
+    data->negResistanceSIM100 = this->negResistanceSIM100;
+    data->posResistanceBMU = this->posResistanceBMU;
+    data->negResistanceBMU = this->negResistanceBMU;
 
     // Message 7
-    data->lvError = obj.lvError;
-    data->hvError = obj.hvError;
+    data->lvError = this->lvError;
+    data->hvError = this->hvError;
 
-    data->state = obj.state;
+    data->state = this->state;
 
-    data->inhibitState = obj.inhibitState;
-    data->busHVDischarged = obj.busHVDischarged;
-    data->pduContactorClose = obj.pduContactorClose;
+    data->inhibitState = this->inhibitState;
+    data->busHVDischarged = this->busHVDischarged;
+    data->pduContactorClose = this->pduContactorClose;
 
-    data->hvOn = obj.hvOn;
-    data->lvHigh = obj.lvHigh;
+    data->hvOn = this->hvOn;
+    data->lvHigh = this->lvHigh;
 
-    data->dcdc1Overtemp = obj.dcdc1Overtemp;
-    data->dcdc2Overtemp = obj.dcdc2Overtemp;
+    data->dcdc1Overtemp = this->dcdc1Overtemp;
+    data->dcdc2Overtemp = this->dcdc2Overtemp;
 
-    data->atsFanFault = obj.atsFanFault;
-    data->atsPumpFault = obj.atsPumpFault;
+    data->atsFanFault = this->atsFanFault;
+    data->atsPumpFault = this->atsPumpFault;
 
-    data->edsOvertemp = obj.edsOvertemp;
-    data->obcOvertemp = obj.obcOvertemp;
+    data->edsOvertemp = this->edsOvertemp;
+    data->obcOvertemp = this->obcOvertemp;
 
-    data->edsInError = obj.edsInError;
-    data->edsCouldntClear = obj.edsCouldntClear;
+    data->edsInError = this->edsInError;
+    data->edsCouldntClear = this->edsCouldntClear;
 
-    data->dcdcHighDifference = obj.dcdcHighDifference;
+    data->dcdcHighDifference = this->dcdcHighDifference;
 
-    data->batModule1 = obj.batModule1;
-    data->batModule2 = obj.batModule2;
-    data->batModule3 = obj.batModule3;
-    data->batModule4 = obj.batModule4;
+    data->batModule1 = this->batModule1;
+    data->batModule2 = this->batModule2;
+    data->batModule3 = this->batModule3;
+    data->batModule4 = this->batModule4;
 
-    data->contactorPdu = obj.contactorPdu;
-    data->sim100Stucked = obj.sim100Stucked;
+    data->contactorPdu = this->contactorPdu;
+    data->sim100Stucked = this->sim100Stucked;
 
-    data->couldntPowerOnBMS = obj.couldntPowerOnBMS;
+    data->couldntPowerOnBMS = this->couldntPowerOnBMS;
 
-    data->bessPowerOffHv = obj.bessPowerOffHv;
-    data->requiredHvOff = obj.requiredHvOff;
+    data->bessPowerOffHv = this->bessPowerOffHv;
+    data->requiredHvOff = this->requiredHvOff;
 
-    data->pedal1Anormal = obj.pedal1Anormal;
-    data->pedal2Anormal = obj.pedal2Anormal;
+    data->pedal1Anormal = this->pedal1Anormal;
+    data->pedal2Anormal = this->pedal2Anormal;
 
-    data->hvilPdu = obj.hvilPdu;
-    data->hvilObc = obj.hvilObc;
-    data->hvilEds = obj.hvilEds;
-    data->hvilDddc = obj.hvilDddc;
+    data->hvilPdu = this->hvilPdu;
+    data->hvilObc = this->hvilObc;
+    data->hvilEds = this->hvilEds;
+    data->hvilDddc = this->hvilDddc;
 
-    data->termistorLVOutOfRange = obj.termistorLVOutOfRange;
-    data->termistorHVOutOfRange = obj.termistorHVOutOfRange;
+    data->termistorLVOutOfRange = this->termistorLVOutOfRange;
+    data->termistorHVOutOfRange = this->termistorHVOutOfRange;
 
-    data->pduTempExcess = obj.pduTempExcess;
-    data->overturn = obj.overturn;
-    data->doorOpen = obj.doorOpen;
-    data->parkingState = obj.parkingState;
-    data->estadoMarcha = obj.estadoMarcha;
+    data->pduTempExcess = this->pduTempExcess;
+    data->overturn = this->overturn;
+    data->doorOpen = this->doorOpen;
+    data->parkingState = this->parkingState;
+    data->estadoMarcha = this->estadoMarcha;
 
     // Bess1
     for (int i = 0; i < 194 * 3;  i++) {
-        data->voltageCells[i] = obj.voltageCells[i];
+        data->voltageCells[i] = this->voltageCells[i];
     }
 
     // Bess2
     for (int i = 0; i < 18 * 6; i++) {
-        data->tempCells[i] = obj.voltageCells[i];
+        data->tempCells[i] = this->tempCells[i];
     }
 
     // Bess3
-    data->chargeEnergyAcumulated = obj.chargeEnergyAcumulated;
-    data->dischargeEnergyAcumulated = obj.dischargeEnergyAcumulated;
-    data->energyOneCharge = obj.energyOneCharge;
+    data->chargeEnergyAcumulated = this->chargeEnergyAcumulated;
+    data->dischargeEnergyAcumulated = this->dischargeEnergyAcumulated;
+    data->energyOneCharge = this->energyOneCharge;
 
     // Bess4
-    data->SOH = obj.SOH;
-    data->minVoltage = obj.minVoltage;
-    data->maxVoltage = obj.maxVoltage;
-    data->meanVoltage = obj.meanVoltage;
+    data->SOH = this->SOH;
+    data->minVoltage = this->minVoltage;
+    data->maxVoltage = this->maxVoltage;
+    data->meanVoltage = this->meanVoltage;
 
     // Bess5
-    data->posChargeTempDC = obj.posChargeTempDC;
-    data->negChargeTempDC = obj.negChargeTempDC;
-    data->dcConected = obj.dcConected;
+    data->posChargeTempDC = this->posChargeTempDC;
+    data->negChargeTempDC = this->negChargeTempDC;
+    data->dcConected = this->dcConected;
 
-    data->bmsChargingMode = obj.bmsChargingMode;
-    data->coolingState = obj.coolingState;
-    data->heatState = obj.heatState;
+    data->bmsChargingMode = this->bmsChargingMode;
+    data->coolingState = this->coolingState;
+    data->heatState = this->heatState;
 
-    data->bmuContactor = obj.bmuContactor;
-    data->bmsFailures = obj.bmsFailures;
+    data->bmuContactor = this->bmuContactor;
+    data->bmsFailures = this->bmsFailures;
 
     // Emix1
-    data->edsFailures  = obj.edsFailures;
-    data->dcdc1Failures = obj.dcdc1Failures;
-    data->dcdc2Failures = obj.dcdc2Failures;
-    data->sim100Failures = obj.sim100Failures;
-    data->obcFailures  = obj.obcFailures;
-    data->emixFailures  = obj.emixFailures;
+    data->edsFailures  = this->edsFailures;
+    data->dcdc1Failures = this->dcdc1Failures;
+    data->dcdc2Failures = this->dcdc2Failures;
+    data->sim100Failures = this->sim100Failures;
+    data->obcFailures  = this->obcFailures;
+    data->emixFailures  = this->emixFailures;
 
     // Faults1
-    data->dcdc1ErrorCode = obj.dcdc1ErrorCode;
-    data->dcdc2ErrorCode = obj.dcdc2ErrorCode;
+    data->dcdc1ErrorCode = this->dcdc1ErrorCode;
+    data->dcdc2ErrorCode = this->dcdc2ErrorCode;
 
     // Faults2
-    data->edsErrorCode = obj.edsErrorCode;
-    data->obcErrorCode = obj.obcErrorCode;
+    data->edsErrorCode = this->edsErrorCode;
+    data->obcErrorCode = this->obcErrorCode;
 
 
     return data;
+}
+
+bool CANData::operator==(CANData& other) const {
+    bool message1 = (
+        this->batteryCurrent == other.batteryCurrent &&
+        this->batteryVoltage == other.batteryVoltage &&
+        this->SOC == other.SOC
+    );
+
+    bool message2 = (
+        this->engineCurrent == other.engineCurrent &&
+        this->engineTorque == other.engineTorque &&
+        this->engineVoltage == other.engineVoltage &&
+        this->rpm == other.rpm &&
+        this->setpoint == other.setpoint
+    );
+
+    bool message3 = (
+        this->engineTemp == other.engineTemp &&
+        this->inversorTemp == other.inversorTemp &&
+        this->batTemp == other.batTemp &&
+        this->batMaxTemp == other.batMaxTemp &&
+        this->batMinTemp == other.batMinTemp
+    );
+
+    bool message4 = (
+        this->dcdc1Current == other.dcdc1Current &&
+        this->dcdc2Current == other.dcdc2Current &&
+        this->dcdc1HVCurrent == other.dcdc1HVCurrent &&
+        this->dcdc2HVCurrent == other.dcdc2HVCurrent
+    );
+
+    bool message5 = (
+        this->dcdc1OutputVoltage == other.dcdc1OutputVoltage &&
+        this->dcdc2OutputVoltage == other.dcdc2OutputVoltage &&
+        this->dcdc1InputVoltage == other.dcdc1InputVoltage &&
+        this->dcdc2InputVoltage == other.dcdc2InputVoltage
+    );
+
+    bool message6 = (
+        this->posResistanceSIM100 == other.posResistanceSIM100 &&
+        this->negResistanceSIM100 == other.negResistanceSIM100 &&
+        this->posResistanceBMU == other.posResistanceBMU &&
+        this->negResistanceBMU == other.negResistanceBMU
+    );
+
+    bool message7 = (
+        // Message 7
+        this->lvError == other.lvError &&
+        this->hvError == other.hvError &&
+
+        this->state == other.state &&
+
+        this->inhibitState == other.inhibitState &&
+        this->busHVDischarged == other.busHVDischarged &&
+        this->pduContactorClose == other.pduContactorClose &&
+
+        this->hvOn == other.hvOn &&
+        this->lvHigh == other.lvHigh &&
+
+        this->dcdc1Overtemp == other.dcdc1Overtemp &&
+        this->dcdc2Overtemp == other.dcdc2Overtemp &&
+
+        this->atsFanFault == other.atsFanFault &&
+        this->atsPumpFault == other.atsPumpFault &&
+
+        this->edsOvertemp == other.edsOvertemp &
+        this->obcOvertemp == other.obcOvertemp &
+
+        this->edsInError == other.edsInError &&
+        this->edsCouldntClear == other.edsCouldntClear &&
+
+        this->dcdcHighDifference == other.dcdcHighDifference &&
+
+        this->batModule1 == other.batModule1 &&
+        this->batModule2 == other.batModule2 &&
+        this->batModule3 == other.batModule3 &&
+        this->batModule4 == other.batModule4 &&
+
+        this->contactorPdu == other.contactorPdu &&
+        this->sim100Stucked == other.sim100Stucked &&
+
+        this->couldntPowerOnBMS == other.couldntPowerOnBMS &&
+
+        this->bessPowerOffHv == other.bessPowerOffHv &&
+        this->requiredHvOff == other.requiredHvOff &&
+
+        this->pedal1Anormal == other.pedal1Anormal &&
+        this->pedal2Anormal == other.pedal2Anormal &&
+
+        this->hvilPdu == other.hvilPdu &&
+        this->hvilObc == other.hvilObc &&
+        this->hvilEds == other.hvilEds &&
+        this->hvilDddc == other.hvilDddc &&
+
+        this->termistorLVOutOfRange == other.termistorLVOutOfRange &&
+        this->termistorHVOutOfRange == other.termistorHVOutOfRange &&
+
+        this->pduTempExcess == other.pduTempExcess &&
+        this->overturn == other.overturn &&
+        this->doorOpen == other.doorOpen &&
+        this->parkingState == other.parkingState &&
+        this->estadoMarcha == other.estadoMarcha
+    );
+
+    bool bess1 = true;
+
+    for (int i = 0; i < 194 * 3; i++) {
+        if (this->voltageCells[i] != other.voltageCells[i]) {
+            return false;
+        }
+    }
+
+    bool bess2 = true;
+
+    for (int i = 0; i < 18 * 6; i++) {
+        if (this->tempCells[i] != other.tempCells[i]) {
+            qInfo() << "Trama" << i;
+            qInfo() << this->tempCells[i];
+            qInfo() << other.tempCells[i];
+            return false;
+        }
+    }
+
+    bool bess3 = (
+        this->chargeEnergyAcumulated == other.chargeEnergyAcumulated &&
+        this->dischargeEnergyAcumulated == other.dischargeEnergyAcumulated &&
+        this->energyOneCharge == other.energyOneCharge
+    );
+
+    bool bess4 = (
+        this->SOC == other.SOC &&
+        this->SOH == other.SOH &&
+        this->minVoltage == other.minVoltage &&
+        this->maxVoltage == other.maxVoltage &&
+        this->meanVoltage == other.meanVoltage
+    );
+
+    bool bess5 = (
+        this->posChargeTempDC == other.posChargeTempDC &&
+        this->negChargeTempDC == other.negChargeTempDC &&
+        this->dcConected == other.dcConected &&
+        this->bmsChargingMode == other.bmsChargingMode &&
+        this->coolingState == other.coolingState &&
+        this->heatState == other.heatState &&
+        this->bmuContactor == other.bmuContactor &&
+        this->bmsFailures == other.bmsFailures
+    );
+
+    bool emix1 = (
+        this->edsFailures == other.edsFailures &&
+        this->dcdc1Failures == other.dcdc1Failures &&
+        this->dcdc2Failures == other.dcdc2Failures &&
+        this->sim100Failures == other.sim100Failures &&
+        this->obcFailures == other.obcFailures &&
+        this->emixFailures == other.emixFailures
+    );
+
+    bool faults1 = (
+        this->dcdc1ErrorCode == other.dcdc1ErrorCode &&
+        this->dcdc2ErrorCode == other.dcdc2ErrorCode
+    );
+
+    bool faults2 =(
+        this->edsErrorCode == other.edsErrorCode &&
+        this->obcErrorCode == other.obcErrorCode
+    );
+
+
+    return (
+        message1 && message2 && message3 && message4 &&
+        message5 && message6 && message7 &&
+        bess1 && bess2 && bess3 && bess4 && bess5&&
+        emix1 &&
+        faults1 && faults2
+    );
 }
 
 CANData::~CANData (){

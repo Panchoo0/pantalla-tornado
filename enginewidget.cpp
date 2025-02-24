@@ -73,99 +73,99 @@ void EngineWidget::bess5() {
     ui->chargeConectedValue->setText(isDCConectedLabel);
 }
 
-void EngineWidget::assertMessage2(int engineCurrent, int engineTorque, int engineVoltage, int rpm, int setpoint) {
+void EngineWidget::assertMessage2() {
     assert(
-        ui->currentValue->text() == (QString::number(engineCurrent) + " A" )
+        ui->currentValue->text() == (QString::number(canData->engineCurrent) + " A" )
     );
 
     assert(
-        ui->torqueValue->text() == (QString::number(engineTorque) + " nm" )
+        ui->torqueValue->text() == (QString::number(canData->engineTorque) + " nm" )
     );
 
     assert(
-        ui->voltageValue->text() == (QString::number(engineVoltage) + " V" )
+        ui->voltageValue->text() == (QString::number(canData->engineVoltage) + " V" )
     );
 
     assert(
-        ui->RPMValue->text() == (QString::number(rpm) + " RPM" )
+        ui->RPMValue->text() == (QString::number(canData->rpm) + " RPM" )
     );
 
     assert(
-        ui->setpointValue->text() == (QString::number(setpoint) + " RPM" )
-    );
-}
-
-void EngineWidget::assertMessage3(int engineTemp, int inversorTemp, int batTemp, int batMaxTemp, int batMinTemp) {
-    assert(
-        ui->tempValue->text() == (QString::number(engineTemp) + "° C")
+        ui->setpointValue->text() == (QString::number(canData->setpoint) + " RPM" )
     );
 }
 
-void EngineWidget::assertMessage4(int dcdc1Current, int dcdc2Current, int dcdc1HVCurrent, int dcdc2HVCurrent) {
+void EngineWidget::assertMessage3() {
     assert(
-        ui->dcdc1OutputCurrentValue->text() == (QString::number(dcdc1Current) + " A")
+        ui->tempValue->text() == (QString::number(canData->engineTemp) + "° C")
+    );
+}
+
+void EngineWidget::assertMessage4() {
+    assert(
+        ui->dcdc1OutputCurrentValue->text() == (QString::number(canData->dcdc1Current) + " A")
     );
 
     assert(
-        ui->dcdc2OutputCurrentValue->text() == (QString::number(dcdc2Current) + " A")
+        ui->dcdc2OutputCurrentValue->text() == (QString::number(canData->dcdc2Current) + " A")
         );
 
     assert(
-        ui->dcdc1InputCurrentHVValue->text() == (QString::number(dcdc1HVCurrent) + " A")
+        ui->dcdc1InputCurrentHVValue->text() == (QString::number(canData->dcdc1HVCurrent) + " A")
         );
 
     assert(
-        ui->dcdc2InputCurrentHVValue->text() == (QString::number(dcdc2HVCurrent) + " A")
-        );
-}
-
-void EngineWidget::assertMessage5(int dcdc1OutputVoltage, int dcdc2OutputVoltage, int dcdc1InputVoltage, int dcdc2InputVoltage) {
-    assert(
-        ui->dcdc1OutputVoltageValue->text() == (QString::number(dcdc1OutputVoltage) + " V")
-        );
-
-    assert(
-        ui->dcdc2OutputVoltageValue->text() == (QString::number(dcdc2OutputVoltage) + " V")
-        );
-
-    assert(
-        ui->dcdc1InputVoltageValue->text() == (QString::number(dcdc1InputVoltage) + " V")
-        );
-
-    assert(
-        ui->dcdc2InputVoltageValue->text() == (QString::number(dcdc2InputVoltage) + " V")
+        ui->dcdc2InputCurrentHVValue->text() == (QString::number(canData->dcdc2HVCurrent) + " A")
         );
 }
 
-void EngineWidget::assertMessage6(int posResistanceSIM100, int negResistanceSIM100, int posResistanceBMU, int negResistanceBMU) {
+void EngineWidget::assertMessage5() {
     assert(
-        ui->sim100posValue->text() == QString::number(posResistanceSIM100) + " kΩ"
+        ui->dcdc1OutputVoltageValue->text() == (QString::number(canData->dcdc1OutputVoltage) + " V")
         );
 
     assert(
-        ui->sim100negValue->text() == QString::number(negResistanceSIM100) + " kΩ"
+        ui->dcdc2OutputVoltageValue->text() == (QString::number(canData->dcdc2OutputVoltage) + " V")
         );
 
     assert(
-        ui->bmuposValue->text() == QString::number(posResistanceBMU) + " kΩ"
+        ui->dcdc1InputVoltageValue->text() == (QString::number(canData->dcdc1InputVoltage) + " V")
         );
 
     assert(
-        ui->bmunegValue->text() == QString::number(negResistanceBMU) + " kΩ"
+        ui->dcdc2InputVoltageValue->text() == (QString::number(canData->dcdc2InputVoltage) + " V")
         );
 }
 
-void EngineWidget::assertBess5(int posChargeTempDC, int negChargeTempDC, int dcConected, int bmsChargingMode, int coolingState, int heatState, int bmuContactor, int bmsFailures) {
+void EngineWidget::assertMessage6() {
     assert(
-        ui->posTempDCChargeValue->text() == (QString::number(posChargeTempDC) + "° C")
+        ui->sim100posValue->text() == QString::number(canData->posResistanceSIM100) + " kΩ"
+        );
+
+    assert(
+        ui->sim100negValue->text() == QString::number(canData->negResistanceSIM100) + " kΩ"
+        );
+
+    assert(
+        ui->bmuposValue->text() == QString::number(canData->posResistanceBMU) + " kΩ"
+        );
+
+    assert(
+        ui->bmunegValue->text() == QString::number(canData->negResistanceBMU) + " kΩ"
+        );
+}
+
+void EngineWidget::assertBess5() {
+    assert(
+        ui->posTempDCChargeValue->text() == (QString::number(canData->posChargeTempDC) + "° C")
     );
 
     assert(
-        ui->negTempDCChargeValue->text() == (QString::number(negChargeTempDC) + "° C")
+        ui->negTempDCChargeValue->text() == (QString::number(canData->negChargeTempDC) + "° C")
         );
 
     QString isDCConectedLabel;
-    switch (dcConected) {
+    switch (canData->dcConected) {
     case 0: {
         isDCConectedLabel = "No conectada";
         break;

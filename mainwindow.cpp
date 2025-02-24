@@ -248,13 +248,13 @@ void MainWindow::receiveMessage(unsigned char sourceAddress, unsigned int pgn, u
     ss << std::hex << pgn;
     std::string pgn_hex = ss.str();
 
-    this->receiveDebugMessage(
-        "Recibido desde " +
-        QString::number(sourceAddress) +
-        " con pgn: " + QString::fromStdString(pgn_hex) +
-        " bytes: " +
-        Utils::toHexString((uchar *)receivedData, 8)
-    );
+    // this->receiveDebugMessage(
+    //     "Recibido desde " +
+    //     QString::number(sourceAddress) +
+    //     " con pgn: " + QString::fromStdString(pgn_hex) +
+    //     " bytes: " +
+    //     Utils::toHexString((uchar *)receivedData, 8)
+    // );
 
     this->data->receiveMessage(sourceAddress, pgn, receivedData);
 
@@ -380,131 +380,211 @@ void MainWindow::sendMessage() {
 
 // Test para comprobar si se actualizan correctamente los valores
 void MainWindow::testCan() {
-    this->testMessage1(1011, 120, 24);
-    this->testMessage2(12, 11, 12, 1, 0);
-    this->testMessage3(3, 12,10, 255, 12);
-    this->testMessage4(12,123, 1221, 187);
-    this->testMessage5(120, 1232, 83, 8912);
-    this->testMessage6(103, 1458, 93, 2);
+    srand (time(NULL));
+    int iteraciones = 100;
+    for (int i = 0; i < iteraciones; i++) {
+        // qInfo() << "Iteración: " << i;
+        this->testMessage1();
+        this->testMessage2();
+        this->testMessage3();
+        this->testMessage4();
+        this->testMessage5();
+        this->testMessage6();
+        this->testMessage7();
 
-    this->testBess1(0, 10, 102, 29);
-    this->testBess2(11, 12, 129, 192, 32, 12, 84);
-    this->testBess3(12, 1029, 12);
-    this->testBess4(12, 92, 1, 83, 44);
-    this->testBess5(12, 123, 1, 1, 1, 1, 1, 1);
+        this->testBess1();
+        this->testBess2();
+        this->testBess3();
+        this->testBess4();
+        this->testBess5();
 
-    uchar data[] = {0xff, 0b11111111, 0b10111111, 0b11111111, 0b11111111, 0b11111111, 0b01000000, 0b00000000};
-    this->receiveMessage(0, 0x700, data);
-
-    uchar data2[] = {3, 4, 5, 6, 7, 8, 0 ,0};
-    this->emix1(12, 15, 19, 21, 34, 56);
-
-    this->faults1(12, 12456);
-    this->faults2(12431, 120);
+        this->testEmix1();
+        this->testFaults1();
+        this->testFaults2();
+    }
 
 }
 
-void MainWindow::assertMessage1(int _current, int _voltage, int soc) {
-    assert(ui->batValue->text() == QString::number(soc));
+void MainWindow::assertMessage1() {
+    assert(ui->batValue->text() == QString::number(this->data->SOC));
 }
 
-void MainWindow::testMessage1(int current, int voltage, int soc) {
+void MainWindow::testMessage1() {
+    // Obtenemos valores random
+    int current = rand() % 0xFFFF;
+    int voltage = rand() % 0xFFFF;
+    int soc = rand() % 0xFF;
+
+    // Clonamos el objeto y actualizamos sus valores
+    CANData *canData = this->data->clone();
+    canData->batteryCurrent = current;
+    canData->batteryVoltage = voltage;
+    canData->SOC = soc;
+
+    // Transformamos los valores según el protocolo de message1
     uchar b1_current = current >> 8;
     uchar b2_current = current & 0xff;
 
     uchar b1_voltage = voltage >> 8;
     uchar b2_voltage = voltage & 0xff;
 
-
     uchar b1_soc = soc & 0xff;
 
     uchar data[] = {b1_current, b2_current, b1_voltage, b2_voltage, b1_soc, 0, 0, 0};
+
+    // Simulamos la recepción del mensaje
     this->receiveMessage(0, 0x100, data);
 
-    this->data->assertMessage1(current, voltage, soc);
-    this->assertMessage1(current, voltage, soc);
-    this->adminPanel->batteryPanel->assertMessage1(current, voltage, soc);
+    // Comprobamos que se actualizó correctamente el objeto con los datos
+    assert((*canData) == (*this->data));
+
+    // Comprobamos que se actualizó la información en los widgets
+    this->assertMessage1();
 }
 
-void MainWindow::testMessage2(int engineCurrent, int engineTorque, int engineVoltage, int rpm, int setpoint) {
+void MainWindow::testMessage2() {
+    // Obtenemos valores random
+    int engineCurrent = rand() % 0xFFF;
+    int engineTorque = rand() % 0xFFF;
+    int engineVoltage = rand() % 0xFFF;
+    int rpm = rand() % 0xFFF;
+    int setpoint = rand() %0xFFFF;
+
+    // Clonamos el objeto y actualizamos sus valores
+    CANData *canData = this->data->clone();
+    canData->engineCurrent = engineCurrent;
+    canData->engineTorque = engineTorque;
+    canData->engineVoltage = engineVoltage;
+    canData->rpm = rpm;
+    canData->setpoint = setpoint;
+
+    // Transformamos los valores según el protocolo de message2
     uchar b1_current = engineCurrent >> 4;
-    uchar b2_current = (engineCurrent & 0xf) << 4;
+    uchar b2_current = (engineCurrent & 0xF) << 4;
 
     uchar b1_torque = engineTorque >> 8;
-    uchar b2_torque  = engineTorque & 0xf;
+    uchar b2_torque  = engineTorque & 0xFF;
 
     uchar b1_voltage = engineVoltage >> 4;
-    uchar b2_voltage = (engineVoltage & 0xf) << 4;
+    uchar b2_voltage = (engineVoltage & 0xF) << 4;
 
     uchar b1_rpm= rpm >> 8;
-    uchar b2_rpm = rpm & 0xf;
+    uchar b2_rpm = rpm & 0xFF;
 
     uchar b1_setpoint = setpoint >> 8;
     uchar b2_setpoint = setpoint & 0xff;
-
 
     uchar b2 = b2_current | b1_torque;
     uchar b5 = b2_voltage | b1_rpm;
 
     uchar data[] = {b1_current, b2, b2_torque, b1_voltage, b5, b2_rpm, b1_setpoint, b2_setpoint};
+
+    // Simulamos la recepción del mensaje
     this->receiveMessage(0, 0x200, data);
 
-    this->data->assertMessage2(engineCurrent, engineTorque, engineVoltage, rpm, setpoint);
-    this->adminPanel->engineWidget->assertMessage2(engineCurrent, engineTorque, engineVoltage, rpm, setpoint);
+    // Comprobamos que se actualizó correctamente el objeto con los datos
+    assert((*canData) == (*this->data));
 
+    this->adminPanel->engineWidget->assertMessage2();
 }
 
-void MainWindow::assertMessage3(int engineTemp, int inversorTemp, int batTemp, int batMaxTemp, int batMinTemp){
+void MainWindow::assertMessage3(){
     assert(
-        ui->engineTempValue->text() == (QString::number(engineTemp) + "° C")
+        ui->engineTempValue->text() == (QString::number(data->engineTemp) + "° C")
         );
 
     assert(
-        ui->inversorValue->text() == (QString::number(inversorTemp) + "° C")
+        ui->inversorValue->text() == (QString::number(data->inversorTemp) + "° C")
     );
 
     assert(
-        ui->batTempValue->text() == (QString::number(batTemp) + "° C")
+        ui->batTempValue->text() == (QString::number(data->batTemp) + "° C")
         );
 }
 
-void MainWindow::testMessage3(int engineTemp, int inversorTemp, int batTemp, int batMaxTemp, int batMinTemp) {
-    uchar b_engineTemp = engineTemp & 0xff;
-    uchar b_inversorTemp = inversorTemp & 0xff;
-    uchar b_batTemp = batTemp & 0xff;
-    uchar b_batMaxTemp = batMaxTemp & 0xff;
-    uchar b_batMinTemp = batMinTemp & 0xff;
+void MainWindow::testMessage3() {
+    // Obtenemos valores aleatorios
+    uchar engineTemp = rand() % 0xFF;
+    uchar inversorTemp = rand() % 0xFF;
+    uchar batTemp = rand() % 0xFF;
+    uchar batMaxTemp = rand() % 0xFF;
+    uchar batMinTemp = rand() % 0xFF;
 
-    uchar data[] = {b_engineTemp, b_inversorTemp, b_batTemp, b_batMaxTemp, b_batMinTemp};
+    // Clonamos el objeto y actualizamos sus valores
+    CANData *canData = this->data->clone();
+    canData->engineTemp = engineTemp;
+    canData->inversorTemp = inversorTemp;
+    canData->batTemp = batTemp;
+    canData->batMaxTemp = batMaxTemp;
+    canData->batMinTemp = batMinTemp;
+
+    uchar data[] = {engineTemp, inversorTemp, batTemp, batMaxTemp, batMinTemp};
+
+    // Simulamos la recepción del mensaje
     this->receiveMessage(0, 0x300, data);
 
-    this->data->assertMessage3(engineTemp, inversorTemp, batTemp, batMaxTemp, batMinTemp);
-    this->assertMessage3(engineTemp, inversorTemp, batTemp, batMaxTemp, batMinTemp);
-    this->adminPanel->batteryPanel->assertMessage3(engineTemp, inversorTemp, batTemp, batMaxTemp, batMinTemp);
-    this->adminPanel->engineWidget->assertMessage3(engineTemp, inversorTemp, batTemp, batMaxTemp, batMinTemp);
+    // Comprobamos que se actualizó correctamente el objeto con los datos
+    assert((*canData) == (*this->data));
+
+    // Comprobamos que se actualizó la información en los widgets
+    this->assertMessage3();
+    this->adminPanel->batteryPanel->assertMessage3();
+    this->adminPanel->engineWidget->assertMessage3();
 }
 
-void MainWindow::testMessage4(int dcdc1Current, int dcdc2Current, int dcdc1HVCurrent, int dcdc2HVCurrent) {
+void MainWindow::testMessage4() {
+    // Obtenemos valores aleatorios
+    int dcdc1Current = rand() % 0xFFFF;
+    int dcdc2Current = rand() % 0xFFFF;
+    int dcdc1HVCurrent = rand() % 0xFFFF;
+    int dcdc2HVCurrent = rand() % 0xFFFF;
+
+    // Clonamos el objeto y actualizamos sus valores
+    CANData *canData = this->data->clone();
+    canData->dcdc1Current = dcdc1Current;
+    canData->dcdc2Current = dcdc2Current;
+    canData->dcdc1HVCurrent = dcdc1HVCurrent;
+    canData->dcdc2HVCurrent = dcdc2HVCurrent;
+
+    // Transformamos los valores según el protocolo de message4
     uchar b1 = dcdc1Current >> 8;
-    uchar b2 = dcdc1Current &0xff;
+    uchar b2 = dcdc1Current & 0xff;
 
     uchar b3 = dcdc2Current >> 8;
-    uchar b4 = dcdc2Current &0xff;
+    uchar b4 = dcdc2Current & 0xff;
 
     uchar b5 = dcdc1HVCurrent >> 8;
-    uchar b6 = dcdc1HVCurrent &0xff;
+    uchar b6 = dcdc1HVCurrent & 0xff;
 
     uchar b7 = dcdc2HVCurrent >> 8;
-    uchar b8 = dcdc2HVCurrent &0xff;
+    uchar b8 = dcdc2HVCurrent & 0xff;
 
     uchar data[] = {b1, b2, b3, b4, b5, b6, b7, b8};
+
+    // Simulamos la recepción del mensaje
     this->receiveMessage(0, 0x400, data);
 
-    this->data->assertMessage4(dcdc1Current, dcdc2Current, dcdc1HVCurrent, dcdc2HVCurrent);
-    this->adminPanel->engineWidget->assertMessage4(dcdc1Current, dcdc2Current, dcdc1HVCurrent, dcdc2HVCurrent);
+    // Comprobamos que se actualizó correctamente el objeto con los datos
+    assert((*canData) == (*this->data));
+
+    this->adminPanel->engineWidget->assertMessage4();
 }
 
-void MainWindow::testMessage5(int dcdc1OutputVoltage, int dcdc2OutputVoltage, int dcdc1InputVoltage, int dcdc2InputVoltage) {
+void MainWindow::testMessage5() {
+    // Obtenemos valores aleatorios
+    int dcdc1OutputVoltage = rand() % 0xFF;
+    int dcdc2OutputVoltage = rand() % 0xFF;
+    int dcdc1InputVoltage = rand() % 0xFF;
+    int dcdc2InputVoltage = rand() % 0xFF;
+
+    // Clonamos el objeto y actualizamos sus valores
+    CANData *canData = this->data->clone();
+    canData->dcdc1OutputVoltage = dcdc1OutputVoltage;
+    canData->dcdc2OutputVoltage = dcdc2OutputVoltage;
+    canData->dcdc1InputVoltage = dcdc1InputVoltage;
+    canData->dcdc2InputVoltage = dcdc2InputVoltage;
+
+    // Transformamos los valores según el protocolo de message5
     uchar b1 = dcdc1OutputVoltage >> 8;
     uchar b2 = dcdc1OutputVoltage &0xff;
 
@@ -518,13 +598,31 @@ void MainWindow::testMessage5(int dcdc1OutputVoltage, int dcdc2OutputVoltage, in
     uchar b8 = dcdc2InputVoltage &0xff;
 
     uchar data[] = {b1, b2, b3, b4, b5, b6, b7, b8};
+
+    // Simulamos la recepción del mensaje
     this->receiveMessage(0, 0x500, data);
 
-    this->data->assertMessage5(dcdc1OutputVoltage, dcdc2OutputVoltage, dcdc1InputVoltage, dcdc2InputVoltage);
-    this->adminPanel->engineWidget->assertMessage5(dcdc1OutputVoltage, dcdc2OutputVoltage, dcdc1InputVoltage, dcdc2InputVoltage);
+    // Comprobamos que se actualizó correctamente el objeto con los datos
+    assert((*canData) == (*this->data));
+
+    this->adminPanel->engineWidget->assertMessage5();
 }
 
-void MainWindow::testMessage6(int posResistanceSIM100, int negResistanceSIM100, int posResistanceBMU, int negResistanceBMU) {
+void MainWindow::testMessage6() {
+    // Obtenemos valores aleatorios
+    int posResistanceSIM100 = rand() % 0xFF;
+    int negResistanceSIM100 = rand() % 0xFF;
+    int posResistanceBMU = rand() % 0xFF;
+    int negResistanceBMU = rand() % 0xFF;
+
+    // Clonamos el objeto y actualizamos sus valores
+    CANData *canData = this->data->clone();
+    canData->posResistanceSIM100 = posResistanceSIM100;
+    canData->negResistanceSIM100 = negResistanceSIM100;
+    canData->posResistanceBMU = posResistanceBMU;
+    canData->negResistanceBMU = negResistanceBMU;
+
+    // Transformamos los valores según el protocolo de message6
     uchar b1 = posResistanceSIM100 >> 8;
     uchar b2 = posResistanceSIM100 &0xff;
 
@@ -538,13 +636,187 @@ void MainWindow::testMessage6(int posResistanceSIM100, int negResistanceSIM100, 
     uchar b8 = negResistanceBMU &0xff;
 
     uchar data[] = {b1, b2, b3, b4, b5, b6, b7, b8};
+
+    // Simulamos la recepción del mensaje
     this->receiveMessage(0, 0x600, data);
 
-    this->data->assertMessage6(posResistanceSIM100, negResistanceSIM100, posResistanceBMU, negResistanceBMU);
-    this->adminPanel->engineWidget->assertMessage6(posResistanceSIM100, negResistanceSIM100, posResistanceBMU, negResistanceBMU);
+    // Comprobamos que se actualizó correctamente el objeto con los datos
+    assert((*canData) == (*this->data));
+
+    this->adminPanel->engineWidget->assertMessage6();
 }
 
-void MainWindow::testBess1(int trama, int v1, int v2, int v3) {
+void MainWindow::testMessage7() {
+    // Obtenemos valores aleatorios
+    int lvError = rand() % 7;
+    int hvError = rand() % 7;
+    int state = rand() % 7;
+    int inhibitState = rand() % 2;
+    int busHVDischarged = rand() % 2;
+    int pduContactorClose = rand() % 2;
+    int hvOn = rand() % 2;
+    int lvHigh = rand() % 3;
+    int dcdc1Overtemp = rand() % 2;
+    int dcdc2Overtemp = rand() % 2;
+    int atsFanFault = rand() % 2;
+    int atsPumpFault = rand() % 2;
+    int edsOvertemp = rand() % 2;
+    int obcOvertemp = rand() % 2;
+    int edsInError = rand() % 2;
+    int edsCouldntClear = rand() % 2;
+    int dcdcHighDifference = rand() % 2;
+    int batModule1 = rand() % 2;
+    int batModule2 = rand() % 2;
+    int batModule3 = rand() % 2;
+    int batModule4 = rand() % 2;
+    int contactorPdu = rand() % 2;
+    int sim100Stucked = rand() % 2;
+    int couldntPowerOnBMS = rand() % 2;
+    int bessPowerOffHv = rand() % 2;
+    int requiredHvOff = rand() % 2;
+    int pedal1Anormal = rand() % 2;
+    int pedal2Anormal = rand() % 2;
+    int hvilPdu = rand() % 2;
+    int hvilObc = rand() % 2;
+    int hvilEds = rand() % 2;
+    int hvilDddc = rand() % 2;
+    int termistorLVOutOfRange = rand() % 2;
+    int termistorHVOutOfRange = rand() % 2;
+    int pduTempExcess = rand() % 2;
+    int overturn = rand() % 2;
+    int doorOpen = rand() % 2;
+    int parkingState = rand() % 2;
+    int estadoMarcha = rand() % 3;
+
+
+    // Clonamos el objeto y actualizamos sus valores
+    CANData *canData = this->data->clone();
+    canData->lvError = lvError;
+    canData->hvError = hvError;
+    canData->state = state;
+    canData->inhibitState = inhibitState;
+    canData->busHVDischarged = busHVDischarged;
+    canData->pduContactorClose = pduContactorClose;
+    canData->hvOn = hvOn;
+    canData->lvHigh = lvHigh;
+    canData->dcdc1Overtemp = dcdc1Overtemp;
+    canData->dcdc2Overtemp = dcdc2Overtemp;
+    canData->atsFanFault = atsFanFault;
+    canData->atsPumpFault = atsPumpFault;
+    canData->edsOvertemp = edsOvertemp;
+    canData->obcOvertemp = obcOvertemp;
+    canData->edsInError = edsInError;
+    canData->edsCouldntClear = edsCouldntClear;
+    canData->dcdcHighDifference = dcdcHighDifference;
+    canData->batModule1 = batModule1;
+    canData->batModule2 = batModule2;
+    canData->batModule3 = batModule3;
+    canData->batModule4 = batModule4;
+    canData->contactorPdu = contactorPdu;
+    canData->sim100Stucked = sim100Stucked;
+    canData->couldntPowerOnBMS = couldntPowerOnBMS;
+    canData->bessPowerOffHv = bessPowerOffHv;
+    canData->requiredHvOff = requiredHvOff;
+    canData->pedal1Anormal = pedal1Anormal;
+    canData->pedal2Anormal = pedal2Anormal;
+    canData->hvilPdu = hvilPdu;
+    canData->hvilObc = hvilObc;
+    canData->hvilEds = hvilEds;
+    canData->hvilDddc = hvilDddc;
+    canData->termistorLVOutOfRange = termistorLVOutOfRange;
+    canData->termistorHVOutOfRange = termistorHVOutOfRange;
+    canData->pduTempExcess = pduTempExcess;
+    canData->overturn = overturn;
+    canData->doorOpen = doorOpen;
+    canData->parkingState = parkingState;
+    canData->estadoMarcha = estadoMarcha;
+
+    // Transformamos los valores según el protocolo de message6
+    uchar b0_4 = lvError << 4;
+    uchar b4_8 = hvError;
+
+    uchar byte1 = b0_4 | b4_8;
+
+    uchar b8_12 = state << 4;
+    uchar b12_13 = inhibitState << 3;
+    uchar b13_14 = busHVDischarged << 2;
+    uchar b14_15 = pduContactorClose << 1;
+    uchar b15_16 = hvOn;
+
+    uchar byte2 = b8_12 | b12_13 | b13_14 | b14_15 | b15_16;
+
+    uchar b16_18 = lvHigh << 6;
+    uchar b18_19 = dcdc1Overtemp << 5;
+    uchar b19_20 = dcdc2Overtemp << 4;
+    uchar b20_21 = atsFanFault << 3;
+    uchar b21_22 = atsPumpFault << 2;
+    uchar b22_23 = edsOvertemp << 1;
+    uchar b23_24 = obcOvertemp;
+
+    uchar byte3 = b16_18 | b18_19 | b19_20 | b20_21 | b21_22 | b22_23 | b23_24;
+
+    uchar b24_25 = edsInError << 7;
+    uchar b25_26 = edsCouldntClear << 6;
+    uchar b26_27 = dcdcHighDifference << 5;
+    uchar b27_28 = batModule1 << 4;
+    uchar b28_29 = batModule2 << 3;
+    uchar b29_30 = batModule3 << 2;
+    uchar b30_31 = batModule4 << 1;
+    uchar b31_32 = contactorPdu;
+
+    uchar byte4 = b24_25 | b25_26 | b26_27 | b27_28 | b28_29 | b29_30 | b30_31 | b31_32;
+
+    uchar b32_33 = sim100Stucked << 7;
+    uchar b33_34 = couldntPowerOnBMS << 6;
+    uchar b34_35 = bessPowerOffHv << 5;
+    uchar b35_36 = requiredHvOff << 4;
+    uchar b36_37 = pedal2Anormal << 3;
+    uchar b37_38 = pedal1Anormal << 2;
+    uchar b38_39 = hvilPdu << 1;
+    uchar b39_40 = hvilObc;
+
+    uchar byte5 = b32_33 | b33_34 | b34_35 | b35_36 | b36_37 | b37_38 | b38_39 | b39_40;
+
+    uchar b40_41 = hvilEds << 7;
+    uchar b41_42 = hvilDddc << 6;
+    uchar b42_43 = termistorLVOutOfRange << 5;
+    uchar b43_44 = termistorHVOutOfRange << 4;
+    uchar b44_45 = pduTempExcess << 3;
+    uchar b45_46 = overturn << 2;
+    uchar b46_47 = doorOpen << 1;
+    uchar b47_48 = parkingState;
+
+    uchar byte6 = b40_41 | b41_42 | b42_43 | b43_44 | b44_45 | b45_46 | b46_47 | b47_48;
+
+    uchar byte7 = estadoMarcha << 6;
+
+    uchar data[] = {byte1, byte2, byte3, byte4, byte5, byte6, byte7, 00};
+
+    // Simulamos la recepción del mensaje
+    this->receiveMessage(0, 0x700, data);
+
+    // Comprobamos que se actualizó correctamente el objeto con los datos
+    assert((*canData) == (*this->data));
+
+    this->adminPanel->processVarsWidget->assertMessage7();
+
+
+}
+
+void MainWindow::testBess1() {
+    // Obtenemos valores aleatorios
+    int trama = rand() % 194;
+    int v1 = rand() % 0xFFFF;
+    int v2 = rand() % 0xFFFF;
+    int v3 = rand() % 0xFFFF;
+
+    // Clonamos el objeto y actualizamos sus valores
+    CANData *canData = this->data->clone();
+    canData->voltageCells[trama * 3] = v1;
+    canData->voltageCells[trama * 3 + 1] = v2;
+    canData->voltageCells[trama * 3 + 2] = v3;
+
+    // Transformamos los valores según el protocolo de bess1
     uchar b1 = trama >> 8;
     uchar b2 = trama & 0xFF;
 
@@ -558,14 +830,36 @@ void MainWindow::testBess1(int trama, int v1, int v2, int v3) {
     uchar b8 = v3 & 0xFF;
 
     uchar data[] = {b1, b2, b3, b4, b5, b6, b7, b8};
+
+    // Simulamos la recepción del mensaje
     this->receiveMessage(0, 0xC100, data);
 
-    this->data->assertBess1(trama, v1, v2, v3);
+    // Comprobamos que se actualizó correctamente el objeto con los datos
+    assert((*canData) == (*this->data));
+
     this->adminPanel->batteryPanel->assertBess1(trama, v1, v2, v3);
 }
 
+void MainWindow::testBess2(){
+    // Obtenemos valores aleatorios
+    int trama = rand() % 18;
+    int t1 = rand() % 0xFF;
+    int t2 = rand() % 0xFF;
+    int t3 = rand() % 0xFF;
+    int t4 = rand() % 0xFF;
+    int t5 = rand() % 0xFF;
+    int t6 = rand() % 0xFF;
 
-void MainWindow::testBess2(int trama, int t1, int t2, int t3, int t4, int t5, int t6){
+    // Clonamos el objeto y actualizamos sus valores
+    CANData *canData = this->data->clone();
+    canData->tempCells[trama * 6] = t1;
+    canData->tempCells[trama * 6 + 1] = t2;
+    canData->tempCells[trama * 6 + 2] = t3;
+    canData->tempCells[trama * 6 + 3] = t4;
+    canData->tempCells[trama * 6 + 4] = t5;
+    canData->tempCells[trama * 6 + 5] = t6;
+
+    // Transformamos los valores según el protocolo de bess2
     uchar b1 = trama >> 8;
     uchar b2 = trama & 0xff;
 
@@ -579,14 +873,29 @@ void MainWindow::testBess2(int trama, int t1, int t2, int t3, int t4, int t5, in
     uchar b8 = t6 & 0xff;
 
     uchar data[] = {b1, b2, b3, b4, b5, b6, b7, b8};
+
+    // Simulamos la recepción del mensaje
     this->receiveMessage(0, 0xC200, data);
 
-    this->data->assertBess2(trama, t1, t2, t3, t4, t5, t6);
+    // Comprobamos que se actualizó correctamente el objeto con los datos
+    assert((*canData) == (*this->data));
+
     this->adminPanel->batteryPanel->assertBess2(trama, t1, t2, t3, t4, t5, t6);
 }
 
+void MainWindow::testBess3() {
+    // Obtenemos valores aleatorios
+    int chargeEnergyAcumulated = rand() % 0xFFFF;
+    int dischargeEnergyAcumulated = rand() % 0xFFFF;
+    int energyOneCharge = rand() % 0xFFFF;
 
-void MainWindow::testBess3(int chargeEnergyAcumulated, int dischargeEnergyAcumulated, int energyOneCharge) {
+    // Clonamos el objeto y actualizamos sus valores
+    CANData *canData = this->data->clone();
+    canData->chargeEnergyAcumulated = chargeEnergyAcumulated;
+    canData->dischargeEnergyAcumulated = dischargeEnergyAcumulated;
+    canData->energyOneCharge = energyOneCharge;
+
+    // Transformamos los valores según el protocolo de bess3
     uchar b1 = chargeEnergyAcumulated >> 16;
     uchar b2 = (chargeEnergyAcumulated >> 8) & 0xFF;
     uchar b3 = chargeEnergyAcumulated & 0xFF;
@@ -599,13 +908,33 @@ void MainWindow::testBess3(int chargeEnergyAcumulated, int dischargeEnergyAcumul
     uchar b8 = energyOneCharge & 0xFF;
 
     uchar data[] = {b1, b2, b3, b4, b5, b6, b7,b8};
+
+    // Simulamos la recepción del mensaje
     this->receiveMessage(0, 0xC300, data);
 
-    this->data->assertBess3(chargeEnergyAcumulated, dischargeEnergyAcumulated, energyOneCharge);
+    // Comprobamos que se actualizó correctamente el objeto con los datos
+    assert((*canData) == (*this->data));
+
     this->adminPanel->batteryPanel->assertBess3(chargeEnergyAcumulated, dischargeEnergyAcumulated, energyOneCharge);
 }
 
-void MainWindow::testBess4(int SOC, int SOH, int minVoltage, int maxVoltage, int meanVoltage) {
+void MainWindow::testBess4() {
+    // Obtenemos valores aleatorios
+    int SOC = rand() % 0xFF;
+    int SOH = rand() % 0xFF;
+    int maxVoltage = rand() % 0xFFFF;
+    int minVoltage = rand() % 0xFFFF;
+    int meanVoltage = rand() % 0xFFFF;
+
+    // Clonamos el objeto y actualizamos sus valores
+    CANData *canData = this->data->clone();
+    canData->SOC = SOC;
+    canData->SOH = SOH;
+    canData->maxVoltage = maxVoltage;
+    canData->minVoltage = minVoltage;
+    canData->meanVoltage = meanVoltage;
+
+    // Transformamos los valores según el protocolo de message5
     uchar b1 = SOC & 0xFF;
     uchar b2 = SOH & 0xFF;
 
@@ -619,59 +948,138 @@ void MainWindow::testBess4(int SOC, int SOH, int minVoltage, int maxVoltage, int
     uchar b8 = meanVoltage & 0xFF;
 
     uchar data[] = {b1, b2, b3, b4, b5, b6, b7,b8};
+
+    // Simulamos la recepción del mensaje
     this->receiveMessage(0, 0xC400, data);
 
-    this->data->assertBess4(SOC, SOH, minVoltage, maxVoltage, meanVoltage);
-    this->adminPanel->batteryPanel->assertBess4(SOC, SOH, minVoltage, maxVoltage, meanVoltage);
+    // Comprobamos que se actualizó correctamente el objeto con los datos
+    assert((*canData) == (*this->data));
+
+    this->adminPanel->batteryPanel->assertBess4();
 }
 
-void MainWindow::testBess5(int posChargeTempDC, int negChargeTempDC, int dcConected, int bmsChargingMode, int coolingState, int heatState, int bmuContactor, int bmsFailures) {
+void MainWindow::testBess5() {
+    // Obtenemos valores aleatorios
+    int posChargeTempDC = rand() % 0xFF;
+    int negChargeTempDC = rand() % 0xFF;
+    int dcConected = rand() % 3;
+    int bmsChargingMode = rand() % 3;
+    int coolingState = rand() % 1;
+    int heatState = rand() % 1;
+    int bmuContactor = rand() % 3;
+    int bmsFailures = rand() % 0xFF;
+
+    // Clonamos el objeto y actualizamos sus valores
+    CANData *canData = this->data->clone();
+    canData->posChargeTempDC = posChargeTempDC;
+    canData->negChargeTempDC = negChargeTempDC;
+    canData->dcConected = dcConected;
+    canData->bmsChargingMode = bmsChargingMode;
+    canData->coolingState = coolingState;
+    canData->heatState = heatState;
+    canData->bmuContactor = bmuContactor;
+    canData->bmsFailures = bmsFailures;
+
+    // Transformamos los valores según el protocolo de bess5
     uchar b1 = posChargeTempDC & 0xFF;
     uchar b2 = negChargeTempDC & 0xFF;
 
-    uchar b3_0_2 = (dcConected & 0b11) << 6;
-    uchar b3_2_4 = (bmsChargingMode & 0b11) << 4;
-    uchar b3_4_5 = (coolingState & 0b1) << 3;
-    uchar b3_5_6 = (heatState & 0b1) << 2;
-    uchar b3_6_8 = (bmuContactor & 0b11);
+    uchar b3_0_2 = dcConected << 6;
+    uchar b3_2_4 = bmsChargingMode << 4;
+    uchar b3_4_5 = coolingState << 3;
+    uchar b3_5_6 = heatState << 2;
+    uchar b3_6_8 = bmuContactor;
 
     uchar b3 = b3_0_2 | b3_2_4 | b3_4_5 | b3_5_6 | b3_6_8;
-
-    uchar b4 = bmsFailures & 0xFF;
+    uchar b4 = bmsFailures;
 
     uchar data[] = {b1, b2, b3, b4, 0, 0, 0, 0};
+
+    // Simulamos la recepción del mensaje
     this->receiveMessage(0, 0xC500, data);
 
-    this->data->assertBess5(posChargeTempDC, negChargeTempDC, dcConected, bmsChargingMode, coolingState, heatState, bmuContactor, bmsFailures);
-    this->adminPanel->engineWidget->assertBess5(posChargeTempDC, negChargeTempDC, dcConected, bmsChargingMode, coolingState, heatState, bmuContactor, bmsFailures);
+    // Comprobamos que se actualizó correctamente el objeto con los datos
+    assert((*canData) == (*this->data));
+
+    this->adminPanel->engineWidget->assertBess5();
+    this->adminPanel->processVarsWidget->assertBess5();
 
 }
 
-void MainWindow::emix1(int edsFailures, int dcdc1Failures, int dcdc2Failures, int sim100Failures, int obcFailures, int emixFailures) {
-    uchar b1 = edsFailures & 0xFF;
-    uchar b2 = dcdc1Failures & 0xFF;
-    uchar b3 = dcdc2Failures & 0xFF;
-    uchar b4 = sim100Failures & 0xFF;
-    uchar b5 = obcFailures & 0xFF;
-    uchar b6 = emixFailures & 0xFF;
+void MainWindow::testEmix1() {
+    int edsFailures = rand() % 0xFF;
+    int dcdc1Failures = rand() % 0xFF;
+    int dcdc2Failures = rand() % 0xFF;
+    int sim100Failures = rand() % 0xFF;
+    int obcFailures = rand() % 0xFF;
+    int emixFailures = rand() % 0xFF;
+
+    // Clonamos el objeto y actualizamos sus valores
+    CANData *canData = this->data->clone();
+    canData->edsFailures = edsFailures;
+    canData->dcdc1Failures = dcdc1Failures;
+    canData->dcdc2Failures = dcdc2Failures;
+    canData->sim100Failures = sim100Failures;
+    canData->obcFailures = obcFailures;
+    canData->emixFailures = emixFailures;
+
+    // Transformamos los valores según el protocolo de emix1
+    uchar b1 = edsFailures;
+    uchar b2 = dcdc1Failures;
+    uchar b3 = dcdc2Failures;
+    uchar b4 = sim100Failures;
+    uchar b5 = obcFailures ;
+    uchar b6 = emixFailures;
 
     uchar data[] = {b1, b2, b3, b4, b5, b6, 0, 0};
+
+    // Simulamos la recepción del mensaje
     this->receiveMessage(0, 0xC600, data);
+
+    // Comprobamos que se actualizó correctamente el objeto con los datos
+    assert((*canData) == (*this->data));
+
+    this->adminPanel->processVarsWidget->assertEmix1();
 }
 
-void MainWindow::faults1(int dcdc1ErrorCode, int dcdc2ErrorCode) {
+void MainWindow::testFaults1() {
+    int dcdc1ErrorCode = rand() % 0xFFFF;
+    int dcdc2ErrorCode = rand() % 0xFFFF;
+
+    // Clonamos el objeto y actualizamos sus valores
+    CANData *canData = this->data->clone();
+    canData->dcdc1ErrorCode = dcdc1ErrorCode;
+    canData->dcdc2ErrorCode = dcdc2ErrorCode;
+
+    // Transformamos los valores según el protocolo de faults1
     uchar b1 = dcdc1ErrorCode >> 8;
-    uchar b2 = dcdc2ErrorCode & 0xFF;
+    uchar b2 = dcdc1ErrorCode & 0xFF;
 
     uchar b3 = dcdc2ErrorCode >> 8;
     uchar b4 = dcdc2ErrorCode & 0xFF;
 
     uchar data[] = {b1, b2, b3, b4, 0, 0, 0, 0};
+
+    // Simulamos la recepción del mensaje
     this->receiveMessage(0, 0xD000, data);
+
+    // Comprobamos que se actualizó correctamente el objeto con los datos
+    assert((*canData) == (*this->data));
+
+    this->adminPanel->processVarsWidget->assertFaults1();
+
 }
 
+void MainWindow::testFaults2() {
+    int edsErrorCode = rand() % 0xFFFF;
+    int obcErrorCode = rand() % 0xFFFF;
 
-void MainWindow::faults2(int edsErrorCode, int obcErrorCode) {
+    // Clonamos el objeto y actualizamos sus valores
+    CANData *canData = this->data->clone();
+    canData->edsErrorCode = edsErrorCode;
+    canData->obcErrorCode = obcErrorCode;
+
+    // Transformamos los valores según el protocolo de faults1
     uchar b1 = edsErrorCode >> 8;
     uchar b2 = edsErrorCode & 0xFF;
 
@@ -679,5 +1087,13 @@ void MainWindow::faults2(int edsErrorCode, int obcErrorCode) {
     uchar b4 = obcErrorCode & 0xFF;
 
     uchar data[] = {b1, b2, b3, b4, 0, 0, 0, 0};
+
+    // Simulamos la recepción del mensaje
     this->receiveMessage(0, 0xD100, data);
+
+    // Comprobamos que se actualizó correctamente el objeto con los datos
+    assert((*canData) == (*this->data));
+
+    this->adminPanel->processVarsWidget->assertFaults2();
+
 }

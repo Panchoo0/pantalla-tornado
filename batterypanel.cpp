@@ -130,31 +130,31 @@ void BatteryPanel::bess4() {
     ui->meanCellVoltageValue->setText(QString::number(canData->meanVoltage) + " V");
 }
 
-void BatteryPanel::assertMessage1(int current, int voltage, int soc) {
+void BatteryPanel::assertMessage1() {
     assert(
-        ui->instantCurrentValue->text() == (QString::number(current) + " A")
+        ui->instantCurrentValue->text() == (QString::number(canData->batteryCurrent) + " A")
     );
 
     assert(
-        ui->instantVoltageValue->text() == (QString::number(voltage) + " V")
+        ui->instantVoltageValue->text() == (QString::number(canData->batteryVoltage) + " V")
     );
 
     assert(
-        ui->SOCValue->text() == (QString::number(soc) + " %")
+        ui->SOCValue->text() == (QString::number(canData->SOC) + " %")
     );
 }
 
-void BatteryPanel::assertMessage3(int engineTemp, int inversorTemp, int batTemp, int batMaxTemp, int batMinTemp) {
+void BatteryPanel::assertMessage3() {
     assert(
-        ui->meanTempValue->text() == (QString::number(batTemp) + "° C")
+        ui->meanTempValue->text() == (QString::number(canData->batTemp) + "° C")
         );
 
     assert(
-        ui->maxTempValue->text() == (QString::number(batMaxTemp) + "° C")
+        ui->maxTempValue->text() == (QString::number(canData->batMaxTemp) + "° C")
         );
 
     assert(
-        ui->minTempValue->text() == (QString::number(batMinTemp) + "° C")
+        ui->minTempValue->text() == (QString::number(canData->batMinTemp) + "° C")
         );
 }
 
@@ -211,20 +211,20 @@ void BatteryPanel::assertBess3(int chargeEnergyAcumulated, int dischargeEnergyAc
         );
 }
 
-void BatteryPanel::assertBess4(int SOC, int SOH, int minVoltage, int maxVoltage, int meanVoltage) {
+void BatteryPanel::assertBess4() {
     assert(
-        ui->SOHValue->text() == (QString::number(SOH) + " %")
+        ui->SOHValue->text() == (QString::number(canData->SOH) + " %")
     );
 
     assert(
-        ui->maxCellVoltageValue->text() == (QString::number(maxVoltage) + " V")
+        ui->maxCellVoltageValue->text() == (QString::number(canData->maxVoltage) + " V")
         );
 
     assert(
-        ui->minCellVoltageValue->text() == (QString::number(minVoltage) + " V")
+        ui->minCellVoltageValue->text() == (QString::number(canData->minVoltage) + " V")
         );
 
     assert(
-        ui->meanCellVoltageValue->text() == (QString::number(meanVoltage) + " V")
+        ui->meanCellVoltageValue->text() == (QString::number(canData->meanVoltage) + " V")
         );
 }

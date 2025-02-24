@@ -188,12 +188,12 @@ public:
     void changeCurrentTab(int index);
 
 public:
-    void assertMessage1(int current, int voltage, int soc);
-    void assertMessage3(int engineTemp, int inversorTemp, int batTemp, int batMaxTemp, int batMinTemp);
+    void assertMessage1();
+    void assertMessage3();
     void assertBess1(int trama, int v1, int v2, int v3);
     void assertBess2(int trama, int t1, int t2, int t3, int t4, int t5, int t6);
     void assertBess3(int chargeEnergyAcumulated, int dischargeEnergyAcumulated, int energyOneCharge);
-    void assertBess4(int SOC, int SOH, int minVoltage, int maxVoltage, int meanVoltage);
+    void assertBess4();
 
 public slots:
     void message1();

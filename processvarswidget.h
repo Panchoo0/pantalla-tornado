@@ -22,6 +22,12 @@ public slots:
     void emix1();
     void faults1();
     void faults2();
+
+    void assertMessage7();
+    void assertBess5();
+    void assertEmix1();
+    void assertFaults1();
+    void assertFaults2();
 private:
     Ui::ProcessVarsWidget *ui;
 };

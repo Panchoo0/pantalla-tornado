@@ -46,29 +46,25 @@ private:
     void activateCANChannel();
 
 private:
-    void assertMessage1(int current, int voltage, int soc);
-    void testMessage1(int current, int voltage, int soc);
+    void assertMessage1();
+    void assertMessage3();
 
-    void testMessage2(int engineCurrent, int engineTorque, int engineVoltage, int rpm, int setpoint);
+    void testMessage1();
+    void testMessage2();
+    void testMessage3();
+    void testMessage4();
+    void testMessage5();
+    void testMessage6();
+    void testMessage7();
+    void testBess1();
+    void testBess2();
+    void testBess3();
+    void testBess4();
+    void testBess5();
 
-    void assertMessage3(int engineTemp, int inversorTemp, int batTemp, int batMaxTemp, int batMinTemp);
-    void testMessage3(int engineTemp, int inversorTemp, int batTemp, int batMaxTemp, int batMinTemp);
-
-    void testMessage4(int dcdc1Current, int dcdc2Current, int dcdc1HVCurrent, int dcdc2HVCurrent);
-
-    void testMessage5(int dcdc1OutputVoltage, int dcdc2OutputVoltage, int dcdc1InputVoltage, int dcdc2InputVoltage);
-
-    void testMessage6(int posResistanceSIM100, int negResistanceSIM100, int posResistanceBMU, int negResistanceBMU);
-
-    void testBess1(int trama, int v1, int v2, int v3);
-    void testBess2(int trama, int t1, int t2, int t3, int t4, int t5, int t6);
-    void testBess3(int chargeEnergyAcumulated, int dischargeEnergyAcumulated, int energyOneCharge);
-    void testBess4(int SOC, int SOH, int minVoltage, int maxVoltage, int meanVoltage);
-    void testBess5(int posChargeTempDC, int negChargeTempDC, int dcConected, int bmsChargingMode, int coolingState, int heatState, int bmuContactor, int bmsFailures);
-
-    void emix1(int edsFailures, int dcdc1Failures, int dcdc2Failures, int sim100Failures, int obcFailures, int emixFailures);
-    void faults1(int dcdc1ErrorCode, int dcdc2ErrorCode);
-    void faults2(int edsErrorCode, int obcErrorCode);
+    void testEmix1();
+    void testFaults1();
+    void testFaults2();
 
 private slots:
     void updateDateTime();

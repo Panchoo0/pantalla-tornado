@@ -7,6 +7,7 @@ class Utils
 {
 public:
     static QString toBitString(char byte);
+    static QString toBitString(int byte);
     static QString toHexString(uchar* bytes, int length);
     static int getShiftedData(char startPos, char length, uchar* receivedData);
 };

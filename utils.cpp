@@ -12,6 +12,17 @@ QString Utils::toBitString(char byte) {
     return res;
 }
 
+// Dado un int retorna su representación como string en formato binario
+QString Utils::toBitString(int byte) {
+    QString res = "";
+    int mask = 0b1;
+    for (int i = 0; i < 32; i++) {
+        int bitChar = (byte >> (31 - i)) & mask;
+        res += QString::number(bitChar);
+    }
+    return res;
+}
+
 // Dado una lista de bytes retorna su representación como string en formato hex
 QString Utils::toHexString(uchar* bytes, int length) {
     char const hex_chars[16] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
@@ -32,7 +43,7 @@ QString Utils::toHexString(uchar* bytes, int length) {
 // Función que dado una posición inicial en bits y un largo en bits retorna el entero contenido en el array de chars
 // en ese rango de bits
 int Utils::getShiftedData(char startPos, char length, uchar* receivedData) {
-    char startChar = startPos / 8;
+    uchar startChar = startPos / 8;
     char offsetChars = startPos % 8;
     int res = 0;
     char copiedBits = 0;

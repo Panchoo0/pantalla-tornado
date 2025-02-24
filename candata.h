@@ -156,26 +156,9 @@ public:
     void addError(int id);
     ~CANData();
 
-    CANData* clone(CANData obj);
+    CANData* clone();
 
-public:
-    void assertMessage1(int current, int voltage, int soc);
-    void assertMessage2(int engineCurrent, int engineTorque, int engineVoltage, int rpm, int setpoint);
-    void assertMessage3(int engineTemp, int inversorTemp, int batTemp, int batMaxTemp, int batMinTemp);
-    void assertMessage4(int dcdc1Current, int dcdc2Current, int dcdc1HVCurrent, int dcdc2HVCurrent);
-    void assertMessage5(int dcdc1OutputVoltage, int dcdc2OutputVoltage, int dcdc1InputVoltage, int dcdc2InputVoltage);
-    void assertMessage6(int posResistanceSIM100, int negResistanceSIM100, int posResistanceBMU, int negResistanceBMU);
-
-    void assertBess1(int trama, int v1, int v2, int v3);
-    void assertBess2(int trama, int t1, int t2, int t3, int t4, int t5, int t6);
-    void assertBess3(int chargeEnergyAcumulated, int dischargeEnergyAcumulated, int energyOneCharge);
-    void assertBess4(int SOC, int SOH, int minVoltage, int maxVoltage, int meanVoltage);
-    void assertBess5(int posChargeTempDC, int negChargeTempDC, int dcConected, int bmsChargingMode, int coolingState, int heatState, int bmuContactor, int bmsFailures);
-
-    void assertEmix1(int edsFailures, int dcdc1Failures, int dcdc2Failures, int sim100Failures, int obcFailures, int emixFailures);
-
-    void assertFaults1(int dcdc1ErrorCode, int dcdc2ErrorCode);
-    void assertFaults2(int edsErrorCode, int obcErrorCode);
+    bool operator==(CANData& other) const;
 
 signals:
     void message1();

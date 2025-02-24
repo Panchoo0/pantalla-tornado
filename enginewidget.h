@@ -17,13 +17,13 @@ public:
     explicit EngineWidget(CANData *canData, QWidget *parent = nullptr);
     ~EngineWidget();
 
-    void assertMessage2(int engineCurrent, int engineTorque, int engineVoltage, int rpm, int setpoint);
-    void assertMessage3(int engineTemp, int inversorTemp, int batTemp, int batMaxTemp, int batMinTemp);
-    void assertMessage4(int dcdc1Current, int dcdc2Current, int dcdc1HVCurrent, int dcdc2HVCurrent);
-    void assertMessage5(int dcdc1OutputVoltage, int dcdc2OutputVoltage, int dcdc1InputVoltage, int dcdc2InputVoltage);
-    void assertMessage6(int posResistanceSIM100, int negResistanceSIM100, int posResistanceBMU, int negResistanceBMU);
+    void assertMessage2();
+    void assertMessage3();
+    void assertMessage4();
+    void assertMessage5();
+    void assertMessage6();
 
-    void assertBess5(int posChargeTempDC, int negChargeTempDC, int dcConected, int bmsChargingMode, int coolingState, int heatState, int bmuContactor, int bmsFailures);
+    void assertBess5();
 
 public slots:
 
