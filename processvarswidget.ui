@@ -7,21 +7,2514 @@
     <x>0</x>
     <y>0</y>
     <width>675</width>
-    <height>440</height>
+    <height>1017</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="CheckboxWidget" name="widget" native="true">
+  <property name="styleSheet">
+   <string notr="true">background: #1c1c1c;</string>
+  </property>
+  <widget class="QScrollArea" name="scrollArea">
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>50</y>
-     <width>20</width>
-     <height>20</height>
+     <x>0</x>
+     <y>30</y>
+     <width>675</width>
+     <height>900</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">::sub-page:vertical {
+background-color: #84CEC3;
+}
+
+::add-page:vertical {
+background-color: #84CEC3;
+border-radius: 20px;
+}
+
+::handle {
+	background-color: #00A6A7;
+	border-radius: 10px;
+}</string>
+   </property>
+   <property name="widgetResizable">
+    <bool>true</bool>
+   </property>
+   <widget class="QWidget" name="scrollAreaWidgetContents">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>673</width>
+      <height>898</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">::sub-page:vertical {
+background-color: #84CEC3;
+}
+
+::add-page:vertical {
+background-color: #84CEC3;
+border-radius: 20px;
+}
+
+::handle {
+	background-color: #00A6A7;
+	border-radius: 10px;
+}</string>
+    </property>
+    <widget class="QWidget" name="column1" native="true">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>220</width>
+       <height>900</height>
+      </rect>
+     </property>
+     <widget class="QWidget" name="failures" native="true">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>220</width>
+        <height>480</height>
+       </rect>
+      </property>
+      <widget class="QLabel" name="failuresTitle">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>220</width>
+         <height>40</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #00A6A7;
+font-size: 14px;</string>
+       </property>
+       <property name="text">
+        <string>Fallas</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QWidget" name="bmsFailures" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>40</y>
+         <width>180</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border-bottom: 2px solid #00A6A7;</string>
+       </property>
+       <widget class="QLabel" name="bmsFailuresLabel">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>140</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #00A6A7; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Suma de fallas del BMS</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="bmsFailuresValue">
+        <property name="geometry">
+         <rect>
+          <x>140</x>
+          <y>0</y>
+          <width>40</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 14px;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="edsFailures" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>80</y>
+         <width>180</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border-bottom: 2px solid #00A6A7;</string>
+       </property>
+       <widget class="QLabel" name="edsFailuresLabel">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>140</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #00A6A7; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Suma de fallas del EDS</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="edsFailuresValue">
+        <property name="geometry">
+         <rect>
+          <x>140</x>
+          <y>0</y>
+          <width>40</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 14px;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="dcdc1Failures" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>120</y>
+         <width>180</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border-bottom: 2px solid #00A6A7;</string>
+       </property>
+       <widget class="QLabel" name="dcdc1FailuresLabel">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>140</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #00A6A7; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Suma de fallas del DCDC1</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="dcdc1FailuresValue">
+        <property name="geometry">
+         <rect>
+          <x>140</x>
+          <y>0</y>
+          <width>40</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 14px;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="dcdc2Failures" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>160</y>
+         <width>180</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border-bottom: 2px solid #00A6A7;</string>
+       </property>
+       <widget class="QLabel" name="dcdc2FailuresLabel">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>140</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #00A6A7; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Suma de fallas del DCDC2</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="dcdc2FailuresValue">
+        <property name="geometry">
+         <rect>
+          <x>140</x>
+          <y>0</y>
+          <width>40</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 14px;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="sim100Failures" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>200</y>
+         <width>180</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border-bottom: 2px solid #00A6A7;</string>
+       </property>
+       <widget class="QLabel" name="sim100FailuresLabel">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>140</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #00A6A7; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Suma de fallas del SIM100</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="sim100FailuresValue">
+        <property name="geometry">
+         <rect>
+          <x>140</x>
+          <y>0</y>
+          <width>40</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 14px;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="obcFailures" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>240</y>
+         <width>180</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border-bottom: 2px solid #00A6A7;</string>
+       </property>
+       <widget class="QLabel" name="obcFailuresLabel">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>140</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #00A6A7; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Suma de fallas del OBC</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="obcFailuresValue">
+        <property name="geometry">
+         <rect>
+          <x>140</x>
+          <y>0</y>
+          <width>40</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 14px;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="emixFailures" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>280</y>
+         <width>180</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border-bottom: 2px solid #00A6A7;</string>
+       </property>
+       <widget class="QLabel" name="emixFailuresLabel">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>140</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #00A6A7; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Suma de fallas del EMIX</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="emixFailuresValue">
+        <property name="geometry">
+         <rect>
+          <x>140</x>
+          <y>0</y>
+          <width>40</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 14px;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="dcdcd1ErrorCode" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>320</y>
+         <width>180</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border-bottom: 2px solid #00A6A7;</string>
+       </property>
+       <widget class="QLabel" name="dcdcd1ErrorCodeLabel">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>140</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #00A6A7; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Código de falla
+entrante del DCDC1</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="dcdcd1ErrorCodeValue">
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>0</y>
+          <width>70</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 14px;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="dcdcd2ErrorCode" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>360</y>
+         <width>180</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border-bottom: 2px solid #00A6A7;</string>
+       </property>
+       <widget class="QLabel" name="dcdcd2ErrorCodeLabel">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>140</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #00A6A7; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Código de falla
+entrante del DCDC2</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="dcdcd2ErrorCodeValue">
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>0</y>
+          <width>70</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 14px;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="edsErrorCode" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>400</y>
+         <width>180</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border-bottom: 2px solid #00A6A7;</string>
+       </property>
+       <widget class="QLabel" name="edsErrorCodeLabel">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>140</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #00A6A7; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Código de falla
+entrante del EDS</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="edsErrorCodeValue">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>0</y>
+          <width>80</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 14px;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="obcErrorCode" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>440</y>
+         <width>180</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border-bottom: 2px solid #00A6A7;</string>
+       </property>
+       <widget class="QLabel" name="obcErrorCodeLabel">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>140</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #00A6A7; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Código de falla
+entrante del OBS</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="obcErrorCodeValue">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>0</y>
+          <width>80</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 14px;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="dcdc" native="true">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>480</y>
+        <width>220</width>
+        <height>200</height>
+       </rect>
+      </property>
+      <widget class="QLabel" name="dcdcTitle">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>220</width>
+         <height>40</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #00A6A7;
+font-size: 14px;</string>
+       </property>
+       <property name="text">
+        <string>DCDC</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QWidget" name="dcdcHighDifference" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>40</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="dcdcHighDifferenceValue" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="dcdcHighDifferenceLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>DC/DCs diferencia
+de potencia muy grande</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="dcdc1Overtemp" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>80</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="dcdc1OvertempValue" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="dcdc1OvertempLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>DCDC1 Overtemp</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="dcdc2Overtemp" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>120</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="dcdc2OvertempValue" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="dcdc2OvertempLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>DCDC2 Overtemp</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="hvilDcdc" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>160</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="hvilDcdcValue" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="hvilDcdcLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>HVIL DC/DCs</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="ats" native="true">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>680</y>
+        <width>220</width>
+        <height>120</height>
+       </rect>
+      </property>
+      <widget class="QLabel" name="atsTitle">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>220</width>
+         <height>40</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #00A6A7;
+font-size: 14px;</string>
+       </property>
+       <property name="text">
+        <string>ATS</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QWidget" name="atsFanFault" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>40</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="atsFanFaultValue" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="atsFanFaultLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>ATS Fan Fault</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="atsPumpFault" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>80</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="atsPumpFaultValue" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="atsPumpFaultLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>ATS Pump Fault</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="column2" native="true">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>0</y>
+       <width>220</width>
+       <height>900</height>
+      </rect>
+     </property>
+     <widget class="QWidget" name="pdu" native="true">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>220</width>
+        <height>200</height>
+       </rect>
+      </property>
+      <widget class="QLabel" name="pduTitle">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>220</width>
+         <height>40</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #00A6A7;
+font-size: 14px;</string>
+       </property>
+       <property name="text">
+        <string>PDU</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QWidget" name="contactorPdu" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>40</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="contactorPduValue" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="contactorPduLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Contactor principal PDU no
+puede cambiar su estado</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="pduContactorClose" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>80</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="pduContactorCloseValue" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="pduContactorCloseLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Contactor principal
+PDU cerrado</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="hvilPdu" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>120</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="hvilPduValue" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="hvilPduLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>HVIL PDU</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="pduTempExcess" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>160</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="pduTempExcessValue" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="pduTempExcessLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>PDU en exceso
+de temperatura</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="hv" native="true">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>200</y>
+        <width>220</width>
+        <height>200</height>
+       </rect>
+      </property>
+      <widget class="QLabel" name="hvTitle">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>220</width>
+         <height>40</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #00A6A7;
+font-size: 14px;</string>
+       </property>
+       <property name="text">
+        <string>HV</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QWidget" name="bessPowerOffHv" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>40</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="bessPowerOffHvValue" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="bessPowerOffHvLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Bess solicitó apagar HV</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="requiredHvOff" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>80</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="requiredHvOffValue" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="requiredHvOffLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Se requiere HV Off</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="hvOn" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>120</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="hvOnValue" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="hvOnLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>HV Encendido</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="hvBusDischarged" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>160</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="hvBusDischargedValue" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="hvBusDischargedLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Bus HV descargado</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="sim100" native="true">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>400</y>
+        <width>220</width>
+        <height>80</height>
+       </rect>
+      </property>
+      <widget class="QLabel" name="sim100Title">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>220</width>
+         <height>40</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #00A6A7;
+font-size: 14px;</string>
+       </property>
+       <property name="text">
+        <string>SIM100</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QWidget" name="sim100Stucked" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>40</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="sim100StuckedValue" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="sim100StuckedLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Sim100 atascado</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="bms" native="true">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>480</y>
+        <width>220</width>
+        <height>120</height>
+       </rect>
+      </property>
+      <widget class="QLabel" name="bmsTitle">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>220</width>
+         <height>40</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #00A6A7;
+font-size: 14px;</string>
+       </property>
+       <property name="text">
+        <string>BMS</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QWidget" name="couldntPowerOnBMS" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>40</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="couldntPowerOnBMSValue" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="couldntPowerOnBMSLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Imposible encender BMS</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="bmsChargingMode" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>80</y>
+         <width>180</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <widget class="QLabel" name="bmsChargingModeLabel">
+        <property name="geometry">
+         <rect>
+          <x>70</x>
+          <y>0</y>
+          <width>115</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>BMS modo de carga</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="bmsChargingModeValue">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>65</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white;
+font-size: 10px;
+border: 2px solid #00A6A7;
+border-radius: 4px;
+background: #2c2c2c;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="termistor" native="true">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>600</y>
+        <width>220</width>
+        <height>120</height>
+       </rect>
+      </property>
+      <widget class="QLabel" name="termistorTitle">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>220</width>
+         <height>40</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #00A6A7;
+font-size: 14px;</string>
+       </property>
+       <property name="text">
+        <string>Termistor</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QWidget" name="termistorLVOutOfRange" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>40</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="termistorLVOutOfRangeValue" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="termistorLVOutOfRangeLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Termistor LV
+fuera de rango</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="termistorHVOutOfRange" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>80</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="termistorHVOutOfRangeValue" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="termistorHVOutOfRangeLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Termistor HV
+fuera de rango</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="obc" native="true">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>720</y>
+        <width>220</width>
+        <height>120</height>
+       </rect>
+      </property>
+      <widget class="QLabel" name="termistorTitle_2">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>220</width>
+         <height>40</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #00A6A7;
+font-size: 14px;</string>
+       </property>
+       <property name="text">
+        <string>Obc</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QWidget" name="obcOvertemp" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>40</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="obcOvertempValue" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="obcOvertempLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>OBC Overtemp</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="hvilObc" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>80</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="hvilObcValue" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="hvilObcLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>HVIL OBC</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="column3" native="true">
+     <property name="geometry">
+      <rect>
+       <x>440</x>
+       <y>0</y>
+       <width>220</width>
+       <height>900</height>
+      </rect>
+     </property>
+     <widget class="QWidget" name="pedals" native="true">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>220</width>
+        <height>120</height>
+       </rect>
+      </property>
+      <widget class="QLabel" name="pedalsTitle">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>220</width>
+         <height>40</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #00A6A7;
+font-size: 14px;</string>
+       </property>
+       <property name="text">
+        <string>Pedales</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QWidget" name="pedal1" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>40</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="pedal1Value" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="pedal1Label">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Pedal 1 anormal</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="pedal2" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>80</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="pedal2Value" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="pedal2Label">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Pedal 2 anormal</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="eds" native="true">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>120</y>
+        <width>220</width>
+        <height>200</height>
+       </rect>
+      </property>
+      <widget class="QLabel" name="edsTitle">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>220</width>
+         <height>40</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #00A6A7;
+font-size: 14px;</string>
+       </property>
+       <property name="text">
+        <string>EDS</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QWidget" name="edsCouldntClear" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>40</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="edsCouldntClearValue" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="edsCouldntClearLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>EDS Couldn´t Clear Error</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="edsInError" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>80</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="edsInErrorValue" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="edsInErrorLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>EDS In Error</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="hvilEds" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>120</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="hvilEdsValue" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="hvilEdsLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>HVIL EDS</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="edsOvertemp" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>160</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="edsOvertempValue" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="edsOvertempLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>EDS Overtemp</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="battery" native="true">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>320</y>
+        <width>220</width>
+        <height>200</height>
+       </rect>
+      </property>
+      <widget class="QLabel" name="edsTitle_2">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>220</width>
+         <height>40</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #00A6A7;
+font-size: 14px;</string>
+       </property>
+       <property name="text">
+        <string>Módulo Baterías</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QWidget" name="module1" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>40</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="module1Value" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="module1Label">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Módulo 1 baterías:
+Temperatura muy grande</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="module2" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>80</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="module2Value" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="module2Label">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Módulo 2 baterías:
+Temperatura muy grande</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="module3" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>120</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="module3Value" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="module3Label">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Módulo 3 baterías:
+Temperatura muy grande</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="module4" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>160</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="module4Value" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="module4Label">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Módulo 4 baterías:
+Temperatura muy grande</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="states" native="true">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>520</y>
+        <width>220</width>
+        <height>371</height>
+       </rect>
+      </property>
+      <widget class="QLabel" name="statesTitle">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>220</width>
+         <height>40</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #00A6A7;
+font-size: 14px;</string>
+       </property>
+       <property name="text">
+        <string>Estados y Eventos</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QWidget" name="coolingState" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>40</y>
+         <width>180</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <widget class="QLabel" name="coolingStateLabel">
+        <property name="geometry">
+         <rect>
+          <x>65</x>
+          <y>0</y>
+          <width>120</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Estado de
+enfriamiento</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="coolingStateValue">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>60</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white;
+font-size: 10px;
+border: 2px solid #00A6A7;
+border-radius: 4px;
+background: #2c2c2c;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="heatState" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>80</y>
+         <width>180</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <widget class="QLabel" name="heatStateLabel">
+        <property name="geometry">
+         <rect>
+          <x>65</x>
+          <y>0</y>
+          <width>120</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Estado de
+calentamiento</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="heatStateValue">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>60</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white;
+font-size: 10px;
+border: 2px solid #00A6A7;
+border-radius: 4px;
+background: #2c2c2c;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="estadoMarcha" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>120</y>
+         <width>180</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <widget class="QLabel" name="estadoMarchaLabel">
+        <property name="geometry">
+         <rect>
+          <x>65</x>
+          <y>0</y>
+          <width>120</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Estado marcha</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="estadoMarchaValue">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>60</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white;
+font-size: 10px;
+border: 2px solid #00A6A7;
+border-radius: 4px;
+background: #2c2c2c;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="inhibitState" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>160</y>
+         <width>180</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <widget class="QLabel" name="inhibitStateLabel">
+        <property name="geometry">
+         <rect>
+          <x>65</x>
+          <y>0</y>
+          <width>120</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Estado Inhibit</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="inhibitStateValue">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>60</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white;
+font-size: 10px;
+border: 2px solid #00A6A7;
+border-radius: 4px;
+background: #2c2c2c;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="bmuContactor" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>200</y>
+         <width>190</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <widget class="QLabel" name="bmuContactorLabel">
+        <property name="geometry">
+         <rect>
+          <x>65</x>
+          <y>0</y>
+          <width>130</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Estado contactor
+principal negativo BMU</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="bmuContactorValue">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>60</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white;
+font-size: 10px;
+border: 2px solid #00A6A7;
+border-radius: 4px;
+background: #2c2c2c;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="overturn" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>240</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="overturnValue" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="overturnLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Evento de volcamiento</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="doorOpen" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>280</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="doorOpenValue" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="doorOpenLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Puerta abierta</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="parkingState" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>320</y>
+         <width>180</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <widget class="CheckboxWidget" name="parkingStateValue" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>5</y>
+          <width>20</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="parkingStateLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>150</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white; font-size: 12px;</string>
+        </property>
+        <property name="text">
+         <string>Estado parqueo ZeMaq</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </widget>
+   </widget>
   </widget>
  </widget>
  <customwidgets>

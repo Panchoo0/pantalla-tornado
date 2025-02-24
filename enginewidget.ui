@@ -541,7 +541,7 @@
        <string notr="true">color: white; font-size: 16px;</string>
       </property>
       <property name="text">
-       <string>12 A</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -697,9 +697,9 @@
      <widget class="QLabel" name="torqueValue">
       <property name="geometry">
        <rect>
-        <x>130</x>
+        <x>110</x>
         <y>0</y>
-        <width>50</width>
+        <width>70</width>
         <height>25</height>
        </rect>
       </property>
@@ -825,7 +825,7 @@
        <string notr="true">color: white; font-size: 16px;</string>
       </property>
       <property name="text">
-       <string>12 Nm</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1109,7 +1109,7 @@
        <string notr="true">color: white; font-size: 16px;</string>
       </property>
       <property name="text">
-       <string>12 V</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1393,7 +1393,7 @@
        <string notr="true">color: white; font-size: 16px;</string>
       </property>
       <property name="text">
-       <string>12 RPM</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1677,7 +1677,7 @@
        <string notr="true">color: white; font-size: 16px;</string>
       </property>
       <property name="text">
-       <string>12 RPM</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1961,7 +1961,7 @@
        <string notr="true">color: white; font-size: 16px;</string>
       </property>
       <property name="text">
-       <string>12° C</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -2245,7 +2245,7 @@
        <string notr="true">color: white; font-size: 16px;</string>
       </property>
       <property name="text">
-       <string>12 W</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -2715,7 +2715,7 @@
        <string notr="true">color: white; font-size: 16px;</string>
       </property>
       <property name="text">
-       <string>12 A</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -2999,7 +2999,7 @@
        <string notr="true">color: white; font-size: 16px;</string>
       </property>
       <property name="text">
-       <string>12 A</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -3283,7 +3283,7 @@
        <string notr="true">color: white; font-size: 16px;</string>
       </property>
       <property name="text">
-       <string>12 V</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -3567,7 +3567,7 @@
        <string notr="true">color: white; font-size: 16px;</string>
       </property>
       <property name="text">
-       <string>12 V</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -4024,7 +4024,7 @@
        <string notr="true">color: white; font-size: 16px;</string>
       </property>
       <property name="text">
-       <string>12 A</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -4308,7 +4308,7 @@
        <string notr="true">color: white; font-size: 16px;</string>
       </property>
       <property name="text">
-       <string>12 A</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -4592,7 +4592,7 @@
        <string notr="true">color: white; font-size: 16px;</string>
       </property>
       <property name="text">
-       <string>12 V</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -4876,7 +4876,7 @@
        <string notr="true">color: white; font-size: 16px;</string>
       </property>
       <property name="text">
-       <string>12 V</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -5354,7 +5354,7 @@
        <string notr="true">color: white; font-size: 16px;</string>
       </property>
       <property name="text">
-       <string>12 kΩ</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -5638,7 +5638,7 @@
        <string notr="true">color: white; font-size: 16px;</string>
       </property>
       <property name="text">
-       <string>12 kΩ</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -5922,7 +5922,7 @@
        <string notr="true">color: white; font-size: 16px;</string>
       </property>
       <property name="text">
-       <string>12 kΩ</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -6206,7 +6206,7 @@
        <string notr="true">color: white; font-size: 16px;</string>
       </property>
       <property name="text">
-       <string>12 kΩ</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -6650,7 +6650,7 @@
        <string notr="true">color: white; font-size: 16px;</string>
       </property>
       <property name="text">
-       <string>12° C</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -6934,7 +6934,7 @@
        <string notr="true">color: white; font-size: 12px;</string>
       </property>
       <property name="text">
-       <string>Pistola doble&lt;br&gt;conectada</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;-&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -7218,7 +7218,7 @@
        <string notr="true">color: white; font-size: 16px;</string>
       </property>
       <property name="text">
-       <string>12° C</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

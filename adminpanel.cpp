@@ -3,6 +3,7 @@
 #include <QProxyStyle>
 #include <QStyleOption>
 #include <qobject.h>
+#include <QDebug>
 
 AdminPanel::AdminPanel(CANData *canData,QWidget *parent)
     : QDialog(parent)
@@ -14,7 +15,7 @@ AdminPanel::AdminPanel(CANData *canData,QWidget *parent)
     this->canData = canData;
 
     // Creamos el panel de la información del motor
-    engineWidget = new EngineWidget(this);
+    engineWidget = new EngineWidget(canData, this);
     engineWidget->setGeometry(125, 0, 675, 440);
     engineWidget->hide();
 
@@ -23,11 +24,11 @@ AdminPanel::AdminPanel(CANData *canData,QWidget *parent)
     errorsPanel->setGeometry(125, 0, 675, 440);
     errorsPanel->hide();
 
-    batteryPanel = new BatteryPanel(this);
+    batteryPanel = new BatteryPanel(canData, this);
     batteryPanel->setGeometry(125, 0, 675, 440);
     batteryPanel->hide();
 
-    processVarsWidget = new ProcessVarsWidget(this);
+    processVarsWidget = new ProcessVarsWidget(canData, this);
     processVarsWidget->setGeometry(125, 0, 675, 440);
     processVarsWidget->hide();
 
@@ -40,10 +41,6 @@ AdminPanel::AdminPanel(CANData *canData,QWidget *parent)
     this->processVarsWidget->stackUnder(ui->closeButton);
 
     this->hide();
-
-    // Datos de prueba
-    this->canData->addError(0);
-    this->errorsPanel->addError();
 }
 
 AdminPanel::~AdminPanel()

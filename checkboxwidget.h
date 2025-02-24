@@ -10,10 +10,10 @@ class CheckboxWidget: public QPushButton
 
 public:
     bool checked;
-    CheckboxWidget( QWidget* parent = nullptr, int width = 30);
+    CheckboxWidget( QWidget* parent = nullptr, int width = 20);
     /*~CheckboxWidget()*/;
-private slots:
-    void onChange();
+public slots:
+    void setChecked(bool checked);
 private:
     QWidget* Check;
 };

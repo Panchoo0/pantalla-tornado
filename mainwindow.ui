@@ -65,7 +65,7 @@
 font-size: 16px;</string>
     </property>
     <property name="text">
-     <string>10:25</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -90,7 +90,7 @@ font-size: 16px;</string>
 font-size: 16px;</string>
     </property>
     <property name="text">
-     <string>Jueves 23 de enero</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -164,7 +164,7 @@ font-size: 12px;</string>
 font-size: 24px;</string>
       </property>
       <property name="text">
-       <string>9:30</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -214,7 +214,7 @@ font-size: 12px;</string>
 font-size: 24px;</string>
       </property>
       <property name="text">
-       <string>10:01</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -264,7 +264,7 @@ font-size: 12px;</string>
 font-size: 24px;</string>
       </property>
       <property name="text">
-       <string>10:01</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -610,6 +610,25 @@ font-size: 24px;</string>
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
+    <widget class="QLabel" name="marcha">
+     <property name="geometry">
+      <rect>
+       <x>165</x>
+       <y>218</y>
+       <width>30</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: white; font-size: 20px; font-weight: 600</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="batInfo" native="true">
     <property name="geometry">
@@ -679,7 +698,7 @@ color: #8B8B8B;</string>
 color: white;</string>
       </property>
       <property name="text">
-       <string>90V</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -729,7 +748,7 @@ color: #8B8B8B;</string>
 color: white;</string>
       </property>
       <property name="text">
-       <string>90V</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -779,7 +798,7 @@ color: #8B8B8B;</string>
 color: white;</string>
       </property>
       <property name="text">
-       <string>90A</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -829,7 +848,7 @@ color: #8B8B8B;</string>
 color: white;</string>
       </property>
       <property name="text">
-       <string>90A</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -1016,6 +1035,22 @@ border: none</string>
     </property>
     <property name="pixmap">
      <pixmap resource="resources.qrc">:/images/pantallaPrincipal/configIcon.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QLabel" name="debug_msg">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>120</y>
+      <width>411</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: white;</string>
+    </property>
+    <property name="text">
+     <string>Debug</string>
     </property>
    </widget>
   </widget>

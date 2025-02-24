@@ -45,8 +45,7 @@ private slots:
     void on_closeButton_clicked();
 
     void on_processVarsButton_clicked();
-
-private:
+public:
     Ui::AdminPanel *ui;
 };
 

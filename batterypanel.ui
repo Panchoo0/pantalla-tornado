@@ -129,7 +129,7 @@ background-color: #1c1c1c;
         <string notr="true">color: white; font-size: 16px; padding-bottom: 0;</string>
        </property>
        <property name="text">
-        <string>12 V</string>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
@@ -180,7 +180,7 @@ background-color: #1c1c1c;
         <string notr="true">color: white; font-size: 16px; padding-bottom: 0;</string>
        </property>
        <property name="text">
-        <string>12 V</string>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
@@ -231,7 +231,7 @@ background-color: #1c1c1c;
         <string notr="true">color: white; font-size: 16px; padding-bottom: 0;</string>
        </property>
        <property name="text">
-        <string>12 V</string>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
@@ -282,7 +282,7 @@ background-color: #1c1c1c;
         <string notr="true">color: white; font-size: 16px; padding-bottom: 0;</string>
        </property>
        <property name="text">
-        <string>12 V</string>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
@@ -333,7 +333,7 @@ background-color: #1c1c1c;
         <string notr="true">color: white; font-size: 16px; padding-bottom: 0;</string>
        </property>
        <property name="text">
-        <string>12 V</string>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
@@ -384,7 +384,7 @@ background-color: #1c1c1c;
         <string notr="true">color: white; font-size: 16px; padding-bottom: 0;</string>
        </property>
        <property name="text">
-        <string>12 V</string>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
@@ -435,7 +435,7 @@ background-color: #1c1c1c;
         <string notr="true">color: white; font-size: 16px; padding-bottom: 0;</string>
        </property>
        <property name="text">
-        <string>12 V</string>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
@@ -518,7 +518,7 @@ background-color: #1c1c1c;
         <string notr="true">color: white; font-size: 16px; padding-bottom: 0;</string>
        </property>
        <property name="text">
-        <string>12° C</string>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
@@ -569,7 +569,7 @@ background-color: #1c1c1c;
         <string notr="true">color: white; font-size: 16px; padding-bottom: 0;</string>
        </property>
        <property name="text">
-        <string>12° C</string>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
@@ -620,7 +620,7 @@ background-color: #1c1c1c;
         <string notr="true">color: white; font-size: 16px; padding-bottom: 0;</string>
        </property>
        <property name="text">
-        <string>12° C</string>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
@@ -703,7 +703,7 @@ background-color: #1c1c1c;
         <string notr="true">color: white; font-size: 16px; padding-bottom: 0;</string>
        </property>
        <property name="text">
-        <string>4</string>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
@@ -754,7 +754,7 @@ background-color: #1c1c1c;
         <string notr="true">color: white; font-size: 16px; padding-bottom: 0;</string>
        </property>
        <property name="text">
-        <string>4</string>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
@@ -802,10 +802,10 @@ background-color: #1c1c1c;
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: white; font-size: 16px; padding-bottom: 0;</string>
+        <string notr="true">color: white; font-size: 12px; padding-bottom: 0;</string>
        </property>
        <property name="text">
-        <string>Alto</string>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
@@ -888,7 +888,7 @@ background-color: #1c1c1c;
         <string notr="true">color: white; font-size: 16px; padding-bottom: 0;</string>
        </property>
        <property name="text">
-        <string>12 A</string>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
@@ -939,7 +939,7 @@ background-color: #1c1c1c;
         <string notr="true">color: white; font-size: 16px; padding-bottom: 0;</string>
        </property>
        <property name="text">
-        <string>12 %</string>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
@@ -990,7 +990,7 @@ background-color: #1c1c1c;
         <string notr="true">color: white; font-size: 16px; padding-bottom: 0;</string>
        </property>
        <property name="text">
-        <string>12 kWh</string>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
@@ -1041,7 +1041,7 @@ background-color: #1c1c1c;
         <string notr="true">color: white; font-size: 16px; padding-bottom: 0;</string>
        </property>
        <property name="text">
-        <string>12 kWh</string>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
@@ -1092,7 +1092,7 @@ background-color: #1c1c1c;
         <string notr="true">color: white; font-size: 16px; padding-bottom: 0;</string>
        </property>
        <property name="text">
-        <string>12 V</string>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
@@ -1143,7 +1143,7 @@ background-color: #1c1c1c;
         <string notr="true">color: white; font-size: 16px; padding-bottom: 0;</string>
        </property>
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;SOH&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;-&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>

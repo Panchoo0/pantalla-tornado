@@ -1,12 +1,14 @@
 QT       += core gui
+QT  += core
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++17
+CONFIG += c++11
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     adminpanel.cpp \
@@ -19,7 +21,10 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     notificationswidget.cpp \
-    processvarswidget.cpp
+    processvarswidget.cpp \
+    receivecandata.cpp \
+    sendcandata.cpp \
+    utils.cpp
 
 HEADERS += \
     adminpanel.h \
@@ -31,7 +36,10 @@ HEADERS += \
     errorspanel.h \
     mainwindow.h \
     notificationswidget.h \
-    processvarswidget.h
+    processvarswidget.h \
+    receivecandata.h \
+    sendcandata.h \
+    utils.h
 
 FORMS += \
     adminpanel.ui \
@@ -41,6 +49,12 @@ FORMS += \
     mainwindow.ui \
     notificationswidget.ui \
     processvarswidget.ui
+
+
+
+#Include the SYSROOT path
+INCLUDEPATH += $$[QT_SYSROOT]/usr
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
