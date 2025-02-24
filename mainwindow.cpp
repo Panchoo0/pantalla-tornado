@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
     // Inicializamos el timer que actualiza la hora
     datetimeTimer = new QTimer(this);
     connect(datetimeTimer, SIGNAL(timeout()), this, SLOT(updateDateTime()));
-    datetimeTimer->start(500);
+    datetimeTimer->start(100);
 
     // Inicializamos los datos que provendran del bus CAN
     data = new CANData();
@@ -39,7 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->needleContainer->rotate(-135);
     ui->needleContainer->setScene(needleScene);
 
-    // Cargamos las imágenes de los iconos de temperatura
+    // Cargamos las imágenes de los iconos de temperatura y batería
     this->lowTempIcon = QPixmap(":/images/pantallaPrincipal/temp_icono_baja.png");
     this->regularTempIcon = QPixmap(":/images/pantallaPrincipal/temp_icono_media.png");
     this->highTempIcon = QPixmap(":/images/pantallaPrincipal/temp_icono_alta.png");
@@ -53,16 +53,21 @@ MainWindow::MainWindow(QWidget *parent)
     adminPanel->setGeometry(0, 0, 800, 440);
     isAdminPanelOpen = false;
 
+    // dummy data
     this->data->addError(2);
 
+    // Creamos el widget para las alertas
     notificationsWidget = new NotificationsWidget(this->data,this);
     notificationsWidget->setGeometry(398, 18, 384, 94);
 
-
+    // Iniciamos la conexión con el bus CAN
     this->startReceivingCAN();
 
+    // Conectamos el thread secundario para recibir las señales
     connect(this->receiver, &ReceiveCANData::messageReceived, this, &MainWindow::receiveMessage);
     connect(this->receiver, &ReceiveCANData::debugMessage, this, &MainWindow::receiveDebugMessage);
+
+    // Conectamos las señales de cada tipo de mensaje con sus correspondientes widgets interesados.
 
     // Message1
     connect(this->data, &CANData::message1, this->adminPanel->batteryPanel, &BatteryPanel::message1);
@@ -117,6 +122,8 @@ MainWindow::MainWindow(QWidget *parent)
     this->testCan();
 
     // Hacer scrolleable el área de variables de proceso
+    // test -> clone y equal para candata
+    // Ver posicionamiento de pantalla secundaria
 }
 
 void MainWindow::message1() {
@@ -233,6 +240,7 @@ void MainWindow::updateBat() {
 }
 
 // Función que recibe un mensaje CAN y actualiza sus valores
+// Se podría eliminar esta indirección conectando directamente la señal del thread secundario con el objeto CANData
 void MainWindow::receiveMessage(unsigned char sourceAddress, unsigned int pgn, uint8_t* receivedData)
 {
     // Transformamos a hexadecimal el pgn para debugear
@@ -292,7 +300,7 @@ void MainWindow::on_pushButton_clicked()
     this->close();
 }
 
-
+// Handler del click del botón de configuración
 void MainWindow::on_confButton_clicked()
 {
     if (isAdminPanelOpen) {
@@ -304,6 +312,7 @@ void MainWindow::on_confButton_clicked()
     isAdminPanelOpen = !isAdminPanelOpen;
 }
 
+// Función que configura el bus CAN de la pantalla e inicia la conexión del socket con este
 void MainWindow::startReceivingCAN() {
     this->activateCANChannel();
     this->receiver = new ReceiveCANData();
@@ -311,6 +320,7 @@ void MainWindow::startReceivingCAN() {
 }
 
 //Function to activate CAN channel of DI5 on which the data will be sent/received
+// COPIADA DEL EJEMPLO
 void MainWindow::activateCANChannel()
 {
     QProcess *myProcess = new QProcess(this);
@@ -366,14 +376,6 @@ void MainWindow::activateCANChannel()
 }
 
 void MainWindow::sendMessage() {
-    qInfo() << "Enviando";
-
-    //Data to be sent
-    unsigned char data = 3;
-
-    //Assign data to dataValue of sendData object and start the thread
-    sender->dataValue = data;
-    sender->start();
 }
 
 // Test para comprobar si se actualizan correctamente los valores
@@ -395,7 +397,6 @@ void MainWindow::testCan() {
     this->receiveMessage(0, 0x700, data);
 
     uchar data2[] = {3, 4, 5, 6, 7, 8, 0 ,0};
-    // this->receiveMessage(0, 0x)
     this->emix1(12, 15, 19, 21, 34, 56);
 
     this->faults1(12, 12456);

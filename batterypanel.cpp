@@ -4,6 +4,8 @@
 #include <QLabel>
 #include <QDebug>
 
+
+// Widget que maneja la información de la batería en el panel de información avanzada
 BatteryPanel::BatteryPanel(CANData *data, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::BatteryPanel)

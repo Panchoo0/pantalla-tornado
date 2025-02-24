@@ -127,7 +127,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: #00A6A7; font-size: 12px;</string>
+         <string notr="true">color: #00A6A7; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Suma de fallas del BMS</string>
@@ -175,7 +175,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: #00A6A7; font-size: 12px;</string>
+         <string notr="true">color: #00A6A7; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Suma de fallas del EDS</string>
@@ -223,7 +223,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: #00A6A7; font-size: 12px;</string>
+         <string notr="true">color: #00A6A7; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Suma de fallas del DCDC1</string>
@@ -271,7 +271,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: #00A6A7; font-size: 12px;</string>
+         <string notr="true">color: #00A6A7; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Suma de fallas del DCDC2</string>
@@ -319,7 +319,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: #00A6A7; font-size: 12px;</string>
+         <string notr="true">color: #00A6A7; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Suma de fallas del SIM100</string>
@@ -367,7 +367,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: #00A6A7; font-size: 12px;</string>
+         <string notr="true">color: #00A6A7; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Suma de fallas del OBC</string>
@@ -415,7 +415,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: #00A6A7; font-size: 12px;</string>
+         <string notr="true">color: #00A6A7; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Suma de fallas del EMIX</string>
@@ -463,7 +463,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: #00A6A7; font-size: 12px;</string>
+         <string notr="true">color: #00A6A7; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Código de falla
@@ -473,9 +473,9 @@ entrante del DCDC1</string>
        <widget class="QLabel" name="dcdcd1ErrorCodeValue">
         <property name="geometry">
          <rect>
-          <x>110</x>
+          <x>130</x>
           <y>0</y>
-          <width>70</width>
+          <width>50</width>
           <height>35</height>
          </rect>
         </property>
@@ -512,7 +512,7 @@ entrante del DCDC1</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: #00A6A7; font-size: 12px;</string>
+         <string notr="true">color: #00A6A7; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Código de falla
@@ -522,9 +522,9 @@ entrante del DCDC2</string>
        <widget class="QLabel" name="dcdcd2ErrorCodeValue">
         <property name="geometry">
          <rect>
-          <x>110</x>
+          <x>130</x>
           <y>0</y>
-          <width>70</width>
+          <width>50</width>
           <height>35</height>
          </rect>
         </property>
@@ -561,7 +561,7 @@ entrante del DCDC2</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: #00A6A7; font-size: 12px;</string>
+         <string notr="true">color: #00A6A7; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Código de falla
@@ -571,9 +571,9 @@ entrante del EDS</string>
        <widget class="QLabel" name="edsErrorCodeValue">
         <property name="geometry">
          <rect>
-          <x>100</x>
+          <x>130</x>
           <y>0</y>
-          <width>80</width>
+          <width>50</width>
           <height>35</height>
          </rect>
         </property>
@@ -610,7 +610,7 @@ entrante del EDS</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: #00A6A7; font-size: 12px;</string>
+         <string notr="true">color: #00A6A7; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Código de falla
@@ -620,9 +620,9 @@ entrante del OBS</string>
        <widget class="QLabel" name="obcErrorCodeValue">
         <property name="geometry">
          <rect>
-          <x>100</x>
+          <x>130</x>
           <y>0</y>
-          <width>80</width>
+          <width>50</width>
           <height>35</height>
          </rect>
         </property>
@@ -696,7 +696,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>DC/DCs diferencia
@@ -733,7 +733,7 @@ de potencia muy grande</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>DCDC1 Overtemp</string>
@@ -769,7 +769,7 @@ de potencia muy grande</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>DCDC2 Overtemp</string>
@@ -805,7 +805,7 @@ de potencia muy grande</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>HVIL DC/DCs</string>
@@ -871,7 +871,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>ATS Fan Fault</string>
@@ -907,7 +907,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>ATS Pump Fault</string>
@@ -983,7 +983,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Contactor principal PDU no
@@ -1020,7 +1020,7 @@ puede cambiar su estado</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Contactor principal
@@ -1057,7 +1057,7 @@ PDU cerrado</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>HVIL PDU</string>
@@ -1093,7 +1093,7 @@ PDU cerrado</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>PDU en exceso
@@ -1160,7 +1160,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Bess solicitó apagar HV</string>
@@ -1196,7 +1196,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Se requiere HV Off</string>
@@ -1232,7 +1232,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>HV Encendido</string>
@@ -1268,7 +1268,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Bus HV descargado</string>
@@ -1334,7 +1334,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Sim100 atascado</string>
@@ -1400,7 +1400,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Imposible encender BMS</string>
@@ -1426,7 +1426,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>BMS modo de carga</string>
@@ -1443,7 +1443,7 @@ font-size: 14px;</string>
         </property>
         <property name="styleSheet">
          <string notr="true">color: white;
-font-size: 10px;
+font-size: 8px;
 border: 2px solid #00A6A7;
 border-radius: 4px;
 background: #2c2c2c;</string>
@@ -1515,7 +1515,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Termistor LV
@@ -1552,7 +1552,7 @@ fuera de rango</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Termistor HV
@@ -1619,7 +1619,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>OBC Overtemp</string>
@@ -1655,7 +1655,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>HVIL OBC</string>
@@ -1731,7 +1731,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Pedal 1 anormal</string>
@@ -1767,7 +1767,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Pedal 2 anormal</string>
@@ -1833,7 +1833,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>EDS Couldn´t Clear Error</string>
@@ -1869,7 +1869,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>EDS In Error</string>
@@ -1905,7 +1905,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>HVIL EDS</string>
@@ -1941,7 +1941,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>EDS Overtemp</string>
@@ -2007,7 +2007,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Módulo 1 baterías:
@@ -2044,7 +2044,7 @@ Temperatura muy grande</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Módulo 2 baterías:
@@ -2081,7 +2081,7 @@ Temperatura muy grande</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Módulo 3 baterías:
@@ -2118,7 +2118,7 @@ Temperatura muy grande</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Módulo 4 baterías:
@@ -2175,7 +2175,7 @@ font-size: 14px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Estado de
@@ -2193,7 +2193,7 @@ enfriamiento</string>
         </property>
         <property name="styleSheet">
          <string notr="true">color: white;
-font-size: 10px;
+font-size: 8px;
 border: 2px solid #00A6A7;
 border-radius: 4px;
 background: #2c2c2c;</string>
@@ -2225,7 +2225,7 @@ background: #2c2c2c;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Estado de
@@ -2243,7 +2243,7 @@ calentamiento</string>
         </property>
         <property name="styleSheet">
          <string notr="true">color: white;
-font-size: 10px;
+font-size: 8px;
 border: 2px solid #00A6A7;
 border-radius: 4px;
 background: #2c2c2c;</string>
@@ -2275,7 +2275,7 @@ background: #2c2c2c;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Estado marcha</string>
@@ -2292,7 +2292,7 @@ background: #2c2c2c;</string>
         </property>
         <property name="styleSheet">
          <string notr="true">color: white;
-font-size: 10px;
+font-size: 8px;
 border: 2px solid #00A6A7;
 border-radius: 4px;
 background: #2c2c2c;</string>
@@ -2324,7 +2324,7 @@ background: #2c2c2c;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Estado Inhibit</string>
@@ -2341,7 +2341,7 @@ background: #2c2c2c;</string>
         </property>
         <property name="styleSheet">
          <string notr="true">color: white;
-font-size: 10px;
+font-size: 8px;
 border: 2px solid #00A6A7;
 border-radius: 4px;
 background: #2c2c2c;</string>
@@ -2373,7 +2373,7 @@ background: #2c2c2c;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Estado contactor
@@ -2391,7 +2391,7 @@ principal negativo BMU</string>
         </property>
         <property name="styleSheet">
          <string notr="true">color: white;
-font-size: 10px;
+font-size: 8px;
 border: 2px solid #00A6A7;
 border-radius: 4px;
 background: #2c2c2c;</string>
@@ -2433,7 +2433,7 @@ background: #2c2c2c;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Evento de volcamiento</string>
@@ -2469,7 +2469,7 @@ background: #2c2c2c;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Puerta abierta</string>
@@ -2505,7 +2505,7 @@ background: #2c2c2c;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: white; font-size: 12px;</string>
+         <string notr="true">color: white; font-size: 10px;</string>
         </property>
         <property name="text">
          <string>Estado parqueo ZeMaq</string>

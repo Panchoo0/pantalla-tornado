@@ -2,6 +2,8 @@
 #include "ui_enginewidget.h"
 #include <QDebug>
 
+// Widget utilizar en la interfaz de información avanzada para mostrar los indicadores de los equipos
+// como el motor
 EngineWidget::EngineWidget(CANData *canData, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::EngineWidget)

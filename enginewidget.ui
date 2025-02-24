@@ -404,7 +404,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: #84CEC3; font-size: 12px;</string>
+       <string notr="true">color: #84CEC3; font-size: 10px;</string>
       </property>
       <property name="text">
        <string>Corriente Instantánea</string>
@@ -538,7 +538,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: white; font-size: 16px;</string>
+       <string notr="true">color: white; font-size: 14px;</string>
       </property>
       <property name="text">
        <string>-</string>
@@ -688,7 +688,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: #84CEC3; font-size: 12px;</string>
+       <string notr="true">color: #84CEC3; font-size: 10px;</string>
       </property>
       <property name="text">
        <string>Torque Instantáneo</string>
@@ -822,7 +822,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: white; font-size: 16px;</string>
+       <string notr="true">color: white; font-size: 14px;</string>
       </property>
       <property name="text">
        <string>-</string>
@@ -972,7 +972,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: #84CEC3; font-size: 12px;</string>
+       <string notr="true">color: #84CEC3; font-size: 10px;</string>
       </property>
       <property name="text">
        <string>Voltaje Instantáneo</string>
@@ -1106,7 +1106,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: white; font-size: 16px;</string>
+       <string notr="true">color: white; font-size: 14px;</string>
       </property>
       <property name="text">
        <string>-</string>
@@ -1256,7 +1256,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: #84CEC3; font-size: 12px;</string>
+       <string notr="true">color: #84CEC3; font-size: 10px;</string>
       </property>
       <property name="text">
        <string>RPM Instáneo</string>
@@ -1390,7 +1390,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: white; font-size: 16px;</string>
+       <string notr="true">color: white; font-size: 14px;</string>
       </property>
       <property name="text">
        <string>-</string>
@@ -1540,7 +1540,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: #84CEC3; font-size: 12px;</string>
+       <string notr="true">color: #84CEC3; font-size: 10px;</string>
       </property>
       <property name="text">
        <string>Setpoint</string>
@@ -1674,7 +1674,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: white; font-size: 16px;</string>
+       <string notr="true">color: white; font-size: 14px;</string>
       </property>
       <property name="text">
        <string>-</string>
@@ -1824,7 +1824,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: #84CEC3; font-size: 12px;</string>
+       <string notr="true">color: #84CEC3; font-size: 10px;</string>
       </property>
       <property name="text">
        <string>Temperatura</string>
@@ -1958,7 +1958,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: white; font-size: 16px;</string>
+       <string notr="true">color: white; font-size: 14px;</string>
       </property>
       <property name="text">
        <string>-</string>
@@ -2108,7 +2108,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: #84CEC3; font-size: 12px;</string>
+       <string notr="true">color: #84CEC3; font-size: 10px;</string>
       </property>
       <property name="text">
        <string>Potencia</string>
@@ -2242,7 +2242,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: white; font-size: 16px;</string>
+       <string notr="true">color: white; font-size: 14px;</string>
       </property>
       <property name="text">
        <string>-</string>
@@ -2578,7 +2578,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: #84CEC3; font-size: 12px;</string>
+       <string notr="true">color: #84CEC3; font-size: 10px;</string>
       </property>
       <property name="text">
        <string>Corriente de salida</string>
@@ -2712,7 +2712,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: white; font-size: 16px;</string>
+       <string notr="true">color: white; font-size: 14px;</string>
       </property>
       <property name="text">
        <string>-</string>
@@ -2862,7 +2862,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: #84CEC3; font-size: 12px;</string>
+       <string notr="true">color: #84CEC3; font-size: 10px;</string>
       </property>
       <property name="text">
        <string>Corriente de entrada HV</string>
@@ -2996,7 +2996,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: white; font-size: 16px;</string>
+       <string notr="true">color: white; font-size: 14px;</string>
       </property>
       <property name="text">
        <string>-</string>
@@ -3146,7 +3146,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: #84CEC3; font-size: 12px;</string>
+       <string notr="true">color: #84CEC3; font-size: 10px;</string>
       </property>
       <property name="text">
        <string>Voltaje de salida</string>
@@ -3280,7 +3280,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: white; font-size: 16px;</string>
+       <string notr="true">color: white; font-size: 14px;</string>
       </property>
       <property name="text">
        <string>-</string>
@@ -3430,7 +3430,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: #84CEC3; font-size: 12px;</string>
+       <string notr="true">color: #84CEC3; font-size: 10px;</string>
       </property>
       <property name="text">
        <string>Voltaje de entrada</string>
@@ -3564,7 +3564,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: white; font-size: 16px;</string>
+       <string notr="true">color: white; font-size: 14px;</string>
       </property>
       <property name="text">
        <string>-</string>
@@ -3887,7 +3887,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: #84CEC3; font-size: 12px;</string>
+       <string notr="true">color: #84CEC3; font-size: 10px;</string>
       </property>
       <property name="text">
        <string>Corriente de salida</string>
@@ -4021,7 +4021,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: white; font-size: 16px;</string>
+       <string notr="true">color: white; font-size: 14px;</string>
       </property>
       <property name="text">
        <string>-</string>
@@ -4171,7 +4171,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: #84CEC3; font-size: 12px;</string>
+       <string notr="true">color: #84CEC3; font-size: 10px;</string>
       </property>
       <property name="text">
        <string>Corriente de entrada HV</string>
@@ -4305,7 +4305,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: white; font-size: 16px;</string>
+       <string notr="true">color: white; font-size: 14px;</string>
       </property>
       <property name="text">
        <string>-</string>
@@ -4455,7 +4455,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: #84CEC3; font-size: 12px;</string>
+       <string notr="true">color: #84CEC3; font-size: 10px;</string>
       </property>
       <property name="text">
        <string>Voltaje de salida</string>
@@ -4589,7 +4589,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: white; font-size: 16px;</string>
+       <string notr="true">color: white; font-size: 14px;</string>
       </property>
       <property name="text">
        <string>-</string>
@@ -4739,7 +4739,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: #84CEC3; font-size: 12px;</string>
+       <string notr="true">color: #84CEC3; font-size: 10px;</string>
       </property>
       <property name="text">
        <string>Voltaje de entrada</string>
@@ -4873,7 +4873,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: white; font-size: 16px;</string>
+       <string notr="true">color: white; font-size: 14px;</string>
       </property>
       <property name="text">
        <string>-</string>
@@ -5217,7 +5217,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: #84CEC3; font-size: 12px;</string>
+       <string notr="true">color: #84CEC3; font-size: 10px;</string>
       </property>
       <property name="text">
        <string>Resistencia de&lt;br&gt; aislación bus + SIM100</string>
@@ -5351,7 +5351,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: white; font-size: 16px;</string>
+       <string notr="true">color: white; font-size: 14px;</string>
       </property>
       <property name="text">
        <string>-</string>
@@ -5501,7 +5501,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: #84CEC3; font-size: 12px;</string>
+       <string notr="true">color: #84CEC3; font-size: 10px;</string>
       </property>
       <property name="text">
        <string>Resistencia de&lt;br&gt; aislación bus + BMU</string>
@@ -5635,7 +5635,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: white; font-size: 16px;</string>
+       <string notr="true">color: white; font-size: 14px;</string>
       </property>
       <property name="text">
        <string>-</string>
@@ -5785,7 +5785,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: #84CEC3; font-size: 12px;</string>
+       <string notr="true">color: #84CEC3; font-size: 10px;</string>
       </property>
       <property name="text">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Resistencia de&lt;br/&gt;aislación bus - SIM100&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -5919,7 +5919,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: white; font-size: 16px;</string>
+       <string notr="true">color: white; font-size: 14px;</string>
       </property>
       <property name="text">
        <string>-</string>
@@ -6069,7 +6069,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: #84CEC3; font-size: 12px;</string>
+       <string notr="true">color: #84CEC3; font-size: 10px;</string>
       </property>
       <property name="text">
        <string>Resistencia de&lt;br&gt; aislación bus + BMU</string>
@@ -6203,7 +6203,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: white; font-size: 16px;</string>
+       <string notr="true">color: white; font-size: 14px;</string>
       </property>
       <property name="text">
        <string>-</string>
@@ -6513,7 +6513,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: #84CEC3; font-size: 12px;</string>
+       <string notr="true">color: #84CEC3; font-size: 10px;</string>
       </property>
       <property name="text">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Temperatura pistola de&lt;br/&gt;carga positiva DC A&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -6647,7 +6647,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: white; font-size: 16px;</string>
+       <string notr="true">color: white; font-size: 14px;</string>
       </property>
       <property name="text">
        <string>-</string>
@@ -6797,7 +6797,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: #84CEC3; font-size: 12px;</string>
+       <string notr="true">color: #84CEC3; font-size: 10px;</string>
       </property>
       <property name="text">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pistola de carga&lt;br/&gt;DC conectada&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -7080,8 +7080,13 @@
         </disabled>
        </palette>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>-1</pointsize>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">color: #84CEC3; font-size: 12px;</string>
+       <string notr="true">color: #84CEC3; font-size: 10px;</string>
       </property>
       <property name="text">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Temperatura pistola de&lt;br/&gt;carga negativa DC A&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -7215,7 +7220,7 @@
        </palette>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: white; font-size: 16px;</string>
+       <string notr="true">color: white; font-size: 14px;</string>
       </property>
       <property name="text">
        <string>-</string>

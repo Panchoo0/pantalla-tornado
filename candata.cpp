@@ -6,6 +6,9 @@
 CANData::CANData() {
 }
 
+// Función para recibir un mensaje proveniente del socket conectado con el bus CAN
+// Actualiza la información del objeto en función del mensaje
+// Emite una señal para indicar el tipo de mensaje recibido y actualizar la información según corresponda
 void CANData::receiveMessage(unsigned char sourceAddress, unsigned int pgn, uint8_t* receivedData) {
 
     switch (pgn) {
@@ -305,6 +308,158 @@ void CANData::assertFaults2(int edsErrorCode, int obcErrorCode) {
 void CANData::addError(int id) {
     DTCCanError error = DTCCanError::fromInt(id);
     this->canErrors.push_back(error);
+}
+
+CANData* CANData::clone(CANData obj) {
+    CANData* data = new CANData();
+
+    data->speed = obj.speed;
+
+    // Message 1
+    data->batteryCurrent = obj.batteryCurrent;
+    data->batteryVoltage = obj.batteryVoltage;
+    data->SOC = obj.SOC;
+
+    // Message 2
+    data->engineCurrent = obj.engineCurrent;
+    data->engineTorque = obj.engineTorque;
+    data->engineVoltage = obj.engineVoltage;
+    data->rpm = obj.rpm;
+    data->setpoint = obj.setpoint;
+
+    // Message 3
+    data->engineTemp = obj.engineTemp;
+    data->inversorTemp = obj.inversorTemp;
+    data->batTemp = obj.batTemp;
+    data->batMaxTemp = obj.batMaxTemp;
+    data->batMinTemp = obj.batMinTemp;
+
+    // Message 4
+    data->dcdc1Current = obj.dcdc1Current;
+    data->dcdc2Current = obj.dcdc2Current;
+    data->dcdc1HVCurrent = obj.dcdc1HVCurrent;
+    data->dcdc2HVCurrent = obj.dcdc2HVCurrent;
+
+    // Message 5
+    data->dcdc1OutputVoltage = obj.dcdc1OutputVoltage;
+    data->dcdc2OutputVoltage = obj.dcdc2OutputVoltage;
+    data->dcdc1InputVoltage = obj.dcdc1InputVoltage;
+    data->dcdc2InputVoltage = obj.dcdc2InputVoltage;
+
+    // Message 6
+    data->posResistanceSIM100 = obj.posResistanceSIM100;
+    data->negResistanceSIM100 = obj.negResistanceSIM100;
+    data->posResistanceBMU = obj.posResistanceBMU;
+    data->negResistanceBMU = obj.negResistanceBMU;
+
+    // Message 7
+    data->lvError = obj.lvError;
+    data->hvError = obj.hvError;
+
+    data->state = obj.state;
+
+    data->inhibitState = obj.inhibitState;
+    data->busHVDischarged = obj.busHVDischarged;
+    data->pduContactorClose = obj.pduContactorClose;
+
+    data->hvOn = obj.hvOn;
+    data->lvHigh = obj.lvHigh;
+
+    data->dcdc1Overtemp = obj.dcdc1Overtemp;
+    data->dcdc2Overtemp = obj.dcdc2Overtemp;
+
+    data->atsFanFault = obj.atsFanFault;
+    data->atsPumpFault = obj.atsPumpFault;
+
+    data->edsOvertemp = obj.edsOvertemp;
+    data->obcOvertemp = obj.obcOvertemp;
+
+    data->edsInError = obj.edsInError;
+    data->edsCouldntClear = obj.edsCouldntClear;
+
+    data->dcdcHighDifference = obj.dcdcHighDifference;
+
+    data->batModule1 = obj.batModule1;
+    data->batModule2 = obj.batModule2;
+    data->batModule3 = obj.batModule3;
+    data->batModule4 = obj.batModule4;
+
+    data->contactorPdu = obj.contactorPdu;
+    data->sim100Stucked = obj.sim100Stucked;
+
+    data->couldntPowerOnBMS = obj.couldntPowerOnBMS;
+
+    data->bessPowerOffHv = obj.bessPowerOffHv;
+    data->requiredHvOff = obj.requiredHvOff;
+
+    data->pedal1Anormal = obj.pedal1Anormal;
+    data->pedal2Anormal = obj.pedal2Anormal;
+
+    data->hvilPdu = obj.hvilPdu;
+    data->hvilObc = obj.hvilObc;
+    data->hvilEds = obj.hvilEds;
+    data->hvilDddc = obj.hvilDddc;
+
+    data->termistorLVOutOfRange = obj.termistorLVOutOfRange;
+    data->termistorHVOutOfRange = obj.termistorHVOutOfRange;
+
+    data->pduTempExcess = obj.pduTempExcess;
+    data->overturn = obj.overturn;
+    data->doorOpen = obj.doorOpen;
+    data->parkingState = obj.parkingState;
+    data->estadoMarcha = obj.estadoMarcha;
+
+    // Bess1
+    for (int i = 0; i < 194 * 3;  i++) {
+        data->voltageCells[i] = obj.voltageCells[i];
+    }
+
+    // Bess2
+    for (int i = 0; i < 18 * 6; i++) {
+        data->tempCells[i] = obj.voltageCells[i];
+    }
+
+    // Bess3
+    data->chargeEnergyAcumulated = obj.chargeEnergyAcumulated;
+    data->dischargeEnergyAcumulated = obj.dischargeEnergyAcumulated;
+    data->energyOneCharge = obj.energyOneCharge;
+
+    // Bess4
+    data->SOH = obj.SOH;
+    data->minVoltage = obj.minVoltage;
+    data->maxVoltage = obj.maxVoltage;
+    data->meanVoltage = obj.meanVoltage;
+
+    // Bess5
+    data->posChargeTempDC = obj.posChargeTempDC;
+    data->negChargeTempDC = obj.negChargeTempDC;
+    data->dcConected = obj.dcConected;
+
+    data->bmsChargingMode = obj.bmsChargingMode;
+    data->coolingState = obj.coolingState;
+    data->heatState = obj.heatState;
+
+    data->bmuContactor = obj.bmuContactor;
+    data->bmsFailures = obj.bmsFailures;
+
+    // Emix1
+    data->edsFailures  = obj.edsFailures;
+    data->dcdc1Failures = obj.dcdc1Failures;
+    data->dcdc2Failures = obj.dcdc2Failures;
+    data->sim100Failures = obj.sim100Failures;
+    data->obcFailures  = obj.obcFailures;
+    data->emixFailures  = obj.emixFailures;
+
+    // Faults1
+    data->dcdc1ErrorCode = obj.dcdc1ErrorCode;
+    data->dcdc2ErrorCode = obj.dcdc2ErrorCode;
+
+    // Faults2
+    data->edsErrorCode = obj.edsErrorCode;
+    data->obcErrorCode = obj.obcErrorCode;
+
+
+    return data;
 }
 
 CANData::~CANData (){

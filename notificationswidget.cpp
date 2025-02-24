@@ -2,6 +2,7 @@
 #include "ui_notificationswidget.h"
 #include <QTimer>
 
+// Widget que maneja las alertas mostradas en la pantalla principal
 NotificationsWidget::NotificationsWidget(CANData *canData,QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::NotificationsWidget)
@@ -9,13 +10,13 @@ NotificationsWidget::NotificationsWidget(CANData *canData,QWidget *parent)
     ui->setupUi(this);
     this->canData = canData;
 
-    // timer
-
+    // timer para cambiar de alerta
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(nextNotification()));
     timer->start(1000);
 }
 
+// Función para cambiar de alerta
 void NotificationsWidget::nextNotification() {
     this->currentSlide = (this->currentSlide + 1) % this->canData->canErrors.size();
     DTCCanError error = this->canData->canErrors[this->currentSlide];

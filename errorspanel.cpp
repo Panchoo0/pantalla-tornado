@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QScrollBar>
 
+// Widget utilizado para mostrar los errores DTC en el panel de información avanzada
 ErrorsPanel::ErrorsPanel(CANData *canData, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::ErrorsPanel)

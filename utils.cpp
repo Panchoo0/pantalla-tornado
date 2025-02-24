@@ -1,7 +1,7 @@
 #include "utils.h"
 #include <QDebug>
 
-// Dado un char retorna su representación como string
+// Dado un char retorna su representación como string en formato binario
 QString Utils::toBitString(char byte) {
     QString res = "";
     int mask = 0b1;
@@ -30,6 +30,7 @@ QString Utils::toHexString(uchar* bytes, int length) {
 
 
 // Función que dado una posición inicial en bits y un largo en bits retorna el entero contenido en el array de chars
+// en ese rango de bits
 int Utils::getShiftedData(char startPos, char length, uchar* receivedData) {
     char startChar = startPos / 8;
     char offsetChars = startPos % 8;

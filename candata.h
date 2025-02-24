@@ -156,6 +156,8 @@ public:
     void addError(int id);
     ~CANData();
 
+    CANData* clone(CANData obj);
+
 public:
     void assertMessage1(int current, int voltage, int soc);
     void assertMessage2(int engineCurrent, int engineTorque, int engineVoltage, int rpm, int setpoint);

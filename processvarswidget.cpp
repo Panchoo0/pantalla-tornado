@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <utils.h>
 
+// Widget que se encarga de mostrar la información de las variables de proceso en el panel de información avanzada.
 ProcessVarsWidget::ProcessVarsWidget(CANData *data, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::ProcessVarsWidget)
@@ -16,7 +17,6 @@ ProcessVarsWidget::ProcessVarsWidget(CANData *data, QWidget *parent)
 }
 
 void ProcessVarsWidget::message7() {
-    qInfo() << "message 7";
     QString inhibitState = data->inhibitState == 1 ? "Estado\nnormal" : "Parada de\nemergencia";
     ui->inhibitStateValue->setText(inhibitState);
     ui->hvBusDischargedValue->setChecked(data->busHVDischarged == 1);
@@ -85,7 +85,7 @@ void ProcessVarsWidget::bess5() {
     QString bmsChargingMode;
     switch (data->bmsChargingMode) {
     case 0:
-        bmsChargingMode = "No Conectada";
+        bmsChargingMode = "No\nConectada";
         break;
     case 1:
         bmsChargingMode = "Pistola única\nconectada";
@@ -98,8 +98,8 @@ void ProcessVarsWidget::bess5() {
     }
     ui->bmsChargingModeValue->setText(bmsChargingMode);
 
-    QString heatingState = data->heatState == 1 ? "Calentando" : "No calentando";
-    QString coolingState = data->coolingState == 1 ? "Enfriando" : "No enfriando";
+    QString heatingState = data->heatState == 1 ? "Calentando" : "No\ncalentando";
+    QString coolingState = data->coolingState == 1 ? "Enfriando" : "No\nenfriando";
     QString bmuState;
     switch (data->bmuContactor) {
     case 1:

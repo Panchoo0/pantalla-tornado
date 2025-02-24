@@ -1,6 +1,7 @@
 #include "checkboxwidget.h"
 #include <QMainWindow>
 
+// Widget para simular un checkbox
 // Recibe el ancho del checkbox junto al componente padre
 CheckboxWidget::CheckboxWidget(QWidget* parent, int width): QPushButton(parent) {
     this->checked = false;
@@ -21,7 +22,3 @@ void CheckboxWidget::setChecked(bool checked) {
     this->checked = checked;
     this->Check->setVisible(this->checked);
 }
-
-// CheckboxWidget::~CheckboxWidget() {
-
-// }

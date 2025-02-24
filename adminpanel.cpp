@@ -5,6 +5,7 @@
 #include <qobject.h>
 #include <QDebug>
 
+// Widget que maneja los tabs en el panel de información avanzada
 AdminPanel::AdminPanel(CANData *canData,QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::AdminPanel)
@@ -19,15 +20,17 @@ AdminPanel::AdminPanel(CANData *canData,QWidget *parent)
     engineWidget->setGeometry(125, 0, 675, 440);
     engineWidget->hide();
 
-    // Creamos el panel que muestra la información de la baterías
+    // Creamos el panel que muestra la información de los errores
     errorsPanel = new ErrorsPanel(canData, this);
     errorsPanel->setGeometry(125, 0, 675, 440);
     errorsPanel->hide();
 
+    // Creamos el panel que muestra la información de la baterías
     batteryPanel = new BatteryPanel(canData, this);
     batteryPanel->setGeometry(125, 0, 675, 440);
     batteryPanel->hide();
 
+    // Creamos el panel que muestra la información de las variables de proceso
     processVarsWidget = new ProcessVarsWidget(canData, this);
     processVarsWidget->setGeometry(125, 0, 675, 440);
     processVarsWidget->hide();
