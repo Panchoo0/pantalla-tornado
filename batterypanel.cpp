@@ -4,6 +4,8 @@
 #include <QLabel>
 #include <QDebug>
 
+#include <QScroller>
+
 
 // Widget que maneja la información de la batería en el panel de información avanzada
 BatteryPanel::BatteryPanel(CANData *data, QWidget *parent)
@@ -28,6 +30,10 @@ BatteryPanel::BatteryPanel(CANData *data, QWidget *parent)
     }
 
     ui->tempCellTabScrollAreaWidgetContents->setMinimumSize(200, 550);
+
+    // Habilitamos el scroll mediante el gesto de arrastrar
+    QScroller::grabGesture(ui->tempCellTabScrollArea, QScroller::LeftMouseButtonGesture);
+    QScroller::grabGesture(ui->scrollArea, QScroller::LeftMouseButtonGesture);
 }
 
 BatteryPanel::~BatteryPanel()

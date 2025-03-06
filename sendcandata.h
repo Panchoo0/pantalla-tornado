@@ -10,22 +10,27 @@
 #include <unistd.h>
 #include <QDebug>
 #include <stdint.h>
-// #include <src/kernel-headers/include/linux/can.h>
-// #include <src/kernel-headers/include/linux/can/j1939.h>
 
-class SendCANData : public QThread
+
+class SendCANData : public QObject
 {
     Q_OBJECT
 
 public:
+        //File descriptor for a socket
+    int sock;
     SendCANData(QObject *parent = nullptr);
 
-    //Data to be sent to RC40
-    unsigned char dataValue;
+    void sendMessage(uint8_t* data, int length);
+    void sendEDS();
+    void sendSIM100();
+    void sendFaultBess();
+    void sendFaultDcdc1();
+    void sendFaultDcdc2();
+    void sendFaultObc();
+    void sendFaultEmix();
+    void sendChargeStatusBMS();
 
-protected:
-    //run() method of sendData is overridden to add the code for sending data
-    void run() override;
 };
 
 #endif // SENDCANDATA_H

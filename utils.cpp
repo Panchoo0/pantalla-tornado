@@ -76,3 +76,29 @@ int Utils::getShiftedData(char startPos, char length, uchar* receivedData) {
 
     return res;
 }
+
+// Retorna en un vector los strings que se encuentran entre el delimitador en el string dado.
+// Muta el string dado
+std::vector<std::string>  Utils::split(std::string& s, const std::string& delimiter) {
+    std::vector<std::string> tokens;
+    size_t pos = 0;
+    std::string token;
+    while ((pos = s.find(delimiter)) != std::string::npos) {
+        token = s.substr(0, pos);
+        tokens.push_back(token);
+        s.erase(0, pos + delimiter.length());
+    }
+    tokens.push_back(s);
+
+    return tokens;
+}
+
+// Dado un valor en milisegundos (int) retorna la cantidad de horas, minutos y segundos correspondientes.
+std::tuple<int, int, int> Utils::fromMsToHoursMinutesSeconds(int ms) {
+    int toSeconds = ms / 1000;
+    int seconds = toSeconds % 60;
+    int minutes = (toSeconds / 60) % 60;
+    int hours = (toSeconds / 60) / 60;
+    return {hours, minutes, seconds};
+}
+

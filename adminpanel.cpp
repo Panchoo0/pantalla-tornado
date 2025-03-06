@@ -6,8 +6,8 @@
 #include <QDebug>
 
 // Widget que maneja los tabs en el panel de información avanzada
-AdminPanel::AdminPanel(CANData *canData,QWidget *parent)
-    : QDialog(parent)
+AdminPanel::AdminPanel(CANData *canData, QWidget *parent)
+    : QWidget(parent)
     , ui(new Ui::AdminPanel)
 {
     ui->setupUi(this);

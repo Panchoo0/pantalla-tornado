@@ -2,8 +2,11 @@
 #include <utils.h>
 #include <bits/stdc++.h>
 #include <QDebug>
+#include <fstream>
+#include <QDateTime>
 
 CANData::CANData() {
+    this->readCanErrorsFromFile();
 }
 
 // Función para recibir un mensaje proveniente del socket conectado con el bus CAN
@@ -77,6 +80,7 @@ void CANData::receiveMessage(unsigned char sourceAddress, unsigned int pgn, uint
         busHVDischarged = Utils::getShiftedData(13, 1, receivedData);
         pduContactorClose = Utils::getShiftedData(14, 1, receivedData);
         hvOn = Utils::getShiftedData(15, 1, receivedData);
+        // Posiblemente aquí este corrido el bit de inicio en el excel
         lvHigh = Utils::getShiftedData(16, 2, receivedData);
         dcdc1Overtemp = Utils::getShiftedData(18, 1, receivedData);
         dcdc2Overtemp = Utils::getShiftedData(19, 1, receivedData);
@@ -193,7 +197,22 @@ void CANData::receiveMessage(unsigned char sourceAddress, unsigned int pgn, uint
         emit faults2();
         break;
     }
+    // Protocolo UDS
+    case 0xDA00: {
+        int resID = Utils::getShiftedData(8, 8, receivedData);
+        if (resID == 0x62) {
+            int DID = Utils::getShiftedData(16, 16, receivedData);
+            int errCode = Utils::getShiftedData(32, 16, receivedData);
+            this->addError(errCode);
+
+            emit canError();
+        } else {
+            qInfo() << "Mensaje con otra resID: " << resID;
+        }
+
+    }
     default:
+        qInfo() << "Mensaje con pgn: " << pgn;
         break;
     }
 
@@ -202,8 +221,33 @@ void CANData::receiveMessage(unsigned char sourceAddress, unsigned int pgn, uint
 // Dado el id de un error lo agrega a los errores DTC recibidos por el bus CAN
 void CANData::addError(int id) {
     DTCCanError error = DTCCanError::fromInt(id);
+    std::ofstream file("errors.csv", std::ofstream::app);
+    file << id << "," << error.date.toString().toStdString() << "\n";
+    file.close();
+
     this->canErrors.push_back(error);
+    this->allErrors.push_back(error);
 }
+
+// Función que lee los errores CAN almacenados en la pantalla al encender el equipo
+void CANData::readCanErrorsFromFile() {
+    std::ifstream file("data.csv");
+
+    std::string string_line;
+    while (std::getline(file, string_line))
+    {
+        // El archivo cuenta con 2 columnas: ID | Fecha
+        std::vector<std::string> tokens = Utils::split(string_line, ",");
+        int id = std::stoi(tokens[0]);
+        QDateTime date = QDateTime::fromString(QString::fromStdString(tokens[1]));
+
+        DTCCanError error = DTCCanError::fromInt(id);
+        error.date = date;
+        this->allErrors.push_back(error);
+    }
+    file.close();
+}
+
 
 CANData* CANData::clone() {
     CANData* data = new CANData();

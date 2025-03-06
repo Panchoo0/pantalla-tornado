@@ -2,6 +2,7 @@
 #include "ui_processvarswidget.h"
 #include <checkboxwidget.h>
 #include <QDebug>
+#include <QScroller>
 #include <utils.h>
 
 // Widget que se encarga de mostrar la información de las variables de proceso en el panel de información avanzada.
@@ -11,7 +12,10 @@ ProcessVarsWidget::ProcessVarsWidget(CANData *data, QWidget *parent)
 {
     ui->setupUi(this);
 
-    ui->scrollAreaWidgetContents->setMinimumSize(200, 1375);
+    ui->scrollAreaWidgetContents->setMinimumSize(200, 1050);
+
+    // Habilitamos el scroll mediante el gesto de arrastre
+    QScroller::grabGesture(ui->scrollArea, QScroller::LeftMouseButtonGesture);
 
     this->data = data;
 }

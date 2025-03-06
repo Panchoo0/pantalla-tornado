@@ -67,9 +67,6 @@ void ReceiveCANData::run()
 
     //     //Emit the message
     //     emit messageReceived(rc40Address.can_addr.j1939.addr, rc40Address.can_addr.j1939.pgn, receivedData);
-
-    //     // //Pause the thread for 20ms before it can receive the message again
-    //     // QThread::msleep(20);
     // }
 }
 

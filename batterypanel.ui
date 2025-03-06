@@ -1162,10 +1162,9 @@ background-color: #1c1c1c;
     <property name="styleSheet">
      <string notr="true">background-color: #1c1c1c;
 
-
 QScrollBar::vertical {
         background: #32CC99;
-    }</string>
+}</string>
     </property>
     <attribute name="title">
      <string>Tab 2</string>

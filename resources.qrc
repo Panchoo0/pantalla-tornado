@@ -21,5 +21,10 @@
     <qresource prefix="/panelConfiguracion">
         <file>images/panelConfiguracion/engineIcon.png</file>
         <file>images/panelConfiguracion/conversorIcon.png</file>
+        <file>images/panelConfiguracion/DescIcon.png</file>
+        <file>images/panelConfiguracion/AscIcon.png</file>
+        <file>images/panelConfiguracion/sim100alert.png</file>
+        <file>images/panelConfiguracion/dcdciconalert.png</file>
+        <file>images/panelConfiguracion/hvilalert.png</file>
     </qresource>
 </RCC>

@@ -7,6 +7,8 @@
 #include <notificationswidget.h>
 #include <receivecandata.h>
 #include <sendcandata.h>
+#include <testigocontroller.h>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -30,12 +32,13 @@ public:
     QPixmap regularBatIcon;
     QPixmap highBatIcon;
 
-    bool isAdminPanelOpen;
     AdminPanel *adminPanel;
     NotificationsWidget *notificationsWidget;
 
     ReceiveCANData* receiver;
     SendCANData* sender;
+
+    TestigoController* testigos;
 
 
     MainWindow(QWidget *parent = nullptr);
@@ -74,11 +77,6 @@ private slots:
     void updateBatTemp();
     void updateBat();
 
-    void on_horizontalSlider_valueChanged(int value);
-    void on_horizontalSlider_2_valueChanged(int value);
-    void on_horizontalSlider_3_valueChanged(int value);
-    void on_horizontalSlider_4_valueChanged(int value);
-    void on_verticalSlider_valueChanged(int value);
     void on_pushButton_clicked();
     void on_confButton_clicked();
 
@@ -88,8 +86,8 @@ private slots:
     void receiveMessage(unsigned char sourceAddress, unsigned int pgn, uint8_t* receivedData);
     void receiveDebugMessage(QString msg);
 
-    void sendMessage();
-
     void testCan();
+    void testCanErrors();
+
 };
 #endif // MAINWINDOW_H

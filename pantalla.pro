@@ -24,6 +24,7 @@ SOURCES += \
     processvarswidget.cpp \
     receivecandata.cpp \
     sendcandata.cpp \
+    testigocontroller.cpp \
     utils.cpp
 
 HEADERS += \
@@ -39,6 +40,7 @@ HEADERS += \
     processvarswidget.h \
     receivecandata.h \
     sendcandata.h \
+    testigocontroller.h \
     utils.h
 
 FORMS += \

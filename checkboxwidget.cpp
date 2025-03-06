@@ -14,11 +14,19 @@ CheckboxWidget::CheckboxWidget(QWidget* parent, int width): QPushButton(parent) 
     this->Check->setGeometry(5, 5, width - 10, width - 10);
     this->Check->setStyleSheet("background-color: #00A6A7; border-radius: 3px;");
     this->Check->hide();
-
-    // connect(this, &CheckboxWidget::clicked, this, &CheckboxWidget::onChange);
 }
+
+void CheckboxWidget::onClick() {
+    this->checked = !this->checked;
+    this->Check->setVisible(this->checked);
+}
+
 
 void CheckboxWidget::setChecked(bool checked) {
     this->checked = checked;
     this->Check->setVisible(this->checked);
+}
+
+void CheckboxWidget::connectClick() {
+    connect(this, &CheckboxWidget::clicked, this, &CheckboxWidget::onClick);
 }

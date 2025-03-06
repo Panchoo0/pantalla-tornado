@@ -469,54 +469,6 @@ font-size: 24px;</string>
       </property>
      </widget>
     </widget>
-    <widget class="QSlider" name="horizontalSlider_2">
-     <property name="geometry">
-      <rect>
-       <x>430</x>
-       <y>90</y>
-       <width>101</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="maximum">
-      <number>100</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-    <widget class="QSlider" name="horizontalSlider_3">
-     <property name="geometry">
-      <rect>
-       <x>540</x>
-       <y>90</y>
-       <width>101</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="maximum">
-      <number>100</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-    <widget class="QSlider" name="horizontalSlider_4">
-     <property name="geometry">
-      <rect>
-       <x>650</x>
-       <y>90</y>
-       <width>101</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="maximum">
-      <number>100</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
    </widget>
    <widget class="QWidget" name="speedometer" native="true">
     <property name="geometry">
@@ -554,22 +506,6 @@ font-size: 24px;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: transparent;</string>
-     </property>
-    </widget>
-    <widget class="QSlider" name="horizontalSlider">
-     <property name="geometry">
-      <rect>
-       <x>130</x>
-       <y>200</y>
-       <width>91</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="maximum">
-      <number>120</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
      </property>
     </widget>
     <widget class="QLabel" name="speedValue">
@@ -949,22 +885,6 @@ color: white;</string>
      </widget>
     </widget>
    </widget>
-   <widget class="QSlider" name="verticalSlider">
-    <property name="geometry">
-     <rect>
-      <x>770</x>
-      <y>140</y>
-      <width>16</width>
-      <height>160</height>
-     </rect>
-    </property>
-    <property name="maximum">
-     <number>100</number>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Vertical</enum>
-    </property>
-   </widget>
    <widget class="QWidget" name="notifications" native="true">
     <property name="geometry">
      <rect>
@@ -1037,20 +957,14 @@ border: none</string>
      <pixmap resource="resources.qrc">:/images/pantallaPrincipal/configIcon.png</pixmap>
     </property>
    </widget>
-   <widget class="QLabel" name="debug_msg">
+   <widget class="QWidget" name="testigosWidget" native="true">
     <property name="geometry">
      <rect>
-      <x>380</x>
+      <x>390</x>
       <y>120</y>
-      <width>411</width>
-      <height>51</height>
+      <width>280</width>
+      <height>40</height>
      </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: white;</string>
-    </property>
-    <property name="text">
-     <string>Debug</string>
     </property>
    </widget>
   </widget>

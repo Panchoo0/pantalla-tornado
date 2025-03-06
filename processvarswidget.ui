@@ -7,14 +7,25 @@
     <x>0</x>
     <y>0</y>
     <width>675</width>
-    <height>1017</height>
+    <height>594</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background: #1c1c1c;</string>
+   <string notr="true">background-color:  #1c1c1c;
+
+QScrollBar::vertical {
+        background: #32CC99;
+};
+
+
+
+
+
+
+</string>
   </property>
   <widget class="QScrollArea" name="scrollArea">
    <property name="geometry">
@@ -22,7 +33,7 @@
      <x>0</x>
      <y>30</y>
      <width>675</width>
-     <height>900</height>
+     <height>551</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -40,32 +51,23 @@ border-radius: 20px;
 	border-radius: 10px;
 }</string>
    </property>
+   <property name="verticalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOn</enum>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
+   </property>
    <property name="widgetResizable">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <widget class="QWidget" name="scrollAreaWidgetContents">
     <property name="geometry">
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>673</width>
-      <height>898</height>
+      <width>659</width>
+      <height>549</height>
      </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">::sub-page:vertical {
-background-color: #84CEC3;
-}
-
-::add-page:vertical {
-background-color: #84CEC3;
-border-radius: 20px;
-}
-
-::handle {
-	background-color: #00A6A7;
-	border-radius: 10px;
-}</string>
     </property>
     <widget class="QWidget" name="column1" native="true">
      <property name="geometry">

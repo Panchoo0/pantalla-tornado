@@ -1,7 +1,7 @@
 #ifndef ADMINPANEL_H
 #define ADMINPANEL_H
 
-#include <QDialog>
+#include <QWidget>
 #include <enginewidget.h>
 #include <errorspanel.h>
 #include <batterypanel.h>
@@ -19,7 +19,7 @@ namespace Ui {
 class AdminPanel;
 }
 
-class AdminPanel : public QDialog
+class AdminPanel : public QWidget
 {
     Q_OBJECT
 

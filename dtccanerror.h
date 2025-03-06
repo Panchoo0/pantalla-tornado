@@ -9,14 +9,14 @@ class DTCCanError
 {
 public:
     int code;
-    int priority;
     QDateTime date;
     QString description;
     QString category;
-    QString from;
+    QString equipment;
+    bool lightIndicator;
 
 public:
-    DTCCanError(int priority, QString category, QString from, QString description, QDateTime date);
+    DTCCanError(int code, QString category, QString equipment, QString description, QDateTime date, bool lightIndicator);
 
     static DTCCanError fromInt(int id);
 };

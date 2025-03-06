@@ -22,7 +22,7 @@
     <rect>
      <x>20</x>
      <y>100</y>
-     <width>635</width>
+     <width>650</width>
      <height>320</height>
     </rect>
    </property>
@@ -67,7 +67,7 @@ background-color: #1C1C1C;</string>
      <string>ID</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="IDButton_2">
+   <widget class="QPushButton" name="equipment">
     <property name="geometry">
      <rect>
       <x>260</x>
@@ -105,228 +105,121 @@ background-color: #1C1C1C;</string>
      <string>Descripción</string>
     </property>
    </widget>
+   <widget class="QScrollArea" name="scrollArea">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>20</y>
+      <width>650</width>
+      <height>295</height>
+     </rect>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOn</enum>
+    </property>
+    <property name="widgetResizable">
+     <bool>true</bool>
+    </property>
+    <widget class="QWidget" name="scrollAreaWidgetContents">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>634</width>
+       <height>293</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QPushButton" name="dateSorterButton">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>0</y>
+      <width>40</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: transparent;
+border: none;
+</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="dateSorter">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>7</y>
+      <width>15</width>
+      <height>7</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="resources.qrc">:/panelConfiguracion/images/panelConfiguracion/DescIcon.png</pixmap>
+    </property>
+   </widget>
+   <zorder>dateButton</zorder>
+   <zorder>IDButton</zorder>
+   <zorder>equipment</zorder>
+   <zorder>descriptionButton</zorder>
+   <zorder>scrollArea</zorder>
+   <zorder>dateSorter</zorder>
+   <zorder>dateSorterButton</zorder>
   </widget>
-  <widget class="QWidget" name="minDate" native="true">
+  <widget class="QWidget" name="dcdc1" native="true">
    <property name="geometry">
     <rect>
      <x>20</x>
      <y>20</y>
-     <width>150</width>
-     <height>70</height>
+     <width>120</width>
+     <height>30</height>
     </rect>
    </property>
-   <widget class="QSlider" name="minDateSlider">
+   <widget class="CheckboxWidget" name="dcdc1Checkbox" native="true">
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>30</y>
-      <width>150</width>
-      <height>25</height>
+      <y>5</y>
+      <width>20</width>
+      <height>20</height>
      </rect>
     </property>
-    <property name="styleSheet">
-     <string notr="true">::groove {
-    background: #84CEC3;
-	height: 8px;
- }
-
-::handle:horizontal {
-    background: #00A6A7;
-	height: 10px;
-	width: 10px;
- }
-
-</string>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
    </widget>
-   <widget class="QLabel" name="minDateLabel">
+   <widget class="QLabel" name="dcdc1Label">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>30</x>
       <y>0</y>
       <width>90</width>
-      <height>18</height>
+      <height>30</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: #656565; font-size: 12px;</string>
+     <string notr="true">color: white; font-size: 14px;</string>
     </property>
     <property name="text">
-     <string>Fecha mínima</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="minDateValue">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>20</y>
-      <width>150</width>
-      <height>18</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: white; font-size: 12px;</string>
-    </property>
-    <property name="text">
-     <string>Fecha mínima</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="minDateMin">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>50</y>
-      <width>150</width>
-      <height>18</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: white; font-size: 12px;</string>
-    </property>
-    <property name="text">
-     <string>01/01/25</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="minDateMax">
-    <property name="geometry">
-     <rect>
-      <x>75</x>
-      <y>50</y>
-      <width>75</width>
-      <height>18</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: white; font-size: 12px;</string>
-    </property>
-    <property name="text">
-     <string>30/12/25</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QWidget" name="maxDate" native="true">
-   <property name="geometry">
-    <rect>
-     <x>190</x>
-     <y>20</y>
-     <width>150</width>
-     <height>70</height>
-    </rect>
-   </property>
-   <widget class="QSlider" name="maxDateSlider">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>30</y>
-      <width>150</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">::groove {
-    background: #84CEC3;
-	height: 8px;
- }
-
-::handle:horizontal {
-    background: #00A6A7;
-	height: 10px;
-	width: 10px;
- }
-
-</string>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
-   </widget>
-   <widget class="QLabel" name="maxDateLabel">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>90</width>
-      <height>18</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: #656565; font-size: 12px;</string>
-    </property>
-    <property name="text">
-     <string>Fecha máxima</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="maxDateValue">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>20</y>
-      <width>150</width>
-      <height>18</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: white; font-size: 12px;</string>
-    </property>
-    <property name="text">
-     <string>Fecha mínima</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="maxDateMin">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>50</y>
-      <width>150</width>
-      <height>18</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: white; font-size: 12px;</string>
-    </property>
-    <property name="text">
-     <string>01/01/25</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="maxDateMax">
-    <property name="geometry">
-     <rect>
-      <x>75</x>
-      <y>50</y>
-      <width>75</width>
-      <height>18</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: white; font-size: 12px;</string>
-    </property>
-    <property name="text">
-     <string>30/12/25</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     <string>DCDC1</string>
     </property>
    </widget>
   </widget>
  </widget>
- <resources/>
+ <customwidgets>
+  <customwidget>
+   <class>CheckboxWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">checkboxwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

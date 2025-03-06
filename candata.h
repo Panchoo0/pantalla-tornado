@@ -151,8 +151,10 @@ public:
     int edsErrorCode;
     int obcErrorCode;
 
-    std::vector<DTCCanError> canErrors;
+    std::vector<DTCCanError> canErrors; // Utilizado para ver los errores generados durante el encendido
+    std::vector<DTCCanError> allErrors; // Utilizado para ver todos los errores
     CANData();
+    void readCanErrorsFromFile();
     void addError(int id);
     ~CANData();
 
@@ -161,6 +163,7 @@ public:
     bool operator==(CANData& other) const;
 
 signals:
+    // Señales enviadas al recibir un mensaje
     void message1();
     void message2();
     void message3();
@@ -176,6 +179,9 @@ signals:
     void emix1();
     void faults1();
     void faults2();
+
+    // Señal enviada al recibir un error
+    void canError();
 
 public slots:
     void receiveMessage(unsigned char sourceAddress, unsigned int pgn, uint8_t* receivedData);

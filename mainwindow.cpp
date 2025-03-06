@@ -24,9 +24,13 @@ MainWindow::MainWindow(QWidget *parent)
     connect(datetimeTimer, SIGNAL(timeout()), this, SLOT(updateDateTime()));
     datetimeTimer->start(100);
 
-    // Inicializamos los datos que provendran del bus CAN
+    // Inicializamos los threads que tratarán con el bus CAN
     data = new CANData();
-    // sender = new SendCANData();
+    sender = new SendCANData();
+    QThread* newThread = new QThread();
+
+    sender->moveToThread(newThread);
+    newThread->start();
 
     // Configuración para poner el botón de configuración por sobre su ícono
     ui->confIcon->stackUnder(ui->confButton);
@@ -51,10 +55,6 @@ MainWindow::MainWindow(QWidget *parent)
     // Creamos el widget para el panel de administración
     adminPanel = new AdminPanel(data, this);
     adminPanel->setGeometry(0, 0, 800, 440);
-    isAdminPanelOpen = false;
-
-    // dummy data
-    this->data->addError(2);
 
     // Creamos el widget para las alertas
     notificationsWidget = new NotificationsWidget(this->data,this);
@@ -119,23 +119,43 @@ MainWindow::MainWindow(QWidget *parent)
     // Faults2
     connect(this->data, &CANData::faults2, this->adminPanel->processVarsWidget, &ProcessVarsWidget::faults2);
 
+    // Señal en caso de recibir un error
+    connect(this->data, &CANData::canError, this->adminPanel->errorsPanel, &ErrorsPanel::canError);
+
     this->testCan();
 
-    // Hacer scrolleable el área de variables de proceso
-    // test -> clone y equal para candata
-    // Ver posicionamiento de pantalla secundaria
+    this->testCanErrors();
+
+    testigos = new TestigoController(ui->testigosWidget);
 }
 
+
+// Función para testear el recibimiento de errores DTC por el protocolo UDS
+void MainWindow::testCanErrors() {
+    // uchar data[] = {0, 0x59, 0, 0, 0xD0, 02, 0, 0};
+    // this->receiveMessage(0, 0xDA00, data);
+    // this->receiveMessage(0, 0xDA00, data);
+    // data[4] = 0xD3;
+    // data[5] = 0x18;
+    // this->receiveMessage(0, 0xDA00, data);
+    // this->receiveMessage(0, 0xDA00, data);
+    // this->receiveMessage(0, 0xDA00, data);
+    // this->receiveMessage(0, 0xDA00, data);
+}
+
+// Función que recibe la señal por un nuevo mensaje message1
 void MainWindow::message1() {
     this->updateBat();
 }
 
+// Función que recibe la señal por un nuevo mensaje message3
 void MainWindow::message3() {
     this->updateBatTemp();
     this->updateEngineTemp();
     this->updateInversorTemp();
 }
 
+// Función de debug
 void MainWindow::receiveDebugMessage(QString msg) {
     // ui->debug_msg->setText(msg);
     qInfo() << msg;
@@ -152,9 +172,22 @@ void MainWindow::updateDateTime() {
                             QString::number(date.day()) + " de " +
                             locale.monthName(date.month());
     ui->date->setText(formattedDate);
+
+    // DEBUG
+    this->sender->sendEDS();
+    this->sender->sendChargeStatusBMS();
+    this->sender->sendFaultBess();
+    this->sender->sendFaultDcdc1();
+    this->sender->sendFaultDcdc2();
+    this->sender->sendFaultEmix();
+    this->sender->sendFaultObc();
+    this->sender->sendSIM100();
 }
 
-// Función que actualiza la velocidad, tanto el número como la rotación de la aguja.
+// Función que actualiza la ui de la velocidad, tanto el número como la rotación de la aguja.
+// TODO: Actualizar según el valor
+//  aqui this->data->speed debe ser el valor previo
+//  y value el nuevo valor
 void MainWindow::updateSpeed()
 {
     // ui->needleContainer->rotate(270 * (value - this->data->speed) / 120.0f);
@@ -163,7 +196,7 @@ void MainWindow::updateSpeed()
     // this->data->speed = value;
 }
 
-// Función que actualiza la temperatura del motor
+// Función que actualiza la ui de la temperatura del motor
 void MainWindow::updateEngineTemp() {
     // Actualizamos el ícono según el valor
     if (this->data->engineTemp < 30) {
@@ -178,7 +211,7 @@ void MainWindow::updateEngineTemp() {
     ui->engineTempValue->setText(QString::number(this->data->engineTemp) + "° C");
 }
 
-// Función que actualiza la temperatura del inversor
+// Función que actualiza la ui de la temperatura del inversor
 void MainWindow::updateInversorTemp() {
 
     // Actualizamos el ícono según el valor
@@ -194,7 +227,7 @@ void MainWindow::updateInversorTemp() {
     ui->inversorValue->setText(QString::number(this->data->inversorTemp) + "° C");
 }
 
-// Función que actualiza la temperatura de la batería
+// Función que actualiza la ui de la temperatura de la batería
 void MainWindow::updateBatTemp() {
 
     // Actualizamos el ícono según el valor
@@ -210,7 +243,7 @@ void MainWindow::updateBatTemp() {
     ui->batTempValue->setText(QString::number(this->data->batTemp) + "° C");
 }
 
-// Función que actualiza la carga de la batería.
+// Función que actualiza la ui de la carga de la batería.
 // Recibe la nueva carga de la batería en un entero que representa el porcentaje
 void MainWindow::updateBat() {
 
@@ -241,20 +274,13 @@ void MainWindow::updateBat() {
 
 // Función que recibe un mensaje CAN y actualiza sus valores
 // Se podría eliminar esta indirección conectando directamente la señal del thread secundario con el objeto CANData
+// Se mantiene solo para facilitar el debug
 void MainWindow::receiveMessage(unsigned char sourceAddress, unsigned int pgn, uint8_t* receivedData)
 {
     // Transformamos a hexadecimal el pgn para debugear
     std::stringstream ss;
     ss << std::hex << pgn;
     std::string pgn_hex = ss.str();
-
-    // this->receiveDebugMessage(
-    //     "Recibido desde " +
-    //     QString::number(sourceAddress) +
-    //     " con pgn: " + QString::fromStdString(pgn_hex) +
-    //     " bytes: " +
-    //     Utils::toHexString((uchar *)receivedData, 8)
-    // );
 
     this->data->receiveMessage(sourceAddress, pgn, receivedData);
 
@@ -265,51 +291,20 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_horizontalSlider_valueChanged(int value)
-{
-    this->updateSpeed();
-}
-
-
-void MainWindow::on_horizontalSlider_2_valueChanged(int value)
-{
-    this->updateInversorTemp();
-}
-
-
-void MainWindow::on_horizontalSlider_3_valueChanged(int value)
-{
-    this->updateEngineTemp();
-}
-
-
-void MainWindow::on_horizontalSlider_4_valueChanged(int value)
-{
-    this->updateBatTemp();
-}
-
-
-void MainWindow::on_verticalSlider_valueChanged(int value)
-{
-    this->updateBat();
-}
-
-
 void MainWindow::on_pushButton_clicked()
 {
     this->close();
 }
 
-// Handler del click del botón de configuración
+// Handler del click del botón de panel de información avanzada
 void MainWindow::on_confButton_clicked()
 {
-    if (isAdminPanelOpen) {
+    if (adminPanel->isVisible()) {
         adminPanel->hide();
     }
     else {
         adminPanel->show();
     }
-    isAdminPanelOpen = !isAdminPanelOpen;
 }
 
 // Función que configura el bus CAN de la pantalla e inicia la conexión del socket con este
@@ -375,15 +370,12 @@ void MainWindow::activateCANChannel()
     this->receiveDebugMessage("CAN Activado");
 }
 
-void MainWindow::sendMessage() {
-}
-
-// Test para comprobar si se actualizan correctamente los valores
+// Test para comprobar si se actualizan correctamente los valores al recibir un mensaje CAN
 void MainWindow::testCan() {
     srand (time(NULL));
     int iteraciones = 100;
     for (int i = 0; i < iteraciones; i++) {
-        // qInfo() << "Iteración: " << i;
+        qInfo() << "Iteración: " << i;
         this->testMessage1();
         this->testMessage2();
         this->testMessage3();
@@ -405,15 +397,17 @@ void MainWindow::testCan() {
 
 }
 
+// Comprueba si se actualizó el panel tras recibir un message1
 void MainWindow::assertMessage1() {
     assert(ui->batValue->text() == QString::number(this->data->SOC));
 }
+
 
 void MainWindow::testMessage1() {
     // Obtenemos valores random
     int current = rand() % 0xFFFF;
     int voltage = rand() % 0xFFFF;
-    int soc = rand() % 0xFF;
+    int soc = rand() % 100;
 
     // Clonamos el objeto y actualizamos sus valores
     CANData *canData = this->data->clone();
@@ -920,7 +914,7 @@ void MainWindow::testBess3() {
 
 void MainWindow::testBess4() {
     // Obtenemos valores aleatorios
-    int SOC = rand() % 0xFF;
+    int SOC = rand() % 101;
     int SOH = rand() % 0xFF;
     int maxVoltage = rand() % 0xFFFF;
     int minVoltage = rand() % 0xFFFF;
