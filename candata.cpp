@@ -231,7 +231,7 @@ void CANData::addError(int id) {
 
 // Función que lee los errores CAN almacenados en la pantalla al encender el equipo
 void CANData::readCanErrorsFromFile() {
-    std::ifstream file("data.csv");
+    std::ifstream file("errors.csv");
 
     std::string string_line;
     while (std::getline(file, string_line))

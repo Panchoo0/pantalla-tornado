@@ -167,6 +167,13 @@ Funciones varias para el manejo de bits y bytes.
 
 Widget que se encarga de manejar los testigos activos y su correspondiente animación.
 
+# USS (no implementado)
+
+Los datos del uss recibidos a través del bus CAN deben ser ser procesados y mostrados en la pantalla de sensor, accesible desde la pantalla principal.
+En dichos datos se debería recibir la información en la que se detalla el objeto más cercano, clasificado en 2 tipos: Punto y Línea, junto a la distancia respecto al sensor.
+
+El diseño de esta interfaz (aún no implementada) se puede ver en figma.
+
 # Links
 
 - [Figma](https://www.figma.com/design/DZc9cLo1U9k7Mq8VNClsgY/Pantalla?node-id=234-214&t=iq6gBsp6CmiKzEhb-1)

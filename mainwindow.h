@@ -40,6 +40,8 @@ public:
 
     TestigoController* testigos;
 
+    QTimer* udsTimer;
+
 
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -47,6 +49,8 @@ private:
     Ui::MainWindow *ui;
     void startReceivingCAN();
     void activateCANChannel();
+
+    void sendUDSMessages();
 
 private:
     void assertMessage1();

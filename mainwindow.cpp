@@ -26,11 +26,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Inicializamos los threads que tratarán con el bus CAN
     data = new CANData();
-    sender = new SendCANData();
-    QThread* newThread = new QThread();
 
-    sender->moveToThread(newThread);
-    newThread->start();
+
 
     // Configuración para poner el botón de configuración por sobre su ícono
     ui->confIcon->stackUnder(ui->confButton);
@@ -119,28 +116,50 @@ MainWindow::MainWindow(QWidget *parent)
     // Faults2
     connect(this->data, &CANData::faults2, this->adminPanel->processVarsWidget, &ProcessVarsWidget::faults2);
 
-    // Señal en caso de recibir un error
+    // Señal en caso de recibir un error por el protocolo UDS
     connect(this->data, &CANData::canError, this->adminPanel->errorsPanel, &ErrorsPanel::canError);
 
-    this->testCan();
-
-    this->testCanErrors();
+    // this->testCan();
+    // this->testCanErrors();
 
     testigos = new TestigoController(ui->testigosWidget);
+
+    // El thread para enviar info se mantiene desocupado hasta que
+    // recibe las señales para enviar
+    sender = new SendCANData();
+    QThread* newThread = new QThread();
+
+    sender->moveToThread(newThread);
+    newThread->start();
+
+    udsTimer = new QTimer(this);
+    connect(udsTimer, SIGNAL(timeout()), this, SLOT(sendUDSMessages()));
+    udsTimer->start(1000);
 }
 
+void MainWindow::sendUDSMessages() {
+    // DEBUG
+    this->sender->sendEDS();
+    this->sender->sendChargeStatusBMS();
+    this->sender->sendFaultBess();
+    this->sender->sendFaultDcdc1();
+    this->sender->sendFaultDcdc2();
+    this->sender->sendFaultEmix();
+    this->sender->sendFaultObc();
+    this->sender->sendSIM100();
+}
 
 // Función para testear el recibimiento de errores DTC por el protocolo UDS
 void MainWindow::testCanErrors() {
-    // uchar data[] = {0, 0x59, 0, 0, 0xD0, 02, 0, 0};
-    // this->receiveMessage(0, 0xDA00, data);
-    // this->receiveMessage(0, 0xDA00, data);
-    // data[4] = 0xD3;
-    // data[5] = 0x18;
-    // this->receiveMessage(0, 0xDA00, data);
-    // this->receiveMessage(0, 0xDA00, data);
-    // this->receiveMessage(0, 0xDA00, data);
-    // this->receiveMessage(0, 0xDA00, data);
+    uchar data[] = {0, 0x62, 0, 0, 0xD0, 02, 0, 0};
+    this->receiveMessage(0, 0xDA00, data);
+    this->receiveMessage(0, 0xDA00, data);
+    data[4] = 0xD3;
+    data[5] = 0x18;
+    this->receiveMessage(0, 0xDA00, data);
+    this->receiveMessage(0, 0xDA00, data);
+    this->receiveMessage(0, 0xDA00, data);
+    this->receiveMessage(0, 0xDA00, data);
 }
 
 // Función que recibe la señal por un nuevo mensaje message1
@@ -172,16 +191,6 @@ void MainWindow::updateDateTime() {
                             QString::number(date.day()) + " de " +
                             locale.monthName(date.month());
     ui->date->setText(formattedDate);
-
-    // DEBUG
-    this->sender->sendEDS();
-    this->sender->sendChargeStatusBMS();
-    this->sender->sendFaultBess();
-    this->sender->sendFaultDcdc1();
-    this->sender->sendFaultDcdc2();
-    this->sender->sendFaultEmix();
-    this->sender->sendFaultObc();
-    this->sender->sendSIM100();
 }
 
 // Función que actualiza la ui de la velocidad, tanto el número como la rotación de la aguja.
