@@ -13,7 +13,7 @@ Nota: para subir los archivos a la pantalla durante la configuración del kit fu
 
 # Acerca de la recepción de datos del bus CAN
 
-Para recibir los datos provenientes del bus CAN desde el archivo *mainwindow.cpp* se conecta las señales provenientes del objeto _*CANData*_ hacia sus respectivos encargados de actualizar la información de la pantalla.
+Para recibir los datos provenientes del bus CAN desde el archivo *mainwindow.cpp* se conecta las señales provenientes del objeto _*CANData*_ hacia sus respectivos widgets encargados de actualizar la información de la pantalla.
 
 Cada widget encargado de mostrar la información posee métodos denominados *nombreMensaje()* para recibir dicha conexión.
 

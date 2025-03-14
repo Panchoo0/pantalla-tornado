@@ -12,13 +12,7 @@ CANData::CANData() {
     this->dcdc2 = Dcdc();
     this->sim100 = Sim100();
     this->processVars = ProcessVars();
-    // this->canErrors = std::vector<DTCCanError>();
-    // this->allErrors = std::vector<DTCCanError>();
-    this->readCanErrorsFromFile();
-
-    for (int i = 0; i < 194; i++) {
-        this->voltageCells[i] = 0;
-    }
+    // this->readCanErrorsFromFile();
 }
 
 // Función para recibir un mensaje proveniente del socket conectado con el bus CAN
@@ -269,7 +263,7 @@ void CANData::receiveUDSMessage(uint8_t* receivedData) {
     case 0xA013: {
         Maxpacktemperature = (uchar) Utils::getShiftedData(32, 8, receivedData);
         Maxpacktemperature -= 40;
-        emit
+        emit message3();
         break;
     }
     case 0xA016: {
@@ -336,15 +330,20 @@ void CANData::receiveUDSMessage(uint8_t* receivedData) {
         break;
     }
     case 0xA031: {
-        DCDC1coolantinT = Utils::getShiftedData(32, 8, receivedData);
+        DCDC1coolantinT = (uchar) Utils::getShiftedData(32, 8, receivedData);
+        DCDC1coolantinT -= 40;
+        emit message5();
         break;
     }
     case 0xA033: {
-        DCDC2coolantinT = Utils::getShiftedData(32, 8, receivedData);
+        DCDC2coolantinT = (uchar) Utils::getShiftedData(32, 8, receivedData);
+        DCDC2coolantinT -= 40;
+        emit message5();
         break;
     }
     case 0xA03D: {
         Electricalisolation = Utils::getShiftedData(32, 16, receivedData);
+        emit message6();
         break;
     }
     case 0xA03E: {
@@ -381,6 +380,10 @@ void CANData::receiveUDSMessage(uint8_t* receivedData) {
         processVars.EMIX_inhibitState = InhibitState;
         emit message7();
         break;
+    }
+    case 0xA04A: {
+        PackcurrentBESS = Utils::round((ushort) Utils::getShiftedData(32, 16, receivedData), 0.1, -1000);
+        emit updateMainWindow();
     }
     case 0xA05A: {
         processVars.LvThermistorOutOfRange = Utils::getShiftedData(32, 16, receivedData) == 1;
@@ -563,14 +566,14 @@ void CANData::readCanErrorsFromFile() {
     std::string string_line;
     while (std::getline(file, string_line))
     {
-        // // El archivo cuenta con 2 columnas: ID | Fecha
-        // std::vector<std::string> tokens = Utils::split(string_line, ",");
-        // int id = std::stoi(tokens[0]);
-        // QDateTime date = QDateTime::fromString(QString::fromStdString(tokens[1]));
+        // El archivo cuenta con 2 columnas: ID | Fecha
+        std::vector<std::string> tokens = Utils::split(string_line, ",");
+        int id = std::stoi(tokens[0]);
+        QDateTime date = QDateTime::fromString(QString::fromStdString(tokens[1]));
 
-        // DTCCanError error = DTCCanError::fromInt(id);
-        // error.date = date;
-        // this->allErrors.push_back(error);
+        DTCCanError error = DTCCanError::fromInt(id);
+        error.date = date;
+        this->allErrors.push_back(error);
     }
     file.close();
 }
@@ -578,7 +581,6 @@ void CANData::readCanErrorsFromFile() {
 // Falta agregar las variables de UDS
 CANData* CANData::clone() {
     CANData* data = new CANData();
-    data->speed = this->speed;
 
     data->bess = *(this->bess.clone());
     data->eds = *(this->eds.clone());

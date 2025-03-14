@@ -38,6 +38,9 @@ void EngineWidget::message5() {
     ui->dcdc2OutputVoltageValue->setText(QString::number(canData->dcdc2.VVout) + " V");
     ui->dcdc1InputVoltageValue->setText(QString::number(canData->dcdc1.Vin) + " V");
     ui->dcdc2InputVoltageValue->setText(QString::number(canData->dcdc2.Vin) + " V");
+
+    ui->dcdc1TempValue->setText(QString::number(canData->DCDC1coolantinT) + "° C");
+    ui->dcdc2TempValue->setText(QString::number(canData->DCDC2coolantinT) + "° C");
 }
 
 void EngineWidget::message6() {
@@ -45,6 +48,8 @@ void EngineWidget::message6() {
     ui->sim100negValue->setText(QString::number(canData->sim100.Rn) + " kΩ");
     ui->bmuposValue->setText(QString::number(canData->bess.Rp) + " kΩ");
     ui->bmunegValue->setText(QString::number(canData->bess.Rn) + " kΩ");
+
+    ui->electricIsolationValue->setText(QString::number(canData->Electricalisolation) + " Ω/V");
 
 }
 

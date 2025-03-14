@@ -8,6 +8,7 @@
 #include <receivecandata.h>
 #include <UDSCanData.h>
 #include <testigocontroller.h>
+#include <queue>
 
 
 QT_BEGIN_NAMESPACE
@@ -21,6 +22,13 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    int speed = 0;
+    static const int CONSUMPTION_TIME_GAP = 1000;
+    static const int CONSUMPTION_TIME_MEASURE = 1000 * 60 * 15;
+    std::queue<float> consumption;
+    float consumptionTotal = 0;
+    QTimer* calcConsumptionTimer;
+
     QTimer* datetimeTimer;
     CANData *data;
 
@@ -74,7 +82,7 @@ private:
 
 private slots:
     void updateDateTime();
-    void updateSpeed();
+    void updateSpeed(int val);
     void updateEngineTemp();
     void updateInversorTemp();
     void updateBatTemp();
@@ -94,6 +102,8 @@ private slots:
 
     void testCan();
     void testCanErrors();
+
+    void calcConsumption();
 
 };
 #endif // MAINWINDOW_H

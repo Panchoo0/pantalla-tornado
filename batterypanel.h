@@ -9,13 +9,7 @@
 // Widget auxiliar para represantar cada item de la lista de temperaturas de celdas
 class TempListItem: public QWidget {
 public:
-
     QLabel* t1;
-    // QLabel* t2;
-    // QLabel* t3;
-    // QLabel* t4;
-    // QLabel* t5;
-    // QLabel* t6;
 
 public:
     TempListItem(QWidget *parent, int rowVal): QWidget(parent) {
@@ -34,95 +28,17 @@ public:
         contenedor->setGeometry(0, 19, 210, 64);
         contenedor->setStyleSheet("border-radius: 10px; border: 2px solid #00A6A7;");
 
-        // QLabel *t1Label = new QLabel("N1", this);
-        // t1Label->setGeometry(0, 19, 210, 11);
-        // t1Label->setStyleSheet("color: #656565; font-size: 10px;");
-        // t1Label->setAlignment(Qt::AlignHCenter);
-
         t1 = new QLabel("", this);
         t1->setGeometry(20, 35, 180, 30);
         t1->setStyleSheet("color: white; font-size: 16px;");
         t1->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
-        // t1 = new QLabel("", this);
-        // t1->setGeometry(2 + 4, 19 + 2 + 11, 68 - 4, 17);
-        // t1->setStyleSheet("color: white; font-size: 16px;");
-        // t1->setAlignment(Qt::AlignHCenter);
-
-        // QLabel *t2Label = new QLabel("N2", this);
-        // t2Label->setGeometry(2 + 5 + 68, 19 + 2, 68 - 10, 11);
-        // t2Label->setStyleSheet("color: #656565; font-size: 10px;");
-        // t2Label->setAlignment(Qt::AlignHCenter);
-
-        // t2 = new QLabel("", this);
-        // t2->setGeometry(2 + 4 + 68, 19 + 2 + 11, 68 - 4, 17);
-        // t2->setStyleSheet("color: white; font-size: 16px;");
-        // t2->setAlignment(Qt::AlignHCenter);
-
-        // QLabel *t3Label = new QLabel("N3", this);
-        // t3Label->setGeometry(2 + 5 + 68 * 2, 19 + 2, 68 - 10, 11);
-        // t3Label->setStyleSheet("color: #656565; font-size: 10px;");
-        // t3Label->setAlignment(Qt::AlignHCenter);
-
-        // t3 = new QLabel("", this);
-        // t3->setGeometry(2 + 4 + 68 * 2, 19 + 2 + 11, 68 - 4, 17);
-        // t3->setStyleSheet("color: white; font-size: 16px;");
-        // t3->setAlignment(Qt::AlignHCenter);
-
-        // QLabel *t4Label = new QLabel("N4", this);
-        // t4Label->setGeometry(2 + 5, 19 + 2 + 29, 68 - 10, 11);
-        // t4Label->setStyleSheet("color: #656565; font-size: 10px;");
-        // t4Label->setAlignment(Qt::AlignHCenter);
-
-        // t4 = new QLabel("", this);
-        // t4->setGeometry(2 + 4, 19 + 2 + 11 + 29, 68 - 4, 17);
-        // t4->setStyleSheet("color: white; font-size: 16px;");
-        // t4->setAlignment(Qt::AlignHCenter);
-
-        // QLabel *t5Label = new QLabel("N5", this);
-        // t5Label->setGeometry(2 + 5 + 68, 19 + 2 + 29, 68 - 10, 11);
-        // t5Label->setStyleSheet("color: #656565; font-size: 10px;");
-        // t5Label->setAlignment(Qt::AlignHCenter);
-
-        // t5 = new QLabel("", this);
-        // t5->setGeometry(2 + 4 + 68, 19 + 2 + 11 + 29, 68 - 4, 17);
-        // t5->setStyleSheet("color: white; font-size: 16px;");
-        // t5->setAlignment(Qt::AlignHCenter);
-
-        // QLabel *t6Label = new QLabel("N6", this);
-        // t6Label->setGeometry(2 + 5 + 68 * 2, 19 + 2 + 29, 68 - 10, 11);
-        // t6Label->setStyleSheet("color: #656565; font-size: 10px;");
-        // t6Label->setAlignment(Qt::AlignHCenter);
-
-        // t6 = new QLabel("", this);
-        // t6->setGeometry(2 + 4 + 68 * 2, 19 + 2 + 11 + 29, 68 - 4, 17);
-        // t6->setStyleSheet("color: white; font-size: 16px;");
-        // t6->setAlignment(Qt::AlignHCenter);
     }
 
     void updateT1(int temp) {
         t1->setText(QString::number(temp) + "° C");
     }
 
-    // void updateT2(int temp) {
-    //     t2->setText(QString::number(temp) + "° C");
-    // }
-
-    // void updateT3(int temp) {
-    //     t3->setText(QString::number(temp) + "° C");
-    // }
-
-    // void updateT4(int temp) {
-    //     t4->setText(QString::number(temp) + "° C");
-    // }
-
-    // void updateT5(int temp) {
-    //     t5->setText(QString::number(temp) + "° C");
-    // }
-
-    // void updateT6(int temp) {
-    //     t6->setText(QString::number(temp) + "° C");
-    // }
 };
 
 // Widget auxiliar para representar cada item de la lista de voltajes de celdas
@@ -130,8 +46,6 @@ public:
 class CellListItem: public QWidget {
 public:
     QLabel* v1;
-    // QLabel* v2;
-    // QLabel* v3;
 
     CellListItem(QWidget *parent, int rowVal): QWidget(parent) {
         this->setStyleSheet("border-bottom: 2px solid #00A6A7; color: white;");
@@ -149,31 +63,11 @@ public:
         this->v1 = new QLabel(this);
         this->v1->setGeometry(30, 0, 165, 20);
         this->v1->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-
-        // this->v1 = new QLabel(this);
-        // this->v1->setGeometry(30, 0, 55, 20);
-        // this->v1->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-
-        // this->v2 = new QLabel(this);
-        // this->v2->setGeometry(85, 0, 55, 20);
-        // this->v2->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-
-        // this->v3 = new QLabel(this);
-        // this->v3->setGeometry(140, 0, 55, 20);
-        // this->v3->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     }
 
     void setVoltage1(float voltage) {
         this->v1->setText(QString::number(voltage) + " V");
     }
-
-    // void setVoltage2(int voltage) {
-    //     this->v2->setText(QString::number(voltage) + " V");
-    // }
-
-    // void setVoltage3(int voltage) {
-    //     this->v3->setText(QString::number(voltage) + " V");
-    // }
 
 };
 

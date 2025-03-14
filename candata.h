@@ -303,8 +303,6 @@ class CANData : public QObject
     Q_OBJECT
 
 public:
-    int speed; // Borrar
-
     Bess bess;
     Eds eds;
     Dcdc dcdc1;
@@ -407,8 +405,8 @@ public:
     ushort ApplicationCoreLoadMaxCurrentSession;
     ushort ApplicationCoreLoadMaxLifetime;
     uchar ModulewithMinTemperature;
-    uchar DCDC1coolantinT;
-    uchar DCDC1coolantoutT;
+    int DCDC1coolantinT;
+    int DCDC1coolantoutT;
     uchar DCDC2coolantinT;
     uchar LastfaultcodeBess;
     uchar DCDC2coolantoutT;
@@ -422,17 +420,17 @@ public:
     ushort Electricalisolation;
     ushort HVCurrentDCDC1;
     uchar PDUT1HV;
-    ushort LVCurrentDCDC1;
+    float LVCurrentDCDC1;
     float LVVoltageDCDC1;
-    ushort LVCurrentDCDC2;
+    float LVCurrentDCDC2;
     uchar PDUT2HV;
-    ushort HVCurrentDCDC2;
+    float HVCurrentDCDC2;
     uchar Isolationstatusbits;
     uchar PDUT3LV;
     uchar PDUT4LV;
     uchar PDUT5LV;
     uchar InhibitState;
-    ushort PackcurrentBESS;
+    float PackcurrentBESS;
     ushort UmaxLVDCDC1;
     ushort UminLVDCDC1;
     ushort Dcdc1HvLevel;

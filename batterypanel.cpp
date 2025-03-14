@@ -90,6 +90,8 @@ void BatteryPanel::message3() {
     ui->meanTempValue->setText(QString::number(canData->bess.avgTemp) + "° C");
     ui->minTempValue->setText(QString::number(canData->bess.minTemp) + "° C");
     ui->maxTempValue->setText(QString::number(canData->bess.maxTemp) + "° C");
+
+    ui->maxCellTempValue->setText(QString::number(canData->Maxpacktemperature) + "° C");
 }
 
 void BatteryPanel::message7() {

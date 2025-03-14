@@ -25,6 +25,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(datetimeTimer, SIGNAL(timeout()), this, SLOT(updateDateTime()));
     datetimeTimer->start(100);
 
+    calcConsumptionTimer = new QTimer(this);
+    connect(calcConsumptionTimer, SIGNAL(timeout()), this, SLOT(calcConsumption()));
+    calcConsumptionTimer->start(CONSUMPTION_TIME_GAP);
+
     // Objeto con la información proveniente del bus CAN
     data = new CANData();
 
@@ -137,7 +141,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this->data, &CANData::updateMainWindow, this, &MainWindow::updateMainWindow);
 }
 
-
+// SLOT que actualiza algunos de los valores de la pantalla principal
 void MainWindow::updateMainWindow() {
     QString text;
 
@@ -154,9 +158,43 @@ void MainWindow::updateMainWindow() {
 
     float maxVoltageLV = std::max(data->LVVoltageDCDC1, data->LVVoltageDCDC2);
     ui->voltageLVValue->setText(QString::number(maxVoltageLV) + " V");
+
+    ui->currentHVValue->setText(QString::number(data->PackcurrentBESS) + " A");
+
+    float maxCurrentLV = std::max(data->LVCurrentDCDC1, data->LVCurrentDCDC2);
+    ui->currentLVValue->setText(QString::number(maxCurrentLV) + " A");
+
+    // Faltan factores de calculo para estos datos
+    int S = data->eds.instCurr * data->eds.instVoltage;
+    this->updateSpeed(S);
+
+    // Autonomía
+    float E_total = 140.95;
+    float kw_15 = consumptionTotal / consumption.size();
+    if (kw_15 == 0) return;
+    float E_actual = 0;
+    float autonomy = (E_actual - E_total * 0.1) / kw_15;
+
+    int hours = autonomy;
+    int minutes = (autonomy - (long) autonomy) * 60;
+
+    ui->autonomyVal->setText(QString::number(hours) + ":" + QString::number(minutes));
+}
+
+// Calcula el consumo cada CONSUMPTION_TIME_GAP ms, guardando las mediciones de los últimos
+// 15 minutos, para obtener el promedio
+void MainWindow::calcConsumption() {
+    float instConsumption = data->bess.inst_current * data->bess.inst_voltage;
+    consumptionTotal += instConsumption;
+    if (consumption.size() >= CONSUMPTION_TIME_MEASURE / CONSUMPTION_TIME_GAP) {
+        consumptionTotal -= consumption.front();
+        consumption.pop();
+    }
+    consumption.push(instConsumption);
 }
 
 void MainWindow::message7() {
+    // Si el estado es MOTOR_ON se comienza la medición para el trip
     if (this->startDate.isValid() || data->processVars.EMIX_state != 2) return;
     this->startDate = QDateTime::currentDateTime();
 }
@@ -202,8 +240,8 @@ void MainWindow::updateDateTime() {
                             locale.monthName(date.month());
     ui->date->setText(formattedDate);
 
+    // Se actualiza el trip
     if (!this->startDate.isValid()) return;
-
     const qint64 deltaMs = this->startDate.msecsTo(QDateTime::currentDateTime());
     std::tuple<int, int, int> time = Utils::fromMsToHoursMinutesSeconds(deltaMs);
 
@@ -211,15 +249,12 @@ void MainWindow::updateDateTime() {
 }
 
 // Función que actualiza la ui de la velocidad, tanto el número como la rotación de la aguja.
-// TODO: Actualizar según el valor
-//  aqui this->data->speed debe ser el valor previo
-//  y value el nuevo valor
-void MainWindow::updateSpeed()
+void MainWindow::updateSpeed(int value)
 {
-    // ui->needleContainer->rotate(270 * (value - this->data->speed) / 120.0f);
-    // ui->speedValue->setText(QString::number(value));
+    ui->needleContainer->rotate(270 * (value - this->speed) / 120.0f);
+    ui->speedValue->setText(QString::number(value));
 
-    // this->data->speed = value;
+    this->speed = value;
 }
 
 // Función que actualiza la ui de la temperatura del motor
@@ -303,13 +338,7 @@ void MainWindow::updateBat() {
 // Se mantiene solo para facilitar el debug
 void MainWindow::receiveMessage(unsigned char sourceAddress, unsigned int pgn, uint8_t* receivedData)
 {
-    // // Transformamos a hexadecimal el pgn para debugear
-    // std::stringstream ss;
-    // ss << std::hex << pgn;
-    // std::string pgn_hex = ss.str();
-
     this->data->receiveMessage(sourceAddress, pgn, receivedData);
-
 }
 
 MainWindow::~MainWindow()
@@ -401,7 +430,6 @@ void MainWindow::testCan() {
     srand (time(NULL));
     int iteraciones = 10;
     for (int i = 0; i < iteraciones; i++) {
-        qInfo() << "Iteración: " << i;
         this->testMessage1();
         this->testMessage2();
         this->testMessage3();
