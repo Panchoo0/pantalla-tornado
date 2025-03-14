@@ -6,18 +6,15 @@
 TestigoController::TestigoController(QWidget* parent): QWidget(parent) {
     testigosTimer = new QTimer(this);
     connect(testigosTimer, SIGNAL(timeout()), this, SLOT(animateTestigos()));
-    testigosTimer->start(500);
-
-    this->addTestigo(TESTIGOS::ESTOP);
-    this->addTestigo(TESTIGOS::SIM100);
-    this->addTestigo(TESTIGOS::ATS);
+    testigosTimer->start(600);
 }
 
 // Función que crea la animación de los testigos parpadeantes
 void TestigoController::animateTestigos() {
     for (int i = 0; i < this->testigos.size(); i++) {
+        bool visible = this->testigos[i].image->isVisible();
         if (this->testigos[i].state == TestigoState::FLASH) {
-            if (this->testigos[i].image->isVisible()) {
+            if (visible) {
                 this->testigos[i].image->hide();
             } else {
                 this->testigos[i].image->show();

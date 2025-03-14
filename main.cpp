@@ -15,5 +15,3 @@ int main(int argc, char *argv[])
     w.show();
     return a.exec();
 }
-
-//2564487681

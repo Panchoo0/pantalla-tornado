@@ -1,14 +1,17 @@
 # Acerca del proyecto
 
-Para correr de manera local el proyecto se debe comentar la función run del archivo _*receivecandata.cpp*_ así como los 2 include que hay en este archivo. 
+Para correr de manera local el proyecto se debe comentar lo relativo a los sockets del archivo _*receivecandata.cpp*_ así como los 2 include que hay en este archivo. 
 Lo mismo para el archivo *UDSCanData.cpp*.
+
 Por otra parte, en el archivo *main.cpp* debe estar comentada la línea *qputenv("QT_QPA_PLATFORM", QByteArray("wayland-egl"));*.
 
 Para el deploy se siguió las instrucciones del archivo _*C_CPP_Developerguide_BR*_. 
 
 Para el desarrollo se contó con 2 kits, uno configurado como se detalla en el archivo mencionado anteriormente, y otro configurado para el computador de desarrollo.
 
-Nota: para subir los archivos a la pantalla durante la configuración del kit fue necesario al utilizar el comando scp agregarle la flag *-O*, siendo entonces los argumentos *-O %{buildDir}/pantalla root@192.168.135.2:/opt/*.
+*_Nota_*: para subir los archivos a la pantalla durante la configuración del kit fue necesario al utilizar el comando scp agregarle la flag *-O*, siendo entonces los argumentos *-O %{buildDir}/pantalla root@192.168.135.2:/opt/*.
+
+*_Nota2_*: El programa se encuentra en la pantalla en la dirección _/opt/pantalla/bin/pantalla_. Este además se inicia junto a la pantalla.
 
 
 # Acerca de la recepción de datos del bus CAN
