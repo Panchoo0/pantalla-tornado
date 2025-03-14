@@ -59,6 +59,9 @@ Cada objeto que maneja alguna interfaz tiene métodos para actualizar la interfa
 
 En este además se recibe la información de los errores provenientes del bus CAN mediante el protocolo UDS. 
 
+*_Nota_*: No todos los valores recibidos tienen implementados sus factores de cálculo y offset. 
+Tanto para los valores obtenidos por J1939 como UDS.
+Tampoco tienen necesariamente su tipo de dato correcto (algunos debería ser float por ejemplo).
 
 ## UDSCanData.cpp
 
@@ -180,5 +183,12 @@ El diseño de esta interfaz (aún no implementada) se puede ver en figma.
 # Links
 
 - [Figma](https://www.figma.com/design/DZc9cLo1U9k7Mq8VNClsgY/Pantalla?node-id=234-214&t=iq6gBsp6CmiKzEhb-1)
-- [SocketCan](https://www-kernel-org.translate.goog/doc/html/latest/networking/can.html?_x_tr_sl=en&_x_tr_tl=es&_x_tr_hl=es&_x_tr_pto=tc)
+- [SocketCan](https://www.kernel.org/doc/html/latest/networking/can.html)
+- [Actualizar fecha y hora linux](https://unix.stackexchange.com/questions/79112/how-do-i-set-time-and-date-from-the-internet)
+- [J1939](https://docs-kernel-org.translate.goog/networking/j1939.html?_x_tr_sl=en&_x_tr_tl=es&_x_tr_hl=es&_x_tr_pto=tc)
+- [ISOTP](https://docs.kernel.org/6.11/networking/iso15765-2.html)
+- [SocketCan y ISOTP](https://s3.eu-central-1.amazonaws.com/cancia-de/documents/proceedings/slides/hartkopp_slides_15icc.pdf)
+
+# Íconos
+
 

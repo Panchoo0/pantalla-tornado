@@ -8,6 +8,9 @@ TestigoController::TestigoController(QWidget* parent): QWidget(parent) {
     connect(testigosTimer, SIGNAL(timeout()), this, SLOT(animateTestigos()));
     testigosTimer->start(500);
 
+    this->addTestigo(TESTIGOS::ESTOP);
+    this->addTestigo(TESTIGOS::SIM100);
+    this->addTestigo(TESTIGOS::ATS);
 }
 
 // Función que crea la animación de los testigos parpadeantes
@@ -27,6 +30,7 @@ void TestigoController::animateTestigos() {
 void TestigoController::addTestigo(TESTIGOS testigo) {
     QPixmap pixmap;
 
+    // Si el testigo ya se encuentra encendido no se hace nada
     for (TestigoUI t : this->testigos) {
         if (t.testigo == testigo) return;
     }

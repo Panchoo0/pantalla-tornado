@@ -10,7 +10,7 @@ void ReceiveCANData::run()
 {
     // Comentar el cuerpo de esta función para ver desarrollo local
 
-    qInfo() << "Comenzado a recibir datos";
+    qInfo() << "(J1939) Comenzado a recibir datos";
     //sockaddr structure of CAN J1939 for DI5
     struct sockaddr_can di5Address;
     di5Address.can_family = AF_CAN;
@@ -34,7 +34,7 @@ void ReceiveCANData::run()
     //On error, -1 is returned, and errno is set to indicate the error.
     if ((sock = socket(AF_CAN, SOCK_DGRAM, CAN_J1939)) < 0)
     {
-        qInfo() << "Error al crear socket";
+        qInfo() << "(J1939) Error al crear socket";
         emit debugMessage("Error al crear socket");
         qCritical() << "Error creating socket error " << errno << " which means " << strerror(errno);
         return;
@@ -46,9 +46,8 @@ void ReceiveCANData::run()
     //Binds the socket to the address
     if (bind(sock, (struct sockaddr *)&di5Address, sizeof(di5Address)) < 0)
     {
-        qInfo() << "Error al bindear socket";
-        emit debugMessage("Error al bindear socket");
-        qCritical() << "Error binding socket error" << errno << "which means" << strerror(errno);
+        qInfo() << "(J1939) Error al bindear socket";
+        qCritical() << "(J1939) Error binding socket error" << errno << "which means" << strerror(errno);
         close(sock);
         return;
     }
@@ -60,8 +59,8 @@ void ReceiveCANData::run()
         int nbytes = recvfrom(sock, receivedData, sizeof(receivedData), 0, (sockaddr*)&rc40Address, &rc40AddressLength);
         if (nbytes < 0)
         {
-            emit debugMessage("Error al recibir datos");
-            qCritical() << "Error reading socket error" << errno << "which means" << strerror(errno);
+            qInfo() << "(J1939) Error al recibir datos";
+            qCritical() << "(J1939) Error reading socket error" << errno << "which means" << strerror(errno);
             close(sock);
             return;
         }

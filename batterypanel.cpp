@@ -24,7 +24,7 @@ BatteryPanel::BatteryPanel(CANData *data, QWidget *parent)
     ui->scrollAreaWidgetContents->setMinimumSize(200, 1950);
 
     // Se inicializa cada una de las celdas de las temperaturas, creando su ui
-    for (int i = 0; i < 18; i++) {
+    for (int i = 0; i < 36; i++) {
         TempListItem *item = new TempListItem(ui->tempCellTabScrollAreaWidgetContents, i);
         this->tempItems[i] = item;
     }

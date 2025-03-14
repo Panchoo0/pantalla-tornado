@@ -84,7 +84,7 @@ class BatteryPanel : public QWidget
 public:
     CANData *canData;
     CellListItem* items[194];
-    TempListItem* tempItems[18];
+    TempListItem* tempItems[36];
     explicit BatteryPanel(CANData *canData, QWidget *parent = nullptr);
     ~BatteryPanel();
 

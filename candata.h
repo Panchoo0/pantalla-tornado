@@ -314,7 +314,7 @@ public:
     float voltageCells[194];
 
     // Bess2
-    int tempCells[18];
+    int tempCells[36];
 
     // Bess3
     int chargeEnergyAcumulated;
@@ -380,7 +380,7 @@ public:
     uchar LVerrorlevel;
     bool isHVOn;
     uchar HVerrorlevel;
-    uchar InletcoolantTemperatureMotor;
+    char InletcoolantTemperatureMotor;
     uchar InletcoolantTemperatureInverter;
     uchar Rnuncertainty;
     float DCVoltageFeedbackRx;
@@ -480,8 +480,8 @@ public:
     uchar FaultCodeEMIX;
     uchar MarchState;
     uchar ChargeStatusBMS;
-    ushort HVVoltageDCDC1;
-    ushort HVVoltageDCDC2;
+    float HVVoltageDCDC1;
+    float HVVoltageDCDC2;
     ushort CurrentFeedbackRx;
 
 

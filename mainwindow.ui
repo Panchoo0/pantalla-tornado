@@ -544,9 +544,9 @@ font-size: 24px;</string>
     <widget class="QWidget" name="voltageHV" native="true">
      <property name="geometry">
       <rect>
-       <x>44</x>
+       <x>24</x>
        <y>0</y>
-       <width>80</width>
+       <width>120</width>
        <height>50</height>
       </rect>
      </property>
@@ -555,7 +555,7 @@ font-size: 24px;</string>
        <rect>
         <x>0</x>
         <y>8</y>
-        <width>80</width>
+        <width>120</width>
         <height>18</height>
        </rect>
       </property>
@@ -575,7 +575,7 @@ color: #8B8B8B;</string>
        <rect>
         <x>0</x>
         <y>22</y>
-        <width>80</width>
+        <width>120</width>
         <height>23</height>
        </rect>
       </property>
@@ -594,9 +594,9 @@ color: white;</string>
     <widget class="QWidget" name="voltageLV" native="true">
      <property name="geometry">
       <rect>
-       <x>44</x>
+       <x>24</x>
        <y>45</y>
-       <width>80</width>
+       <width>120</width>
        <height>50</height>
       </rect>
      </property>
@@ -605,7 +605,7 @@ color: white;</string>
        <rect>
         <x>0</x>
         <y>10</y>
-        <width>80</width>
+        <width>120</width>
         <height>18</height>
        </rect>
       </property>
@@ -625,7 +625,7 @@ color: #8B8B8B;</string>
        <rect>
         <x>0</x>
         <y>27</y>
-        <width>80</width>
+        <width>120</width>
         <height>23</height>
        </rect>
       </property>
@@ -646,7 +646,7 @@ color: white;</string>
       <rect>
        <x>150</x>
        <y>0</y>
-       <width>80</width>
+       <width>120</width>
        <height>50</height>
       </rect>
      </property>
@@ -655,7 +655,7 @@ color: white;</string>
        <rect>
         <x>0</x>
         <y>8</y>
-        <width>80</width>
+        <width>120</width>
         <height>18</height>
        </rect>
       </property>
@@ -675,7 +675,7 @@ color: #8B8B8B;</string>
        <rect>
         <x>0</x>
         <y>22</y>
-        <width>80</width>
+        <width>120</width>
         <height>23</height>
        </rect>
       </property>
@@ -696,7 +696,7 @@ color: white;</string>
       <rect>
        <x>150</x>
        <y>45</y>
-       <width>80</width>
+       <width>120</width>
        <height>50</height>
       </rect>
      </property>
@@ -705,7 +705,7 @@ color: white;</string>
        <rect>
         <x>0</x>
         <y>10</y>
-        <width>80</width>
+        <width>120</width>
         <height>18</height>
        </rect>
       </property>
@@ -725,7 +725,7 @@ color: #8B8B8B;</string>
        <rect>
         <x>0</x>
         <y>27</y>
-        <width>80</width>
+        <width>120</width>
         <height>23</height>
        </rect>
       </property>

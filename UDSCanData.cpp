@@ -61,9 +61,9 @@ void UDSCanData::run() {
         0xA023, 0xA028, 0xA02A, 0xA02B, 0xA031, 0xA033, 0xA03D, 0xA03E, 0xA040, 0xA041,
         0xA042, 0xA044, 0xA049, 0xA04A, 0xA05A, 0xA05B, 0xA066, 0xA0C0, 0xA0C1, 0xA0CD,
         0xA0CE, 0xA0CF, 0xA0D0, 0xA0D1, 0xA0D2, 0xA0D3, 0xA0D4, 0xA0D6, 0xA0E4, 0xA0E7,
-        0xA0EB, 0xA0EE, 0xA0EF, 0xA0F0, 0xA0F1, 0xA0F2, 0xA0F3, 0xA0F4
+        0xA0EB, 0xA0EE, 0xA0EF, 0xA0F0, 0xA0F1, 0xA0F2, 0xA0F3, 0xA0F4, 0xA195, 0xA196
     };
-    int didsLen = 48;
+    int didsLen = 50;
 
     // timeout para la espera de la info solicitada
     struct timeval tv;
@@ -79,7 +79,6 @@ void UDSCanData::run() {
             send_frame.data[2] = did >> 8;
             send_frame.data[3] = did & 0xFF;
 
-            // D6 32
             while (true) {
                 // Se envía la petición
                 // qInfo() << "(UDS) Asking for:" << Utils::toHexString(send_frame.data, 4);
@@ -101,10 +100,10 @@ void UDSCanData::run() {
                 } else {
                     int did2 = Utils::getShiftedData(16, 16, rcv_frame.data);
                     if (did2 != did) {
-                        qInfo() << "(UDS) Recibido otro DID";
+                        qInfo() << "(UDS) Recibido otro DID distinto al consultado";
                         continue;
                     }
-                    qInfo() << "(UDS) Mensaje Recibido. Data:" << Utils::toHexString(rcv_frame.data, 8);
+                    qInfo() << "(UDS) Mensaje Recibido:" << Utils::toHexString(rcv_frame.data, 8);
                     emit udsMessage(rcv_frame.data);
                     break;
                 }

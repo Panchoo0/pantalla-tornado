@@ -154,15 +154,21 @@ void MainWindow::updateMainWindow() {
     }
     ui->marcha->setText(text);
 
-    ui->voltageHVValue->setText(QString::number(data->PackVoltage) + " V");
+    // max entre dcvoltage y hvvoltagedcdc 1 y 2
+    // float voltageHV = std::max(data->eds.instVoltage, data->HVVoltageDCDC1, data->HVVoltageDCDC2);
+    float voltageHV = std::max(data->eds.instVoltage, data->HVVoltageDCDC1);
+    voltageHV = std::max(voltageHV, data->HVVoltageDCDC2);
+    ui->voltageHVValue->setText(QString::number(voltageHV) + " V");
 
     float maxVoltageLV = std::max(data->LVVoltageDCDC1, data->LVVoltageDCDC2);
     ui->voltageLVValue->setText(QString::number(maxVoltageLV) + " V");
 
     ui->currentHVValue->setText(QString::number(data->PackcurrentBESS) + " A");
 
-    float maxCurrentLV = std::max(data->LVCurrentDCDC1, data->LVCurrentDCDC2);
+    float maxCurrentLV = std::max(data->dcdc1.lvCurr, data->dcdc2.lvCurr);
     ui->currentLVValue->setText(QString::number(maxCurrentLV) + " A");
+
+    // AÚN NO PROBADOS vvv
 
     // Faltan factores de calculo para estos datos
     int S = data->eds.instCurr * data->eds.instVoltage;
@@ -182,7 +188,8 @@ void MainWindow::updateMainWindow() {
 }
 
 // Calcula el consumo cada CONSUMPTION_TIME_GAP ms, guardando las mediciones de los últimos
-// 15 minutos, para obtener el promedio
+// minutos establecidos en CONSUMPTION_TIME_MEASURE ms (15 minutos), para obtener el promedio
+// de consumo durante este periodo
 void MainWindow::calcConsumption() {
     float instConsumption = data->bess.inst_current * data->bess.inst_voltage;
     consumptionTotal += instConsumption;

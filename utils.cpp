@@ -113,6 +113,7 @@ std::tuple<int, int, int> Utils::fromMsToHoursMinutesSeconds(int ms) {
     return {hours, minutes, seconds};
 }
 
+// Función que dado un valor un factor y un offset se retorna la aproximación a 2 dígitos
 float Utils::round(int val, float factor, float offset) {
-    return std::ceil(((float)(val * factor)) * 100.0) / 100.0 - offset;;
+    return std::ceil(((float)(val * factor)) * 100.0) / 100.0 + offset;;
 }

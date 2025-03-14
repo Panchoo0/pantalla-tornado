@@ -23,7 +23,7 @@ void CANData::receiveMessage(unsigned char sourceAddress, unsigned int pgn, uint
     uchar b2_pgn = pgn & 0xFF;
     uchar b_pgn[] = {b1_pgn, b2_pgn};
     QString hex_pgn = Utils::toHexString(b_pgn, 2);
-    // emit dbgMessage("Mensaje CAN recibido pgn: " + hex_pgn + "; data: " + Utils::toHexString(receivedData, 8));
+    qInfo() << "(J1939) Mensaje CAN recibido pgn:" << hex_pgn << "; data:" << Utils::toHexString(receivedData, 8);
 
     switch (pgn) {
     case 0x100: {
@@ -134,7 +134,7 @@ void CANData::receiveMessage(unsigned char sourceAddress, unsigned int pgn, uint
         int trama = trama1 + (trama2 << 8) - 1;
 
         if (trama > 194) {
-            qInfo() << "Trama de voltaje inválida:" << trama;
+            qInfo() << "(J1939) Trama de voltaje inválida:" << trama;
             return;
         }
 
@@ -147,9 +147,9 @@ void CANData::receiveMessage(unsigned char sourceAddress, unsigned int pgn, uint
         int v5 = (uchar) Utils::getShiftedData(48, 8, receivedData);
         int v6 = (uchar) Utils::getShiftedData(56, 8, receivedData);
 
-        voltageCells[trama] =     Utils::round(v1 + (v2 <<  8), fc);
-        voltageCells[trama + 1] = Utils::round(v3 + (v4 <<  8), fc);
-        voltageCells[trama + 2] = Utils::round(v5 + (v6 <<  8), fc);
+        voltageCells[trama] =     Utils::round((int) v1 + (int) (v2 <<  8), fc);
+        voltageCells[trama + 1] = Utils::round((int) v3 + (int) (v4 <<  8), fc);
+        voltageCells[trama + 2] = Utils::round((int) v5 + (int) (v6 <<  8), fc);
 
         emit bess1(trama);
         break;
@@ -160,8 +160,8 @@ void CANData::receiveMessage(unsigned char sourceAddress, unsigned int pgn, uint
 
         int trama = trama1 + (trama2 << 8) - 1;
 
-        if (trama > 13) {
-            qInfo() << "Trama de temp inválida:" << trama;
+        if (trama > 30) {
+            qInfo() << "(J1939) Trama de temp inválida:" << trama;
             return;
         }
         tempCells[trama] = Utils::getShiftedData(16, 8, receivedData);
@@ -183,7 +183,6 @@ void CANData::receiveMessage(unsigned char sourceAddress, unsigned int pgn, uint
         break;
     }
     case 0xC400: {
-        // TODO: revisar este SOC con el otro y ver cual es el de verdad
         bess.SoC = Utils::round(Utils::getShiftedData(0, 8, receivedData), 0.4);
         SOH = Utils::round(Utils::getShiftedData(8, 8, receivedData), 0.4);
         maxVoltage = Utils::round(Utils::getShiftedData(16, 16, receivedData), 0.001);
@@ -233,7 +232,7 @@ void CANData::receiveMessage(unsigned char sourceAddress, unsigned int pgn, uint
         break;
     }
     default:
-        qInfo() << "Mensaje J1939 no reconocido con pgn: " << hex_pgn;
+        qInfo() << "(J1939) Mensaje no reconocido con pgn: " << hex_pgn;
         break;
     }
 
@@ -243,7 +242,7 @@ void CANData::receiveUDSMessage(uint8_t* receivedData) {
     int resID = Utils::getShiftedData(8, 8, receivedData);
     int DID = Utils::getShiftedData(16, 16, receivedData);
     if (resID != 0x62) {
-        qInfo() << "Mensaje con otra resID: " << resID;
+        qInfo() << "(UDS) Mensaje con otra resID: " << resID;
         return;
     }
 
@@ -273,7 +272,7 @@ void CANData::receiveUDSMessage(uint8_t* receivedData) {
         break;
     }
     case 0xA018: {
-        InletcoolantTemperatureMotor = (uchar) Utils::getShiftedData(32, 8, receivedData) - 40;
+        InletcoolantTemperatureMotor = ((uchar) Utils::getShiftedData(32, 8, receivedData)) - 40;
         eds.motorTemp = InletcoolantTemperatureMotor;
         emit message3();
         emit updateMainWindow();
@@ -288,6 +287,7 @@ void CANData::receiveUDSMessage(uint8_t* receivedData) {
         DCVoltageFeedbackRx = Utils::round((ushort)Utils::getShiftedData(32, 16, receivedData), 0.4375, -875);
         eds.instVoltage = DCVoltageFeedbackRx;
         emit message2();
+        emit updateMainWindow();
         break;
     }
     case 0xA01E: {
@@ -356,6 +356,7 @@ void CANData::receiveUDSMessage(uint8_t* receivedData) {
         LVCurrentDCDC1 = (ushort) Utils::getShiftedData(32, 16, receivedData);
         dcdc1.lvCurr = Utils::round(LVCurrentDCDC1, 0.1, -3212.7);
         emit message4();
+        emit updateMainWindow();
         break;
     }
     case 0xA041: {
@@ -365,7 +366,10 @@ void CANData::receiveUDSMessage(uint8_t* receivedData) {
     }
     case 0xA042: {
         LVCurrentDCDC2 = (ushort) Utils::getShiftedData(32, 16, receivedData);
+        qInfo() << "LVCurrentDCDC2:" << LVCurrentDCDC2;
         dcdc2.lvCurr = Utils::round(LVCurrentDCDC2, 0.1, -3212.7);
+        qInfo() << "LVCURR" << dcdc2.lvCurr;
+        emit updateMainWindow();
         emit message4();
         break;
     }
@@ -384,6 +388,7 @@ void CANData::receiveUDSMessage(uint8_t* receivedData) {
     case 0xA04A: {
         PackcurrentBESS = Utils::round((ushort) Utils::getShiftedData(32, 16, receivedData), 0.1, -1000);
         emit updateMainWindow();
+        break;
     }
     case 0xA05A: {
         processVars.LvThermistorOutOfRange = Utils::getShiftedData(32, 16, receivedData) == 1;
@@ -398,6 +403,7 @@ void CANData::receiveUDSMessage(uint8_t* receivedData) {
     case 0xA066: {
         LVVoltageDCDC2 = Utils::round((ushort) Utils::getShiftedData(32, 16, receivedData), 0.01);
         emit updateMainWindow();
+        break;
     }
     case 0xA0C0: {
         processVars.Pedal1Abnormal = Utils::getShiftedData(32, 8, receivedData) == 1;
@@ -542,6 +548,16 @@ void CANData::receiveUDSMessage(uint8_t* receivedData) {
         emit message7();
         break;
     }
+    case 0xA195: {
+        HVVoltageDCDC1 = Utils::round((ushort)Utils::getShiftedData(32, 16, receivedData), 0.05);
+        emit updateMainWindow();
+        break;
+    }
+    case 0xA196: {
+        HVVoltageDCDC2 = Utils::round((ushort)Utils::getShiftedData(32, 16, receivedData), 0.05);
+        emit updateMainWindow();
+        break;
+    }
     default: {
     }
 
@@ -581,7 +597,6 @@ void CANData::readCanErrorsFromFile() {
 // Falta agregar las variables de UDS
 CANData* CANData::clone() {
     CANData* data = new CANData();
-
     data->bess = *(this->bess.clone());
     data->eds = *(this->eds.clone());
     data->dcdc1 = *(this->dcdc1.clone());
@@ -597,7 +612,7 @@ CANData* CANData::clone() {
     }
 
     // Bess2
-    for (int i = 0; i < 18; i++) {
+    for (int i = 0; i < 36; i++) {
         data->tempCells[i] = this->tempCells[i];
     }
 
@@ -640,7 +655,6 @@ CANData* CANData::clone() {
     data->edsErrorCode = this->edsErrorCode;
     data->obcErrorCode = this->obcErrorCode;
 
-
     return data;
 }
 
@@ -666,7 +680,7 @@ bool CANData::operator==(CANData& other) const {
     }
 
 
-    for (int i = 0; i < 18; i++) {
+    for (int i = 0; i < 36; i++) {
         if (this->tempCells[i] != other.tempCells[i]) {
             qInfo() << "BESS2";
             return false;

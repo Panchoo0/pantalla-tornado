@@ -27,7 +27,6 @@ void NotificationsWidget::nextNotification() {
     uchar hex_b[] = {b1, b2};
     ui->category->setText(error.category);
     ui->from->setText(error.equipment);
-    // ui->code->setText("Código: " + QString::number(error.code));
     ui->code->setText("Id: " + Utils::toHexString(hex_b, 2));
     ui->description->setText(error.description);
 }
