@@ -14,7 +14,7 @@ NotificationsWidget::NotificationsWidget(CANData *canData,QWidget *parent)
     // timer para cambiar de alerta
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(nextNotification()));
-    timer->start(1000);
+    timer->start(5000);
 }
 
 // Función para cambiar de alerta

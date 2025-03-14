@@ -413,9 +413,9 @@
      <widget class="QLabel" name="currentValue">
       <property name="geometry">
        <rect>
-        <x>130</x>
+        <x>110</x>
         <y>0</y>
-        <width>50</width>
+        <width>70</width>
         <height>25</height>
        </rect>
       </property>
@@ -981,9 +981,9 @@
      <widget class="QLabel" name="voltageValue">
       <property name="geometry">
        <rect>
-        <x>130</x>
+        <x>110</x>
         <y>0</y>
-        <width>50</width>
+        <width>70</width>
         <height>25</height>
        </rect>
       </property>
@@ -1265,9 +1265,9 @@
      <widget class="QLabel" name="RPMValue">
       <property name="geometry">
        <rect>
-        <x>109</x>
+        <x>90</x>
         <y>0</y>
-        <width>71</width>
+        <width>90</width>
         <height>25</height>
        </rect>
       </property>
@@ -1549,9 +1549,9 @@
      <widget class="QLabel" name="setpointValue">
       <property name="geometry">
        <rect>
-        <x>109</x>
+        <x>90</x>
         <y>0</y>
-        <width>71</width>
+        <width>90</width>
         <height>25</height>
        </rect>
       </property>
@@ -1833,9 +1833,9 @@
      <widget class="QLabel" name="tempValue">
       <property name="geometry">
        <rect>
-        <x>109</x>
+        <x>110</x>
         <y>0</y>
-        <width>71</width>
+        <width>70</width>
         <height>25</height>
        </rect>
       </property>
@@ -2117,9 +2117,9 @@
      <widget class="QLabel" name="powerValue">
       <property name="geometry">
        <rect>
-        <x>109</x>
+        <x>110</x>
         <y>0</y>
-        <width>71</width>
+        <width>70</width>
         <height>25</height>
        </rect>
       </property>
@@ -2587,9 +2587,9 @@
      <widget class="QLabel" name="dcdc1OutputCurrentValue">
       <property name="geometry">
        <rect>
-        <x>130</x>
+        <x>110</x>
         <y>0</y>
-        <width>50</width>
+        <width>70</width>
         <height>25</height>
        </rect>
       </property>
@@ -2871,9 +2871,9 @@
      <widget class="QLabel" name="dcdc1InputCurrentHVValue">
       <property name="geometry">
        <rect>
-        <x>130</x>
+        <x>110</x>
         <y>0</y>
-        <width>50</width>
+        <width>70</width>
         <height>25</height>
        </rect>
       </property>
@@ -3155,9 +3155,9 @@
      <widget class="QLabel" name="dcdc1OutputVoltageValue">
       <property name="geometry">
        <rect>
-        <x>130</x>
+        <x>110</x>
         <y>0</y>
-        <width>50</width>
+        <width>70</width>
         <height>25</height>
        </rect>
       </property>
@@ -3439,9 +3439,9 @@
      <widget class="QLabel" name="dcdc1InputVoltageValue">
       <property name="geometry">
        <rect>
-        <x>130</x>
+        <x>110</x>
         <y>0</y>
-        <width>50</width>
+        <width>70</width>
         <height>25</height>
        </rect>
       </property>
@@ -3896,9 +3896,9 @@
      <widget class="QLabel" name="dcdc2OutputCurrentValue">
       <property name="geometry">
        <rect>
-        <x>130</x>
+        <x>110</x>
         <y>0</y>
-        <width>50</width>
+        <width>70</width>
         <height>25</height>
        </rect>
       </property>
@@ -4180,9 +4180,9 @@
      <widget class="QLabel" name="dcdc2InputCurrentHVValue">
       <property name="geometry">
        <rect>
-        <x>130</x>
+        <x>110</x>
         <y>0</y>
-        <width>50</width>
+        <width>70</width>
         <height>25</height>
        </rect>
       </property>
@@ -4464,9 +4464,9 @@
      <widget class="QLabel" name="dcdc2OutputVoltageValue">
       <property name="geometry">
        <rect>
-        <x>130</x>
+        <x>110</x>
         <y>0</y>
-        <width>50</width>
+        <width>70</width>
         <height>25</height>
        </rect>
       </property>
@@ -4748,9 +4748,9 @@
      <widget class="QLabel" name="dcdc2InputVoltageValue">
       <property name="geometry">
        <rect>
-        <x>130</x>
+        <x>110</x>
         <y>0</y>
-        <width>50</width>
+        <width>70</width>
         <height>25</height>
        </rect>
       </property>
@@ -5226,9 +5226,9 @@
      <widget class="QLabel" name="sim100posValue">
       <property name="geometry">
        <rect>
-        <x>130</x>
+        <x>110</x>
         <y>10</y>
-        <width>50</width>
+        <width>70</width>
         <height>25</height>
        </rect>
       </property>
@@ -5510,9 +5510,9 @@
      <widget class="QLabel" name="bmuposValue">
       <property name="geometry">
        <rect>
-        <x>130</x>
+        <x>110</x>
         <y>10</y>
-        <width>50</width>
+        <width>70</width>
         <height>25</height>
        </rect>
       </property>
@@ -5794,9 +5794,9 @@
      <widget class="QLabel" name="sim100negValue">
       <property name="geometry">
        <rect>
-        <x>130</x>
+        <x>110</x>
         <y>10</y>
-        <width>50</width>
+        <width>70</width>
         <height>25</height>
        </rect>
       </property>
@@ -6078,9 +6078,9 @@
      <widget class="QLabel" name="bmunegValue">
       <property name="geometry">
        <rect>
-        <x>130</x>
+        <x>110</x>
         <y>10</y>
-        <width>50</width>
+        <width>70</width>
         <height>25</height>
        </rect>
       </property>
@@ -6522,9 +6522,9 @@
      <widget class="QLabel" name="posTempDCChargeValue">
       <property name="geometry">
        <rect>
-        <x>130</x>
+        <x>110</x>
         <y>10</y>
-        <width>50</width>
+        <width>70</width>
         <height>25</height>
        </rect>
       </property>
@@ -7095,9 +7095,9 @@
      <widget class="QLabel" name="negTempDCChargeValue">
       <property name="geometry">
        <rect>
-        <x>130</x>
+        <x>110</x>
         <y>10</y>
-        <width>50</width>
+        <width>70</width>
         <height>25</height>
        </rect>
       </property>

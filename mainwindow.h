@@ -6,7 +6,7 @@
 #include <adminpanel.h>
 #include <notificationswidget.h>
 #include <receivecandata.h>
-#include <sendcandata.h>
+#include <UDSCanData.h>
 #include <testigocontroller.h>
 
 
@@ -36,11 +36,13 @@ public:
     NotificationsWidget *notificationsWidget;
 
     ReceiveCANData* receiver;
-    SendCANData* sender;
+    UDSCanData* sender;
 
     TestigoController* testigos;
 
     QTimer* udsTimer;
+
+    QDateTime startDate;
 
 
     MainWindow(QWidget *parent = nullptr);
@@ -50,9 +52,6 @@ private:
     void startReceivingCAN();
     void activateCANChannel();
 
-    void sendUDSMessages();
-
-private:
     void assertMessage1();
     void assertMessage3();
 
@@ -81,11 +80,14 @@ private slots:
     void updateBatTemp();
     void updateBat();
 
+    void updateMainWindow();
+
     void on_pushButton_clicked();
     void on_confButton_clicked();
 
     void message1();
     void message3();
+    void message7();
 
     void receiveMessage(unsigned char sourceAddress, unsigned int pgn, uint8_t* receivedData);
     void receiveDebugMessage(QString msg);

@@ -21,60 +21,60 @@ ProcessVarsWidget::ProcessVarsWidget(CANData *data, QWidget *parent)
 }
 
 void ProcessVarsWidget::assertMessage7() {
-    QString inhibitState = data->inhibitState == 1 ? "Estado\nnormal" : "Parada de\nemergencia";
+    QString inhibitState = data->processVars.EMIX_inhibitState? "Estado\nnormal" : "Parada de\nemergencia";
     assert(ui->inhibitStateValue->text() == inhibitState);
-    assert(ui->hvBusDischargedValue->checked == (data->busHVDischarged == 1));
-    assert(ui->pduContactorCloseValue->checked == (data->pduContactorClose == 1));
+    assert(ui->hvBusDischargedValue->checked == data->processVars.isHVBusDischarged);
+    assert(ui->pduContactorCloseValue->checked == data->processVars.IsPDUmainRelayClosed);
 
-    assert(ui->hvOnValue->checked == (data->hvOn == 1));
-    assert(ui->dcdc1OvertempValue->checked == (data->dcdc1Overtemp == 1));
-    assert(ui->dcdc2OvertempValue->checked == (data->dcdc2Overtemp == 1));
+    assert(ui->hvOnValue->checked == data->processVars.IsHVOn);
+    assert(ui->dcdc1OvertempValue->checked == data->processVars.DCDC1Overtemp);
+    assert(ui->dcdc2OvertempValue->checked == data->processVars.DCDC2Overtemp);
 
-    assert(ui->atsFanFaultValue->checked == (data->atsFanFault == 1));
-    assert(ui->atsPumpFaultValue->checked == (data->atsPumpFault == 1));
+    assert(ui->atsFanFaultValue->checked == data->processVars.ATS_Fan_Fault);
+    assert(ui->atsPumpFaultValue->checked == data->processVars.ATS_Pump_Fault);
 
-    assert(ui->edsOvertempValue->checked == (data->edsOvertemp== 1));
-    assert(ui->obcOvertempValue->checked == (data->obcOvertemp == 1));
+    assert(ui->edsOvertempValue->checked == data->processVars.EDSOvertemp);
+    assert(ui->obcOvertempValue->checked == data->processVars.OBCOvertemp);
 
-    assert(ui->dcdcHighDifferenceValue->checked == (data->dcdcHighDifference == 1));
+    assert(ui->dcdcHighDifferenceValue->checked == data->processVars.DCDCsPwrDifference2Large);
 
-    assert(ui->module1Value->checked == (data->batModule1 == 1));
-    assert(ui->module2Value->checked == (data->batModule2 == 1));
-    assert(ui->module3Value->checked == (data->batModule3 == 1));
-    assert(ui->module4Value->checked == (data->batModule4 == 1));
+    assert(ui->module1Value->checked == data->processVars.BESS_Module1TempTooLarge);
+    assert(ui->module2Value->checked == data->processVars.BESS_Module2TempTooLarge);
+    assert(ui->module3Value->checked == data->processVars.BESS_Module3TempTooLarge);
+    assert(ui->module4Value->checked == data->processVars.BESS_Module4TempTooLarge);
 
-    assert(ui->contactorPduValue->checked == (data->contactorPdu == 1));
-    assert(ui->sim100StuckedValue->checked == (data->sim100Stucked == 1));
+    assert(ui->contactorPduValue->checked == data->processVars.PDUMainRelayCantChangeState);
+    assert(ui->sim100StuckedValue->checked == data->processVars.Sim100Stuck);
 
-    assert(ui->couldntPowerOnBMSValue->checked == (data->couldntPowerOnBMS == 1));
-    assert(ui->bessPowerOffHvValue->checked == (data->bessPowerOffHv == 1));
-    assert(ui->requiredHvOffValue->checked == (data->requiredHvOff == 1));
+    assert(ui->couldntPowerOnBMSValue->checked == data->processVars.ImpossibleToSwitchOnBMS);
+    assert(ui->bessPowerOffHvValue->checked == data->processVars.BMSrequestsHvOff);
+    assert(ui->requiredHvOffValue->checked == data->processVars.HvOffIsRequired);
 
-    assert(ui->pedal1Value->checked == (data->pedal1Anormal == 1));
-    assert(ui->pedal2Value->checked == (data->pedal2Anormal == 1));
+    assert(ui->pedal1Value->checked == data->processVars.Pedal2Abnormal);
+    assert(ui->pedal2Value->checked == data->processVars.Pedal1Abnormal);
 
-    assert(ui->hvilPduValue->checked == (data->hvilPdu == 1));
-    assert(ui->hvilObcValue->checked == (data->hvilObc == 1));
-    assert(ui->hvilEdsValue->checked == (data->hvilEds == 1));
-    assert(ui->hvilDcdcValue->checked == (data->hvilDddc == 1));
+    assert(ui->hvilPduValue->checked == data->processVars.PDU_HvilAlarm);
+    assert(ui->hvilObcValue->checked == data->processVars.OBC_HvilAlarm);
+    assert(ui->hvilEdsValue->checked == data->processVars.EDS_HvilAlarm);
+    assert(ui->hvilDcdcValue->checked == data->processVars.DCDCs_HvilAlarm);
 
-    assert(ui->termistorLVOutOfRangeValue->checked == (data->termistorLVOutOfRange == 1));
-    assert(ui->termistorHVOutOfRangeValue->checked == (data->termistorHVOutOfRange == 1));
+    assert(ui->termistorLVOutOfRangeValue->checked == data->processVars.LvThermistorOutOfRange);
+    assert(ui->termistorHVOutOfRangeValue->checked == data->processVars.HvThermistorOutOfRange);
 
-    assert(ui->pduTempExcessValue->checked == (data->pduTempExcess == 1));
-    assert(ui->overturnValue->checked == (data->overturn == 1));
-    assert(ui->doorOpenValue->checked == (data->doorOpen == 1));
-    assert(ui->parkingStateValue->checked == (data->parkingState == 1));
+    assert(ui->pduTempExcessValue->checked == data->processVars.PDUOvertemp);
+    assert(ui->overturnValue->checked == data->processVars.OverturnEvent);
+    assert(ui->doorOpenValue->checked == data->processVars.CabinDoorOpen);
+    assert(ui->parkingStateValue->checked == data->processVars.ParkingRelayState);
 
     QString marcha;
-    switch (data->estadoMarcha) {
-    case 0:
-        marcha = "Neutro";
-        break;
+    switch (data->processVars.MarchState) {
     case 1:
         marcha = "Delante";
         break;
     case 2:
+        marcha = "Neutro";
+        break;
+    case 3:
         marcha = "Trasera";
         break;
     default:
@@ -84,62 +84,62 @@ void ProcessVarsWidget::assertMessage7() {
 }
 
 void ProcessVarsWidget::message7() {
-    QString inhibitState = data->inhibitState == 1 ? "Estado\nnormal" : "Parada de\nemergencia";
+    QString inhibitState = data->processVars.EMIX_inhibitState ? "Estado\nnormal" : "Parada de\nemergencia";
     ui->inhibitStateValue->setText(inhibitState);
-    ui->hvBusDischargedValue->setChecked(data->busHVDischarged == 1);
-    ui->pduContactorCloseValue->setChecked(data->pduContactorClose == 1);
-    ui->hvOnValue->setChecked(data->hvOn == 1);
-    ui->dcdc1OvertempValue->setChecked(data->dcdc1Overtemp == 1);
-    ui->dcdc2OvertempValue->setChecked(data->dcdc2Overtemp == 1);
+    ui->hvBusDischargedValue->setChecked(data->processVars.isHVBusDischarged);
+    ui->pduContactorCloseValue->setChecked(data->processVars.IsPDUmainRelayClosed);
+    ui->hvOnValue->setChecked(data->processVars.IsHVOn);
+    ui->dcdc1OvertempValue->setChecked(data->processVars.DCDC1Overtemp);
+    ui->dcdc2OvertempValue->setChecked(data->processVars.DCDC2Overtemp);
 
-    ui->atsFanFaultValue->setChecked(data->atsFanFault == 1);
-    ui->atsPumpFaultValue->setChecked(data->atsPumpFault == 1);
+    ui->atsFanFaultValue->setChecked(data->processVars.ATS_Fan_Fault);
+    ui->atsPumpFaultValue->setChecked(data->processVars.ATS_Pump_Fault);
 
-    ui->edsOvertempValue->setChecked(data->edsOvertemp == 1);
-    ui->obcOvertempValue->setChecked(data->obcOvertemp == 1);
+    ui->edsOvertempValue->setChecked(data->processVars.EDSOvertemp);
+    ui->obcOvertempValue->setChecked(data->processVars.OBCOvertemp);
 
-    ui->edsInErrorValue->setChecked(data->edsInError == 1);
-    ui->edsCouldntClearValue->setChecked(data->edsCouldntClear == 1);
+    ui->edsInErrorValue->setChecked(data->processVars.EDSinError);
+    ui->edsCouldntClearValue->setChecked(data->processVars.EDScantClearError);
 
-    ui->dcdcHighDifferenceValue->setChecked(data->dcdcHighDifference == 1);
+    ui->dcdcHighDifferenceValue->setChecked(data->processVars.DCDCsPwrDifference2Large);
 
-    ui->module1Value->setChecked(data->batModule1 == 1);
-    ui->module2Value->setChecked(data->batModule2 == 1);
-    ui->module3Value->setChecked(data->batModule3 == 1);
-    ui->module4Value->setChecked(data->batModule4 == 1);
+    ui->module1Value->setChecked(data->processVars.BESS_Module1TempTooLarge);
+    ui->module2Value->setChecked(data->processVars.BESS_Module2TempTooLarge);
+    ui->module3Value->setChecked(data->processVars.BESS_Module3TempTooLarge);
+    ui->module4Value->setChecked(data->processVars.BESS_Module4TempTooLarge);
 
-    ui->contactorPduValue->setChecked(data->contactorPdu == 1);
-    ui->sim100StuckedValue->setChecked(data->sim100Stucked == 1);
+    ui->contactorPduValue->setChecked(data->processVars.PDUMainRelayCantChangeState);
+    ui->sim100StuckedValue->setChecked(data->processVars.Sim100Stuck);
 
-    ui->couldntPowerOnBMSValue->setChecked(data->couldntPowerOnBMS == 1);
-    ui->bessPowerOffHvValue->setChecked(data->bessPowerOffHv == 1);
-    ui->requiredHvOffValue->setChecked(data->requiredHvOff == 1);
+    ui->couldntPowerOnBMSValue->setChecked(data->processVars.ImpossibleToSwitchOnBMS);
+    ui->bessPowerOffHvValue->setChecked(data->processVars.BMSrequestsHvOff);
+    ui->requiredHvOffValue->setChecked(data->processVars.HvOffIsRequired);
 
-    ui->pedal1Value->setChecked(data->pedal1Anormal == 1);
-    ui->pedal2Value->setChecked(data->pedal2Anormal == 1);
+    ui->pedal1Value->setChecked(data->processVars.Pedal2Abnormal);
+    ui->pedal2Value->setChecked(data->processVars.Pedal1Abnormal);
 
-    ui->hvilPduValue->setChecked(data->hvilPdu == 1);
-    ui->hvilObcValue->setChecked(data->hvilObc == 1);
-    ui->hvilEdsValue->setChecked(data->hvilEds == 1);
-    ui->hvilDcdcValue->setChecked(data->hvilDddc == 1);
+    ui->hvilPduValue->setChecked(data->processVars.PDU_HvilAlarm);
+    ui->hvilObcValue->setChecked(data->processVars.OBC_HvilAlarm);
+    ui->hvilEdsValue->setChecked(data->processVars.EDS_HvilAlarm);
+    ui->hvilDcdcValue->setChecked(data->processVars.DCDCs_HvilAlarm);
 
-    ui->termistorLVOutOfRangeValue->setChecked(data->termistorLVOutOfRange);
-    ui->termistorHVOutOfRangeValue->setChecked(data->termistorHVOutOfRange);
+    ui->termistorLVOutOfRangeValue->setChecked(data->processVars.LvThermistorOutOfRange);
+    ui->termistorHVOutOfRangeValue->setChecked(data->processVars.HvThermistorOutOfRange);
 
-    ui->pduTempExcessValue->setChecked(data->pduTempExcess == 1);
-    ui->overturnValue->setChecked(data->overturn == 1);
-    ui->doorOpenValue->setChecked(data->doorOpen == 1);
-    ui->parkingStateValue->setChecked(data->parkingState == 1);
+    ui->pduTempExcessValue->setChecked(data->processVars.PDUOvertemp);
+    ui->overturnValue->setChecked(data->processVars.OverturnEvent);
+    ui->doorOpenValue->setChecked(data->processVars.CabinDoorOpen);
+    ui->parkingStateValue->setChecked(data->processVars.ParkingRelayState);
 
     QString marcha;
-    switch (data->estadoMarcha) {
-    case 0:
-        marcha = "Neutro";
-        break;
+    switch (data->processVars.MarchState) {
     case 1:
         marcha = "Delante";
         break;
     case 2:
+        marcha = "Neutro";
+        break;
+    case 3:
         marcha = "Trasera";
         break;
     default:

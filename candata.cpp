@@ -6,135 +6,176 @@
 #include <QDateTime>
 
 CANData::CANData() {
+    this->bess = Bess();
+    this->eds = Eds();
+    this->dcdc1 = Dcdc();
+    this->dcdc2 = Dcdc();
+    this->sim100 = Sim100();
+    this->processVars = ProcessVars();
+    // this->canErrors = std::vector<DTCCanError>();
+    // this->allErrors = std::vector<DTCCanError>();
     this->readCanErrorsFromFile();
+
+    for (int i = 0; i < 194; i++) {
+        this->voltageCells[i] = 0;
+    }
 }
 
 // Función para recibir un mensaje proveniente del socket conectado con el bus CAN
 // Actualiza la información del objeto en función del mensaje
 // Emite una señal para indicar el tipo de mensaje recibido y actualizar la información según corresponda
 void CANData::receiveMessage(unsigned char sourceAddress, unsigned int pgn, uint8_t* receivedData) {
+    uchar b1_pgn = pgn >> 8;
+    uchar b2_pgn = pgn & 0xFF;
+    uchar b_pgn[] = {b1_pgn, b2_pgn};
+    QString hex_pgn = Utils::toHexString(b_pgn, 2);
+    // emit dbgMessage("Mensaje CAN recibido pgn: " + hex_pgn + "; data: " + Utils::toHexString(receivedData, 8));
 
     switch (pgn) {
     case 0x100: {
-        batteryCurrent = Utils::getShiftedData(0, 16, receivedData);
-        batteryVoltage = Utils::getShiftedData(16, 16, receivedData);
-        SOC = Utils::getShiftedData(32, 8, receivedData);
+        bess.inst_current = Utils::round(Utils::getShiftedData(0, 16, receivedData), 0.1, -1000);
+        bess.inst_voltage = Utils::round(Utils::getShiftedData(16, 16, receivedData), 0.1);
+        bess.SoC = Utils::round(Utils::getShiftedData(32, 8, receivedData), 0.4);
 
         emit message1();
         break;
     }
     case 0x200: {
-        engineCurrent = Utils::getShiftedData(0, 12, receivedData);
-        engineTorque = Utils::getShiftedData(12, 12, receivedData);
-        engineVoltage = Utils::getShiftedData(24, 12, receivedData);
-        rpm = Utils::getShiftedData(36, 12, receivedData);
-        setpoint = Utils::getShiftedData(48, 16, receivedData);
+        eds.instCurr = Utils::getShiftedData(0, 12, receivedData);
+        eds.instTorque = Utils::getShiftedData(12, 12, receivedData);
+        eds.instVoltage = Utils::getShiftedData(24, 12, receivedData);
+        eds.instRPM = Utils::round(Utils::getShiftedData(36, 12, receivedData), 0.0859375, -2750);
+        eds.txSetpoint = Utils::getShiftedData(48, 16, receivedData);
 
         emit message2();
         break;
     }
     case 0x300: {
-        engineTemp = Utils::getShiftedData(0, 8, receivedData);
-        inversorTemp = Utils::getShiftedData(8, 8, receivedData);
-        batTemp = Utils::getShiftedData(16, 8, receivedData);
-        batMaxTemp = Utils::getShiftedData(24, 8, receivedData);
-        batMinTemp = Utils::getShiftedData(32, 8, receivedData);
+        eds.motorTemp = Utils::getShiftedData(0, 8, receivedData) - 40;
+        eds.invTemp = Utils::getShiftedData(8, 8, receivedData) - 40;
+        bess.avgTemp = Utils::getShiftedData(16, 8, receivedData);
+        bess.maxTemp = Utils::getShiftedData(24, 8, receivedData);
+        bess.minTemp = Utils::getShiftedData(32, 8, receivedData);
 
         emit message3();
         break;
     }
     case 0x400: {
-        dcdc1Current = Utils::getShiftedData(0, 16, receivedData);
-        dcdc2Current = Utils::getShiftedData(16, 16, receivedData);
-        dcdc1HVCurrent = Utils::getShiftedData(32, 16, receivedData);
-        dcdc2HVCurrent = Utils::getShiftedData(48, 16, receivedData);
+        dcdc1.lvCurr = Utils::round(Utils::getShiftedData(0, 16, receivedData), 0.1 , 3212.7);
+        dcdc2.lvCurr = Utils::round(Utils::getShiftedData(16, 16, receivedData), 0.1, 3212.7);
+        dcdc1.hvCurr = Utils::round(Utils::getShiftedData(32, 16, receivedData), 0.1, 3212.7);
+        dcdc2.hvCurr = Utils::round(Utils::getShiftedData(48, 16, receivedData), 0.1, 3212.7);
 
         emit message4();
         break;
     }
     case 0x500: {
-        dcdc1OutputVoltage = Utils::getShiftedData(0, 16, receivedData);
-        dcdc2OutputVoltage = Utils::getShiftedData(16, 16, receivedData);
-        dcdc1InputVoltage = Utils::getShiftedData(32, 16, receivedData);
-        dcdc2InputVoltage = Utils::getShiftedData(48, 16, receivedData);
+        dcdc1.VVout = Utils::round(Utils::getShiftedData(0, 16, receivedData), 0.05);
+        dcdc2.VVout = Utils::round(Utils::getShiftedData(16, 16, receivedData), 0.05);
+        dcdc1.Vin = Utils::round(Utils::getShiftedData(32, 16, receivedData), 0.05);
+        dcdc2.Vin = Utils::round(Utils::getShiftedData(48, 16, receivedData), 0.05);
 
         emit message5();
         break;
     }
     case 0x600: {
-        posResistanceSIM100 = Utils::getShiftedData(0, 16, receivedData);
-        negResistanceSIM100 = Utils::getShiftedData(16, 16, receivedData);
-        posResistanceBMU = Utils::getShiftedData(32, 16, receivedData);
-        negResistanceBMU = Utils::getShiftedData(48, 16, receivedData);
+        sim100.Rp = Utils::getShiftedData(0, 16, receivedData);
+        sim100.Rn = Utils::getShiftedData(16, 16, receivedData);
+        bess.Rp = Utils::getShiftedData(32, 16, receivedData);
+        bess.Rn = Utils::getShiftedData(48, 16, receivedData);
 
         emit message6();
         break;
     }
     case 0x700: {
-        lvError = Utils::getShiftedData(0, 4, receivedData);
-        hvError = Utils::getShiftedData(4, 4, receivedData);
+        processVars.LV_Error_Level = Utils::getShiftedData(0, 4, receivedData);
+        processVars.HV_Error_Level = Utils::getShiftedData(4, 4, receivedData);
 
-        state = Utils::getShiftedData(8, 4, receivedData);
+        processVars.EMIX_state = Utils::getShiftedData(8, 4, receivedData);
 
-        inhibitState = Utils::getShiftedData(12, 1, receivedData);
-        busHVDischarged = Utils::getShiftedData(13, 1, receivedData);
-        pduContactorClose = Utils::getShiftedData(14, 1, receivedData);
-        hvOn = Utils::getShiftedData(15, 1, receivedData);
+        processVars.EMIX_inhibitState = Utils::getShiftedData(12, 1, receivedData);
+        processVars.isHVBusDischarged = Utils::getShiftedData(13, 1, receivedData);
+        processVars.IsPDUmainRelayClosed = Utils::getShiftedData(14, 1, receivedData);
+        processVars.IsHVOn = Utils::getShiftedData(15, 1, receivedData);
         // Posiblemente aquí este corrido el bit de inicio en el excel
-        lvHigh = Utils::getShiftedData(16, 2, receivedData);
-        dcdc1Overtemp = Utils::getShiftedData(18, 1, receivedData);
-        dcdc2Overtemp = Utils::getShiftedData(19, 1, receivedData);
-        atsFanFault = Utils::getShiftedData(20, 1, receivedData);
-        atsPumpFault =Utils::getShiftedData(21, 1, receivedData);
-        edsOvertemp = Utils::getShiftedData(22, 1, receivedData);
-        obcOvertemp = Utils::getShiftedData(23, 1, receivedData);
-        edsInError = Utils::getShiftedData(24, 1, receivedData);
-        edsCouldntClear = Utils::getShiftedData(25, 1, receivedData);
-        dcdcHighDifference = Utils::getShiftedData(26, 1, receivedData);
-        batModule1 = Utils::getShiftedData(27, 1, receivedData);
-        batModule2 = Utils::getShiftedData(28, 1, receivedData);
-        batModule3 = Utils::getShiftedData(29, 1, receivedData);
-        batModule4 = Utils::getShiftedData(30, 1, receivedData);
-        contactorPdu = Utils::getShiftedData(31, 1, receivedData);
-        sim100Stucked = Utils::getShiftedData(32, 1, receivedData);
-        couldntPowerOnBMS = Utils::getShiftedData(33, 1, receivedData);
-        bessPowerOffHv = Utils::getShiftedData(34, 1, receivedData);
-        requiredHvOff = Utils::getShiftedData(35, 1, receivedData);
-        pedal2Anormal = Utils::getShiftedData(36, 1, receivedData);
-        pedal1Anormal = Utils::getShiftedData(37, 1, receivedData);
-        hvilPdu = Utils::getShiftedData(38, 1, receivedData);
-        hvilObc = Utils::getShiftedData(39, 1, receivedData);
-        hvilEds = Utils::getShiftedData(40, 1, receivedData);
-        hvilDddc= Utils::getShiftedData(41, 1, receivedData);
-        termistorLVOutOfRange = Utils::getShiftedData(42, 1, receivedData);
-        termistorHVOutOfRange = Utils::getShiftedData(43, 1, receivedData);
-        pduTempExcess = Utils::getShiftedData(44, 1, receivedData);
-        overturn = Utils::getShiftedData(45, 1, receivedData);
-        doorOpen = Utils::getShiftedData(46, 1, receivedData);
-        parkingState = Utils::getShiftedData(47, 1, receivedData);
-        estadoMarcha = Utils::getShiftedData(48, 2, receivedData);
+        processVars.LvVoltageTooHigh = Utils::getShiftedData(16, 2, receivedData);
+        processVars.DCDC1Overtemp = Utils::getShiftedData(18, 1, receivedData);
+        processVars.DCDC2Overtemp = Utils::getShiftedData(19, 1, receivedData);
+        processVars.ATS_Fan_Fault = Utils::getShiftedData(20, 1, receivedData);
+        processVars.ATS_Pump_Fault =Utils::getShiftedData(21, 1, receivedData);
+        processVars.EDSOvertemp = Utils::getShiftedData(22, 1, receivedData);
+        processVars.OBCOvertemp = Utils::getShiftedData(23, 1, receivedData);
+        processVars.EDSinError = Utils::getShiftedData(24, 1, receivedData);
+        processVars.EDScantClearError = Utils::getShiftedData(25, 1, receivedData);
+        processVars.DCDCsPwrDifference2Large = Utils::getShiftedData(26, 1, receivedData);
+        processVars.BESS_Module1TempTooLarge = Utils::getShiftedData(27, 1, receivedData);
+        processVars.BESS_Module2TempTooLarge = Utils::getShiftedData(28, 1, receivedData);
+        processVars.BESS_Module3TempTooLarge = Utils::getShiftedData(29, 1, receivedData);
+        processVars.BESS_Module4TempTooLarge = Utils::getShiftedData(30, 1, receivedData);
+        processVars.PDUMainRelayCantChangeState = Utils::getShiftedData(31, 1, receivedData);
+        processVars.Sim100Stuck = Utils::getShiftedData(32, 1, receivedData);
+        processVars.ImpossibleToSwitchOnBMS = Utils::getShiftedData(33, 1, receivedData);
+        processVars.BMSrequestsHvOff = Utils::getShiftedData(34, 1, receivedData);
+        processVars.HvOffIsRequired = Utils::getShiftedData(35, 1, receivedData);
+        processVars.Pedal2Abnormal = Utils::getShiftedData(36, 1, receivedData);
+        processVars.Pedal1Abnormal = Utils::getShiftedData(37, 1, receivedData);
+        processVars.PDU_HvilAlarm = Utils::getShiftedData(38, 1, receivedData);
+        processVars.OBC_HvilAlarm = Utils::getShiftedData(39, 1, receivedData);
+        processVars.EDS_HvilAlarm = Utils::getShiftedData(40, 1, receivedData);
+        processVars.DCDCs_HvilAlarm = Utils::getShiftedData(41, 1, receivedData);
+        processVars.LvThermistorOutOfRange = Utils::getShiftedData(42, 1, receivedData);
+        processVars.HvThermistorOutOfRange = Utils::getShiftedData(43, 1, receivedData);
+        processVars.PDUOvertemp = Utils::getShiftedData(44, 1, receivedData);
+        processVars.OverturnEvent = Utils::getShiftedData(45, 1, receivedData);
+        processVars.CabinDoorOpen = Utils::getShiftedData(46, 1, receivedData);
+        processVars.ParkingRelayState = Utils::getShiftedData(47, 1, receivedData);
+        processVars.MarchState = Utils::getShiftedData(48, 2, receivedData);
 
         emit message7();
         break;
     }
-
     case 0xC100: {
-        int trama = Utils::getShiftedData(0, 16, receivedData);
-        voltageCells[trama * 3] = Utils::getShiftedData(16, 16, receivedData);
-        voltageCells[trama * 3 + 1]  = Utils::getShiftedData(32, 16, receivedData);
-        voltageCells[trama * 3 + 2]  = Utils::getShiftedData(48, 16, receivedData);
+        uchar trama1 = Utils::getShiftedData(0, 8, receivedData);
+        uchar trama2 = Utils::getShiftedData(8, 8, receivedData);
+        int trama = trama1 + (trama2 << 8) - 1;
+
+        if (trama > 194) {
+            qInfo() << "Trama de voltaje inválida:" << trama;
+            return;
+        }
+
+        float fc = 0.001;
+
+        int v1 = (uchar) Utils::getShiftedData(16, 8, receivedData);
+        int v2 = (uchar) Utils::getShiftedData(24, 8, receivedData);
+        int v3 = (uchar) Utils::getShiftedData(32, 8, receivedData);
+        int v4 = (uchar) Utils::getShiftedData(40, 8, receivedData);
+        int v5 = (uchar) Utils::getShiftedData(48, 8, receivedData);
+        int v6 = (uchar) Utils::getShiftedData(56, 8, receivedData);
+
+        voltageCells[trama] =     Utils::round(v1 + (v2 <<  8), fc);
+        voltageCells[trama + 1] = Utils::round(v3 + (v4 <<  8), fc);
+        voltageCells[trama + 2] = Utils::round(v5 + (v6 <<  8), fc);
 
         emit bess1(trama);
         break;
     }
     case 0xC200: {
-        int trama = Utils::getShiftedData(0, 16, receivedData);
-        tempCells[trama * 6] = Utils::getShiftedData(16, 8, receivedData);
-        tempCells[trama * 6 + 1]  = Utils::getShiftedData(24, 8, receivedData);
-        tempCells[trama * 6 + 2]  = Utils::getShiftedData(32, 8, receivedData);
-        tempCells[trama * 6 + 3]  = Utils::getShiftedData(40, 8, receivedData);
-        tempCells[trama * 6 + 4]  = Utils::getShiftedData(48, 8, receivedData);
-        tempCells[trama * 6 + 5]  = Utils::getShiftedData(56, 8, receivedData);
+        uchar trama1 = Utils::getShiftedData(0, 8, receivedData);
+        uchar trama2 = Utils::getShiftedData(8, 8, receivedData);
+
+        int trama = trama1 + (trama2 << 8) - 1;
+
+        if (trama > 13) {
+            qInfo() << "Trama de temp inválida:" << trama;
+            return;
+        }
+        tempCells[trama] = Utils::getShiftedData(16, 8, receivedData);
+        tempCells[trama + 1]  = Utils::getShiftedData(24, 8, receivedData);
+        tempCells[trama + 2]  = Utils::getShiftedData(32, 8, receivedData);
+        tempCells[trama + 3]  = Utils::getShiftedData(40, 8, receivedData);
+        tempCells[trama + 4]  = Utils::getShiftedData(48, 8, receivedData);
+        tempCells[trama + 5]  = Utils::getShiftedData(56, 8, receivedData);
 
         emit bess2(trama);
         break;
@@ -142,25 +183,25 @@ void CANData::receiveMessage(unsigned char sourceAddress, unsigned int pgn, uint
     case 0xC300: {
         chargeEnergyAcumulated = Utils::getShiftedData(0, 24, receivedData);
         dischargeEnergyAcumulated = Utils::getShiftedData(24, 24, receivedData);
-        energyOneCharge = Utils::getShiftedData(48, 16, receivedData);
+        energyOneCharge = Utils::round(Utils::getShiftedData(48, 16, receivedData), 0.1);
 
         emit bess3();
         break;
     }
     case 0xC400: {
         // TODO: revisar este SOC con el otro y ver cual es el de verdad
-        SOC = Utils::getShiftedData(0, 8, receivedData);
-        SOH = Utils::getShiftedData(8, 8, receivedData);
-        maxVoltage = Utils::getShiftedData(16, 16, receivedData);
-        minVoltage = Utils::getShiftedData(32, 16, receivedData);
-        meanVoltage = Utils::getShiftedData(48, 16, receivedData);
+        bess.SoC = Utils::round(Utils::getShiftedData(0, 8, receivedData), 0.4);
+        SOH = Utils::round(Utils::getShiftedData(8, 8, receivedData), 0.4);
+        maxVoltage = Utils::round(Utils::getShiftedData(16, 16, receivedData), 0.001);
+        minVoltage = Utils::round(Utils::getShiftedData(32, 16, receivedData), 0.001);
+        meanVoltage = Utils::round(Utils::getShiftedData(48, 16, receivedData), 0.001);
 
         emit bess4();
         break;
     }
     case 0xC500: {
-        posChargeTempDC = Utils::getShiftedData(0, 8, receivedData);
-        negChargeTempDC = Utils::getShiftedData(8, 8, receivedData);
+        posChargeTempDC = Utils::getShiftedData(0, 8, receivedData) - 40;
+        negChargeTempDC = Utils::getShiftedData(8, 8, receivedData) - 40;
         dcConected = Utils::getShiftedData(16, 2, receivedData);
         bmsChargingMode = Utils::getShiftedData(18, 2, receivedData);
         heatState = Utils::getShiftedData(20, 1, receivedData);
@@ -197,25 +238,311 @@ void CANData::receiveMessage(unsigned char sourceAddress, unsigned int pgn, uint
         emit faults2();
         break;
     }
-    // Protocolo UDS
-    case 0xDA00: {
-        int resID = Utils::getShiftedData(8, 8, receivedData);
-        if (resID == 0x62) {
-            int DID = Utils::getShiftedData(16, 16, receivedData);
-            int errCode = Utils::getShiftedData(32, 16, receivedData);
-            this->addError(errCode);
-
-            emit canError();
-        } else {
-            qInfo() << "Mensaje con otra resID: " << resID;
-        }
-
-    }
     default:
-        qInfo() << "Mensaje con pgn: " << pgn;
+        qInfo() << "Mensaje J1939 no reconocido con pgn: " << hex_pgn;
         break;
     }
 
+}
+
+void CANData::receiveUDSMessage(uint8_t* receivedData) {
+    int resID = Utils::getShiftedData(8, 8, receivedData);
+    int DID = Utils::getShiftedData(16, 16, receivedData);
+    if (resID != 0x62) {
+        qInfo() << "Mensaje con otra resID: " << resID;
+        return;
+    }
+
+    switch (DID) {
+    case 0xA011: {
+        Maxcellvoltage = (ushort) Utils::getShiftedData(32, 16, receivedData);
+        maxVoltage = Utils::round(Maxcellvoltage, 0.001);
+        emit bess4();
+        break;
+    }
+    case 0xA012: {
+        Mincellvoltage = (ushort) Utils::getShiftedData(32, 16, receivedData);
+        minVoltage = Utils::round(Mincellvoltage, 0.001);
+        emit bess4();
+        break;
+    }
+    case 0xA013: {
+        Maxpacktemperature = (uchar) Utils::getShiftedData(32, 8, receivedData);
+        Maxpacktemperature -= 40;
+        emit
+        break;
+    }
+    case 0xA016: {
+        isHVOn = Utils::getShiftedData(32, 8, receivedData) == 1;
+        processVars.IsHVOn = isHVOn;
+        emit message7();
+        break;
+    }
+    case 0xA018: {
+        InletcoolantTemperatureMotor = (uchar) Utils::getShiftedData(32, 8, receivedData) - 40;
+        eds.motorTemp = InletcoolantTemperatureMotor;
+        emit message3();
+        emit updateMainWindow();
+        break;
+    }
+    case 0xA019: {
+        InletcoolantTemperatureInverter = (uchar) Utils::getShiftedData(32, 8, receivedData) - 40;
+        emit message3();
+        break;
+    }
+    case 0xA01B: {
+        DCVoltageFeedbackRx = Utils::round((ushort)Utils::getShiftedData(32, 16, receivedData), 0.4375, -875);
+        eds.instVoltage = DCVoltageFeedbackRx;
+        emit message2();
+        break;
+    }
+    case 0xA01E: {
+        PositiveinsulationResistancesim100 = (ushort) Utils::getShiftedData(32, 16, receivedData);
+        sim100.Rp = PositiveinsulationResistancesim100;
+        emit message6();
+        break;
+    }
+    case 0xA01F: {
+        NegativeinsulationResistancesim100 = (ushort) Utils::getShiftedData(32, 16, receivedData);
+        sim100.Rn = NegativeinsulationResistancesim100;
+        emit message6();
+        break;
+    }
+    case 0xA020: {
+        Averagecellvoltage = (ushort) Utils::getShiftedData(32, 16, receivedData);
+        meanVoltage = Utils::round(Averagecellvoltage, 0.001);
+        emit bess4();
+        break;
+    }
+    case 0xA023: {
+        SoC = (uchar) Utils::getShiftedData(32, 8, receivedData);
+        bess.SoC = Utils::round(SoC, 0.4);
+        emit message1();
+        break;
+    }
+    case 0xA028: {
+        posChargeTempDC = Utils::getShiftedData(32, 8, receivedData) - 40;
+        emit bess5();
+        break;
+    }
+    case 0xA02A: {
+        negChargeTempDC = Utils::getShiftedData(32, 8, receivedData) - 40;
+        emit bess5();
+        break;
+    }
+    case 0xA02B: {
+        PackVoltage = Utils::round((ushort) Utils::getShiftedData(32, 16, receivedData), 0.1) ;
+        emit updateMainWindow();
+        break;
+    }
+    case 0xA031: {
+        DCDC1coolantinT = Utils::getShiftedData(32, 8, receivedData);
+        break;
+    }
+    case 0xA033: {
+        DCDC2coolantinT = Utils::getShiftedData(32, 8, receivedData);
+        break;
+    }
+    case 0xA03D: {
+        Electricalisolation = Utils::getShiftedData(32, 16, receivedData);
+        break;
+    }
+    case 0xA03E: {
+        HVCurrentDCDC1 = (ushort) Utils::getShiftedData(32, 16, receivedData);
+        dcdc1.hvCurr = Utils::round(HVCurrentDCDC1, 0.1, -3212.7);
+        emit message4();
+        break;
+    }
+    case 0xA040: {
+        LVCurrentDCDC1 = (ushort) Utils::getShiftedData(32, 16, receivedData);
+        dcdc1.lvCurr = Utils::round(LVCurrentDCDC1, 0.1, -3212.7);
+        emit message4();
+        break;
+    }
+    case 0xA041: {
+        LVVoltageDCDC1 = Utils::round((ushort) Utils::getShiftedData(32, 16, receivedData), 0.01);
+        emit updateMainWindow();
+        break;
+    }
+    case 0xA042: {
+        LVCurrentDCDC2 = (ushort) Utils::getShiftedData(32, 16, receivedData);
+        dcdc2.lvCurr = Utils::round(LVCurrentDCDC2, 0.1, -3212.7);
+        emit message4();
+        break;
+    }
+    case 0xA044: {
+        HVCurrentDCDC2 = (ushort) Utils::getShiftedData(32, 16, receivedData);
+        dcdc2.hvCurr = Utils::round(HVCurrentDCDC2, 0.1, -3212.7);
+        emit message4();
+        break;
+    }
+    case 0xA049: {
+        InhibitState = (uchar) Utils::getShiftedData(32, 8, receivedData);
+        processVars.EMIX_inhibitState = InhibitState;
+        emit message7();
+        break;
+    }
+    case 0xA05A: {
+        processVars.LvThermistorOutOfRange = Utils::getShiftedData(32, 16, receivedData) == 1;
+        emit message7();
+        break;
+    }
+    case 0xA05B: {
+        processVars.HvThermistorOutOfRange = Utils::getShiftedData(32, 16, receivedData) == 1;
+        emit message7();
+        break;
+    }
+    case 0xA066: {
+        LVVoltageDCDC2 = Utils::round((ushort) Utils::getShiftedData(32, 16, receivedData), 0.01);
+        emit updateMainWindow();
+    }
+    case 0xA0C0: {
+        processVars.Pedal1Abnormal = Utils::getShiftedData(32, 8, receivedData) == 1;
+        emit message7();
+        break;
+    }
+    case 0xA0C1: {
+        processVars.Pedal2Abnormal = Utils::getShiftedData(32, 8, receivedData) == 1;
+        emit message7();
+        break;
+    }
+    case 0xA0CD: {
+        processVars.OBCOvertemp = Utils::getShiftedData(32, 8, receivedData) == 1;
+        emit message7();
+        break;
+    }
+    case 0xA0CE: {
+        processVars.EDSOvertemp = Utils::getShiftedData(32, 8, receivedData) == 1;
+        emit message7();
+        break;
+    }
+    case 0xA0CF: {
+        processVars.DCDC1Overtemp = Utils::getShiftedData(32, 8, receivedData) == 1;
+        emit message7();
+        break;
+    }
+    case 0xA0D0: {
+        processVars.DCDC2Overtemp = Utils::getShiftedData(32, 8, receivedData) == 1;
+        emit message7();
+        break;
+    }
+    case 0xA0D1: {
+        processVars.ATS_Pump_Fault = Utils::getShiftedData(32, 8, receivedData) == 1;
+        emit message7();
+        break;
+    }
+    case 0xA0D2: {
+        processVars.ATS_Fan_Fault = Utils::getShiftedData(32, 8, receivedData) == 1;
+        emit message7();
+        break;
+    }
+    case 0xA0D3: {
+        processVars.EDSinError = Utils::getShiftedData(32, 8, receivedData) == 1;
+        emit message7();
+        break;
+    }
+    case 0xA0D4: {
+        processVars.EDScantClearError = Utils::getShiftedData(32, 8, receivedData) == 1;
+        emit message7();
+        break;
+    }
+    case 0xA0D6: {
+        processVars.DCDCsPwrDifference2Large = Utils::getShiftedData(32, 8, receivedData) == 1;
+        emit message7();
+        break;
+    }
+    case 0xA0E4: {
+        processVars.Sim100Stuck = Utils::getShiftedData(32, 8, receivedData);
+        emit message7();
+        break;
+    }
+    case 0xA0E7: {
+        processVars.ImpossibleToSwitchOnBMS = Utils::getShiftedData(32, 8, receivedData) == 1;
+        emit message7();
+        break;
+    }
+    case 0xA0EB: {
+        FaultCodeEDS = (uchar) Utils::getShiftedData(32, 8, receivedData);
+        
+        if (FaultCodeEDS == 0) return;
+
+        this->addError(FaultCodeEDS + 0xD300);
+        emit canError();
+        emit canTestigo(this->allErrors[this->allErrors.size() - 1].testigo);
+        break;
+    }
+    case 0xA0EE: {
+        FaultCodeSIM100 = (uchar) Utils::getShiftedData(32, 8, receivedData);
+
+        if (FaultCodeSIM100 == 0) {
+            emit dbgMessage("Sin errores");
+            return;
+        }
+
+        this->addError(FaultCodeSIM100 + 0xD200);
+        emit canError();
+        emit canTestigo(this->allErrors[this->allErrors.size() - 1].testigo);
+        break;
+    }
+    case 0xA0EF: {
+        FaultCodeBESS = (uchar) Utils::getShiftedData(32, 8, receivedData);
+        if (FaultCodeBESS == 0) return;
+
+
+        this->addError(FaultCodeBESS + 0xD400);
+        emit canError();
+        emit canTestigo(this->allErrors[this->allErrors.size() - 1].testigo);
+        break;
+    }
+    case 0xA0F0: {
+        FaultCodeDCDC1 = (uchar) Utils::getShiftedData(32, 8, receivedData);
+        if (FaultCodeDCDC1 == 0) return;
+
+        this->addError(FaultCodeDCDC1 + 0xD000);
+        emit canError();
+        emit canTestigo(this->allErrors[this->allErrors.size() - 1].testigo);
+        break;
+    }
+    case 0xA0F1: {
+        FaultCodeDCDC2 = (uchar) Utils::getShiftedData(32, 8, receivedData);
+
+        if (FaultCodeDCDC2 == 0) return;
+
+        this->addError(FaultCodeDCDC2 + 0xD100);
+        emit canError();
+        emit canTestigo(this->allErrors[this->allErrors.size() - 1].testigo);
+        break;
+    }
+    case 0xA0F2: {
+        FaultCodeOBC = (uchar) Utils::getShiftedData(32, 8, receivedData);
+
+        if (FaultCodeOBC == 0) return;
+
+        this->addError(FaultCodeOBC + 0xD700);
+        emit canError();
+        emit canTestigo(this->allErrors[this->allErrors.size() - 1].testigo);
+        break;
+    }
+    case 0xA0F3: {
+        FaultCodeEMIX = (uchar) Utils::getShiftedData(32, 8, receivedData);
+
+        if (FaultCodeEMIX == 0) return;
+
+        this->addError(FaultCodeEMIX + 0xD600);
+        emit canError();
+        emit canTestigo(this->allErrors[this->allErrors.size() - 1].testigo);
+        break;
+    }
+    case 0xA0F4: {
+        MarchState = (uchar) Utils::getShiftedData(32, 8, receivedData);
+        emit updateMainWindow();
+        emit message7();
+        break;
+    }
+    default: {
+    }
+
+    }
 }
 
 // Dado el id de un error lo agrega a los errores DTC recibidos por el bus CAN
@@ -236,125 +563,39 @@ void CANData::readCanErrorsFromFile() {
     std::string string_line;
     while (std::getline(file, string_line))
     {
-        // El archivo cuenta con 2 columnas: ID | Fecha
-        std::vector<std::string> tokens = Utils::split(string_line, ",");
-        int id = std::stoi(tokens[0]);
-        QDateTime date = QDateTime::fromString(QString::fromStdString(tokens[1]));
+        // // El archivo cuenta con 2 columnas: ID | Fecha
+        // std::vector<std::string> tokens = Utils::split(string_line, ",");
+        // int id = std::stoi(tokens[0]);
+        // QDateTime date = QDateTime::fromString(QString::fromStdString(tokens[1]));
 
-        DTCCanError error = DTCCanError::fromInt(id);
-        error.date = date;
-        this->allErrors.push_back(error);
+        // DTCCanError error = DTCCanError::fromInt(id);
+        // error.date = date;
+        // this->allErrors.push_back(error);
     }
     file.close();
 }
 
-
+// Falta agregar las variables de UDS
 CANData* CANData::clone() {
     CANData* data = new CANData();
-
     data->speed = this->speed;
 
-    // Message 1
-    data->batteryCurrent = this->batteryCurrent;
-    data->batteryVoltage = this->batteryVoltage;
-    data->SOC = this->SOC;
-
-    // Message 2
-    data->engineCurrent = this->engineCurrent;
-    data->engineTorque = this->engineTorque;
-    data->engineVoltage = this->engineVoltage;
-    data->rpm = this->rpm;
-    data->setpoint = this->setpoint;
-
-    // Message 3
-    data->engineTemp = this->engineTemp;
-    data->inversorTemp = this->inversorTemp;
-    data->batTemp = this->batTemp;
-    data->batMaxTemp = this->batMaxTemp;
-    data->batMinTemp = this->batMinTemp;
-
-    // Message 4
-    data->dcdc1Current = this->dcdc1Current;
-    data->dcdc2Current = this->dcdc2Current;
-    data->dcdc1HVCurrent = this->dcdc1HVCurrent;
-    data->dcdc2HVCurrent = this->dcdc2HVCurrent;
-
-    // Message 5
-    data->dcdc1OutputVoltage = this->dcdc1OutputVoltage;
-    data->dcdc2OutputVoltage = this->dcdc2OutputVoltage;
-    data->dcdc1InputVoltage = this->dcdc1InputVoltage;
-    data->dcdc2InputVoltage = this->dcdc2InputVoltage;
-
-    // Message 6
-    data->posResistanceSIM100 = this->posResistanceSIM100;
-    data->negResistanceSIM100 = this->negResistanceSIM100;
-    data->posResistanceBMU = this->posResistanceBMU;
-    data->negResistanceBMU = this->negResistanceBMU;
+    data->bess = *(this->bess.clone());
+    data->eds = *(this->eds.clone());
+    data->dcdc1 = *(this->dcdc1.clone());
+    data->dcdc2 = *(this->dcdc2.clone());
+    data->sim100 = *(this->sim100.clone());
 
     // Message 7
-    data->lvError = this->lvError;
-    data->hvError = this->hvError;
-
-    data->state = this->state;
-
-    data->inhibitState = this->inhibitState;
-    data->busHVDischarged = this->busHVDischarged;
-    data->pduContactorClose = this->pduContactorClose;
-
-    data->hvOn = this->hvOn;
-    data->lvHigh = this->lvHigh;
-
-    data->dcdc1Overtemp = this->dcdc1Overtemp;
-    data->dcdc2Overtemp = this->dcdc2Overtemp;
-
-    data->atsFanFault = this->atsFanFault;
-    data->atsPumpFault = this->atsPumpFault;
-
-    data->edsOvertemp = this->edsOvertemp;
-    data->obcOvertemp = this->obcOvertemp;
-
-    data->edsInError = this->edsInError;
-    data->edsCouldntClear = this->edsCouldntClear;
-
-    data->dcdcHighDifference = this->dcdcHighDifference;
-
-    data->batModule1 = this->batModule1;
-    data->batModule2 = this->batModule2;
-    data->batModule3 = this->batModule3;
-    data->batModule4 = this->batModule4;
-
-    data->contactorPdu = this->contactorPdu;
-    data->sim100Stucked = this->sim100Stucked;
-
-    data->couldntPowerOnBMS = this->couldntPowerOnBMS;
-
-    data->bessPowerOffHv = this->bessPowerOffHv;
-    data->requiredHvOff = this->requiredHvOff;
-
-    data->pedal1Anormal = this->pedal1Anormal;
-    data->pedal2Anormal = this->pedal2Anormal;
-
-    data->hvilPdu = this->hvilPdu;
-    data->hvilObc = this->hvilObc;
-    data->hvilEds = this->hvilEds;
-    data->hvilDddc = this->hvilDddc;
-
-    data->termistorLVOutOfRange = this->termistorLVOutOfRange;
-    data->termistorHVOutOfRange = this->termistorHVOutOfRange;
-
-    data->pduTempExcess = this->pduTempExcess;
-    data->overturn = this->overturn;
-    data->doorOpen = this->doorOpen;
-    data->parkingState = this->parkingState;
-    data->estadoMarcha = this->estadoMarcha;
+    data->processVars = *(this->processVars.clone());
 
     // Bess1
-    for (int i = 0; i < 194 * 3;  i++) {
+    for (int i = 0; i < 194;  i++) {
         data->voltageCells[i] = this->voltageCells[i];
     }
 
     // Bess2
-    for (int i = 0; i < 18 * 6; i++) {
+    for (int i = 0; i < 18; i++) {
         data->tempCells[i] = this->tempCells[i];
     }
 
@@ -401,124 +642,31 @@ CANData* CANData::clone() {
     return data;
 }
 
+// Falta agregar las variables de UDS
 bool CANData::operator==(CANData& other) const {
-    bool message1 = (
-        this->batteryCurrent == other.batteryCurrent &&
-        this->batteryVoltage == other.batteryVoltage &&
-        this->SOC == other.SOC
-    );
+    bool message1 = this->bess == other.bess;
+    bool message2 = this->eds == other.eds;
+    bool message4 = this->dcdc1 == other.dcdc1 && this->dcdc2 == other.dcdc2;
+    bool message6 = this->sim100 == other.sim100;
+    bool message7 = this->processVars == other.processVars;
 
-    bool message2 = (
-        this->engineCurrent == other.engineCurrent &&
-        this->engineTorque == other.engineTorque &&
-        this->engineVoltage == other.engineVoltage &&
-        this->rpm == other.rpm &&
-        this->setpoint == other.setpoint
-    );
+    if (!message1) qInfo() << "message1" << message1;
+    if (!message2) qInfo() << "message2" << message2;
+    if (!message4) qInfo() << "message4" << message4;
+    if (!message6) qInfo() << "message6" << message6;
+    if (!message7) qInfo() << "message7" << message7;
 
-    bool message3 = (
-        this->engineTemp == other.engineTemp &&
-        this->inversorTemp == other.inversorTemp &&
-        this->batTemp == other.batTemp &&
-        this->batMaxTemp == other.batMaxTemp &&
-        this->batMinTemp == other.batMinTemp
-    );
-
-    bool message4 = (
-        this->dcdc1Current == other.dcdc1Current &&
-        this->dcdc2Current == other.dcdc2Current &&
-        this->dcdc1HVCurrent == other.dcdc1HVCurrent &&
-        this->dcdc2HVCurrent == other.dcdc2HVCurrent
-    );
-
-    bool message5 = (
-        this->dcdc1OutputVoltage == other.dcdc1OutputVoltage &&
-        this->dcdc2OutputVoltage == other.dcdc2OutputVoltage &&
-        this->dcdc1InputVoltage == other.dcdc1InputVoltage &&
-        this->dcdc2InputVoltage == other.dcdc2InputVoltage
-    );
-
-    bool message6 = (
-        this->posResistanceSIM100 == other.posResistanceSIM100 &&
-        this->negResistanceSIM100 == other.negResistanceSIM100 &&
-        this->posResistanceBMU == other.posResistanceBMU &&
-        this->negResistanceBMU == other.negResistanceBMU
-    );
-
-    bool message7 = (
-        // Message 7
-        this->lvError == other.lvError &&
-        this->hvError == other.hvError &&
-
-        this->state == other.state &&
-
-        this->inhibitState == other.inhibitState &&
-        this->busHVDischarged == other.busHVDischarged &&
-        this->pduContactorClose == other.pduContactorClose &&
-
-        this->hvOn == other.hvOn &&
-        this->lvHigh == other.lvHigh &&
-
-        this->dcdc1Overtemp == other.dcdc1Overtemp &&
-        this->dcdc2Overtemp == other.dcdc2Overtemp &&
-
-        this->atsFanFault == other.atsFanFault &&
-        this->atsPumpFault == other.atsPumpFault &&
-
-        this->edsOvertemp == other.edsOvertemp &
-        this->obcOvertemp == other.obcOvertemp &
-
-        this->edsInError == other.edsInError &&
-        this->edsCouldntClear == other.edsCouldntClear &&
-
-        this->dcdcHighDifference == other.dcdcHighDifference &&
-
-        this->batModule1 == other.batModule1 &&
-        this->batModule2 == other.batModule2 &&
-        this->batModule3 == other.batModule3 &&
-        this->batModule4 == other.batModule4 &&
-
-        this->contactorPdu == other.contactorPdu &&
-        this->sim100Stucked == other.sim100Stucked &&
-
-        this->couldntPowerOnBMS == other.couldntPowerOnBMS &&
-
-        this->bessPowerOffHv == other.bessPowerOffHv &&
-        this->requiredHvOff == other.requiredHvOff &&
-
-        this->pedal1Anormal == other.pedal1Anormal &&
-        this->pedal2Anormal == other.pedal2Anormal &&
-
-        this->hvilPdu == other.hvilPdu &&
-        this->hvilObc == other.hvilObc &&
-        this->hvilEds == other.hvilEds &&
-        this->hvilDddc == other.hvilDddc &&
-
-        this->termistorLVOutOfRange == other.termistorLVOutOfRange &&
-        this->termistorHVOutOfRange == other.termistorHVOutOfRange &&
-
-        this->pduTempExcess == other.pduTempExcess &&
-        this->overturn == other.overturn &&
-        this->doorOpen == other.doorOpen &&
-        this->parkingState == other.parkingState &&
-        this->estadoMarcha == other.estadoMarcha
-    );
-
-    bool bess1 = true;
-
-    for (int i = 0; i < 194 * 3; i++) {
+    for (int i = 0; i < 194; i++) {
         if (this->voltageCells[i] != other.voltageCells[i]) {
+            qInfo() << "BESS1";
             return false;
         }
     }
 
-    bool bess2 = true;
 
-    for (int i = 0; i < 18 * 6; i++) {
+    for (int i = 0; i < 18; i++) {
         if (this->tempCells[i] != other.tempCells[i]) {
-            qInfo() << "Trama" << i;
-            qInfo() << this->tempCells[i];
-            qInfo() << other.tempCells[i];
+            qInfo() << "BESS2";
             return false;
         }
     }
@@ -529,13 +677,27 @@ bool CANData::operator==(CANData& other) const {
         this->energyOneCharge == other.energyOneCharge
     );
 
+    if (!bess3) {
+        qInfo() << "BESS3";
+        qInfo() << (this->chargeEnergyAcumulated == other.chargeEnergyAcumulated);
+        qInfo() << (this->dischargeEnergyAcumulated == other.dischargeEnergyAcumulated);
+        qInfo() << (this->energyOneCharge == other.energyOneCharge);
+    }
+
     bool bess4 = (
-        this->SOC == other.SOC &&
         this->SOH == other.SOH &&
         this->minVoltage == other.minVoltage &&
         this->maxVoltage == other.maxVoltage &&
         this->meanVoltage == other.meanVoltage
     );
+
+    if (!bess4) {
+        qInfo() << "BESS4";
+        qInfo() << (this->SOH == other.SOH);
+        qInfo() << (this->minVoltage == other.minVoltage);
+        qInfo() << (this->maxVoltage == other.maxVoltage);
+        qInfo() << (this->meanVoltage == other.meanVoltage);
+    }
 
     bool bess5 = (
         this->posChargeTempDC == other.posChargeTempDC &&
@@ -548,6 +710,8 @@ bool CANData::operator==(CANData& other) const {
         this->bmsFailures == other.bmsFailures
     );
 
+    if (!bess5) qInfo() << "BESS5";
+
     bool emix1 = (
         this->edsFailures == other.edsFailures &&
         this->dcdc1Failures == other.dcdc1Failures &&
@@ -557,21 +721,27 @@ bool CANData::operator==(CANData& other) const {
         this->emixFailures == other.emixFailures
     );
 
+    if (!emix1) qInfo() << "emix1";
+
     bool faults1 = (
         this->dcdc1ErrorCode == other.dcdc1ErrorCode &&
         this->dcdc2ErrorCode == other.dcdc2ErrorCode
     );
+
+    if (!faults1) qInfo() << "faults1";
 
     bool faults2 =(
         this->edsErrorCode == other.edsErrorCode &&
         this->obcErrorCode == other.obcErrorCode
     );
 
+    if (!faults2) qInfo() << "faults2";
+
 
     return (
-        message1 && message2 && message3 && message4 &&
-        message5 && message6 && message7 &&
-        bess1 && bess2 && bess3 && bess4 && bess5&&
+        message1 && message2 && message4 &&
+        message6 && message7 &&
+        bess3 && bess4 && bess5&&
         emix1 &&
         faults1 && faults2
     );

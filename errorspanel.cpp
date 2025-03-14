@@ -14,7 +14,7 @@ ErrorsPanel::ErrorsPanel(CANData *canData, QWidget *parent)
     this->canData = canData;
 
     // Configuración para permiter el scroll al arrastrar
-    QScroller::grabGesture(ui->scrollAreaWidgetContents, QScroller::LeftMouseButtonGesture);
+    QScroller::grabGesture(ui->scrollArea, QScroller::LeftMouseButtonGesture);
 
     // Creamos cada item de los errores almacenados en memoria
     for (unsigned long int i = 0; i < this->canData->allErrors.size(); i++) {
@@ -38,7 +38,7 @@ void ErrorsPanel::sort() {
     // Posición actual de la siguiente fila a mostrar
     int count = 0;
     for (int i = 0; i < this->items.size(); i++) {
-        if (this->items[i]->error->equipment == "DCDC1" && !this->showDcdc1) {
+        if (this->items[i]->equipment->text() == "DCDC1" && !this->showDcdc1) {
             // Si no se encuentra marcado el DCDC1 entonces se 'ocultan' estas filas
             this->items[i]->updatePosition(-20);
 
@@ -57,7 +57,7 @@ void ErrorsPanel::sort() {
 // Dada una fila se agrega a la tabla el error correspondiente
 void ErrorsPanel::addError(int row) {
     // Se crea el elemento UI
-    ErrorListItem* item = new ErrorListItem(ui->scrollAreaWidgetContents, row, &this->canData->allErrors[row]);
+    ErrorListItem* item = new ErrorListItem(ui->scrollAreaWidgetContents, row, this->canData->allErrors[row]);
     // Se actualiza el alto de la tabla
     ui->scrollAreaWidgetContents->setMinimumHeight(ErrorListItem::height * (row + 1));
     this->items.push_back(item);
@@ -91,7 +91,6 @@ void ErrorsPanel::on_dateSorterButton_clicked()
     case SORTER_MODE::ASC:
         struct {
             bool operator()(const ErrorListItem* a, const ErrorListItem* b) const {
-
                 return a->error->date < b->error->date; }
         } ascComparer;
 

@@ -81,20 +81,20 @@ void BatteryPanel::on_tempInfo_clicked()
 }
 
 void BatteryPanel::message1() {
-    ui->instantCurrentValue->setText(QString::number(canData->batteryCurrent) + " A");
-    ui->instantVoltageValue->setText(QString::number(canData->batteryVoltage) + " V");
-    ui->SOCValue->setText(QString::number(canData->SOC) + " %");
+    ui->instantCurrentValue->setText(QString::number(canData->bess.inst_current) + " A");
+    ui->instantVoltageValue->setText(QString::number(canData->bess.inst_voltage) + " V");
+    ui->SOCValue->setText(QString::number(canData->bess.SoC) + " %");
 }
 
 void BatteryPanel::message3() {
-    ui->meanTempValue->setText(QString::number(canData->batTemp) + "° C");
-    ui->minTempValue->setText(QString::number(canData->batMinTemp) + "° C");
-    ui->maxTempValue->setText(QString::number(canData->batMaxTemp) + "° C");
+    ui->meanTempValue->setText(QString::number(canData->bess.avgTemp) + "° C");
+    ui->minTempValue->setText(QString::number(canData->bess.minTemp) + "° C");
+    ui->maxTempValue->setText(QString::number(canData->bess.maxTemp) + "° C");
 }
 
 void BatteryPanel::message7() {
     QString highLVHigh;
-    switch (canData->lvHigh) {
+    switch (canData->processVars.LvVoltageTooHigh) {
     case 0:
         highLVHigh = "Normal";
         break;
@@ -109,18 +109,18 @@ void BatteryPanel::message7() {
 }
 
 void BatteryPanel::bess1(int trama) {
-    items[trama]->setVoltage1(canData->voltageCells[trama * 3]);
-    items[trama]->setVoltage2(canData->voltageCells[trama * 3 + 1]);
-    items[trama]->setVoltage3(canData->voltageCells[trama * 3 + 2]);
+    items[trama]->setVoltage1(canData->voltageCells[trama]);
+    items[trama + 1]->setVoltage1(canData->voltageCells[trama + 1]);
+    items[trama + 2]->setVoltage1(canData->voltageCells[trama + 2]);
 }
 
 void BatteryPanel::bess2(int trama) {
-    tempItems[trama]->updateT1(canData->tempCells[trama * 6]);
-    tempItems[trama]->updateT2(canData->tempCells[trama * 6 + 1]);
-    tempItems[trama]->updateT3(canData->tempCells[trama * 6 + 2]);
-    tempItems[trama]->updateT4(canData->tempCells[trama * 6 + 3]);
-    tempItems[trama]->updateT5(canData->tempCells[trama * 6 + 4]);
-    tempItems[trama]->updateT6(canData->tempCells[trama * 6 + 5]);
+    tempItems[trama]->updateT1(canData->tempCells[trama]);
+    tempItems[trama + 1]->updateT1(canData->tempCells[trama + 1]);
+    tempItems[trama + 2]->updateT1(canData->tempCells[trama + 2]);
+    tempItems[trama + 3]->updateT1(canData->tempCells[trama + 3]);
+    tempItems[trama + 4]->updateT1(canData->tempCells[trama + 4]);
+    tempItems[trama + 5]->updateT1(canData->tempCells[trama + 5]);
 }
 
 void BatteryPanel::bess3() {
@@ -138,72 +138,72 @@ void BatteryPanel::bess4() {
 
 void BatteryPanel::assertMessage1() {
     assert(
-        ui->instantCurrentValue->text() == (QString::number(canData->batteryCurrent) + " A")
+        ui->instantCurrentValue->text() == (QString::number(canData->bess.inst_current) + " A")
     );
 
     assert(
-        ui->instantVoltageValue->text() == (QString::number(canData->batteryVoltage) + " V")
+        ui->instantVoltageValue->text() == (QString::number(canData->bess.inst_voltage) + " V")
     );
 
     assert(
-        ui->SOCValue->text() == (QString::number(canData->SOC) + " %")
+        ui->SOCValue->text() == (QString::number(canData->bess.SoC) + " %")
     );
 }
 
 void BatteryPanel::assertMessage3() {
     assert(
-        ui->meanTempValue->text() == (QString::number(canData->batTemp) + "° C")
+        ui->meanTempValue->text() == (QString::number(canData->bess.avgTemp) + "° C")
         );
 
     assert(
-        ui->maxTempValue->text() == (QString::number(canData->batMaxTemp) + "° C")
+        ui->maxTempValue->text() == (QString::number(canData->bess.maxTemp) + "° C")
         );
 
     assert(
-        ui->minTempValue->text() == (QString::number(canData->batMinTemp) + "° C")
+        ui->minTempValue->text() == (QString::number(canData->bess.minTemp) + "° C")
         );
 }
 
-void BatteryPanel::assertBess1(int trama, int v1, int v2, int v3) {
+void BatteryPanel::assertBess1(int trama, float v1, float v2, float v3) {
     assert(
-        this->items[trama ]->v1->text() == (QString::number(v1) +  " V")
+        this->items[trama - 1]->v1->text() == (QString::number(v1) +  " V")
         );
     assert(
-        this->items[trama]->v2->text() == (QString::number(v2) +  " V")
+        this->items[trama]->v1->text() == (QString::number(v2) +  " V")
         );
     assert(
-        this->items[trama]->v3->text() == (QString::number(v3) +  " V")
+        this->items[trama + 1]->v1->text() == (QString::number(v3) +  " V")
         );
 }
 
 void BatteryPanel::assertBess2(int trama, int t1, int t2, int t3, int t4, int t5, int t6) {
 
     assert(
-        this->tempItems[trama]->t1->text() == (QString::number(t1) +  "° C")
+        this->tempItems[trama - 1]->t1->text() == (QString::number(t1) +  "° C")
         );
 
     assert(
-        this->tempItems[trama]->t2->text() == (QString::number(t2) +  "° C")
+        this->tempItems[trama]->t1->text() == (QString::number(t2) +  "° C")
         );
 
     assert(
-        this->tempItems[trama]->t3->text() == (QString::number(t3) +  "° C")
+        this->tempItems[trama + 1]->t1->text() == (QString::number(t3) +  "° C")
         );
 
     assert(
-        this->tempItems[trama]->t4->text() == (QString::number(t4) +  "° C")
+        this->tempItems[trama + 2]->t1->text() == (QString::number(t4) +  "° C")
         );
 
     assert(
-        this->tempItems[trama]->t5->text() == (QString::number(t5) +  "° C")
+        this->tempItems[trama + 3]->t1->text() == (QString::number(t5) +  "° C")
         );
 
     assert(
-        this->tempItems[trama]->t6->text() == (QString::number(t6) +  "° C")
+        this->tempItems[trama + 4]->t1->text() == (QString::number(t6) +  "° C")
         );
 }
 
-void BatteryPanel::assertBess3(int chargeEnergyAcumulated, int dischargeEnergyAcumulated, int energyOneCharge) {
+void BatteryPanel::assertBess3(int chargeEnergyAcumulated, int dischargeEnergyAcumulated, float energyOneCharge) {
     assert(
         ui->chargeEnergyValue->text() == (QString::number(chargeEnergyAcumulated) + " kwh")
         );

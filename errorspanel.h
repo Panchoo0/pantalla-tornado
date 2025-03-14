@@ -12,18 +12,6 @@ enum SORTER_MODE {
     DESC,
 };
 
-// SORTER_MODE operator++(SORTER_MODE& mode)
-// {
-//     mode = static_cast<SORTER_MODE>((mode + 1) % 3);
-//     return mode;
-// }
-
-// SORTER_MODE operator(SORTER_MODE& mode, int) // postfix operator
-// {
-//     SORTER_MODE result = mode;
-//     ++mode;
-//     return result;
-// }
 
 class ErrorListItem: public QWidget {
 public:
@@ -36,7 +24,7 @@ public:
     DTCCanError* error;
     static const int height = 120;
 
-    ErrorListItem(QWidget *parent, int row, DTCCanError* error): QWidget(parent) {
+    ErrorListItem(QWidget *parent, int row, DTCCanError& error): QWidget(parent) {
         this->originalRow = row;
 
         this->setGeometry(0, row * height, 635, height);
@@ -59,14 +47,14 @@ public:
         description->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
         this->updateRow(error);
-        this->error = error;
+        this->error = &error;
     }
 
-    void updateRow(DTCCanError* error) {
-        this->date->setText(error->date.toString("dddd, dd MMMM yy"));
-        this->ID->setText(QString::number(error->code));
-        this->equipment->setText(error->equipment);
-        this->description->setText(error->description);
+    void updateRow(DTCCanError& error) {
+        this->date->setText(error.date.toString("dddd, dd MMMM yy"));
+        this->ID->setText(QString::number(error.code));
+        this->equipment->setText(error.equipment);
+        this->description->setText(error.description);
     }
 
     void updatePosition(int row) {

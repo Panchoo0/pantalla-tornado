@@ -11,6 +11,7 @@ CONFIG += c++11
 DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
+    UDSCanData.cpp \
     adminpanel.cpp \
     batterypanel.cpp \
     candata.cpp \
@@ -23,11 +24,11 @@ SOURCES += \
     notificationswidget.cpp \
     processvarswidget.cpp \
     receivecandata.cpp \
-    sendcandata.cpp \
     testigocontroller.cpp \
     utils.cpp
 
 HEADERS += \
+    UDSCanData.h \
     adminpanel.h \
     batterypanel.h \
     candata.h \
@@ -39,7 +40,6 @@ HEADERS += \
     notificationswidget.h \
     processvarswidget.h \
     receivecandata.h \
-    sendcandata.h \
     testigocontroller.h \
     utils.h
 

@@ -9,15 +9,29 @@ enum TestigoState {
     FLASH
 };
 
-struct Testigo {
-    QLabel* image;
-    TestigoState state;
+enum TESTIGOS {
+    OFF,
+    DCDC,
+    SIM100,
+    EDS,
+    BESS,
+    BTMS,
+    TEMP,
+    HVIL,
+    SENSOR,
+    HOOD_OPEN,
+    ESTOP,
+    BATT_LV,
+    ATS,
+    FIRE,
+    BATT_HV,
+    CONTACTOR
 };
 
-enum TESTIGOS {
-    DCDCD,
-    SIM100,
-    HVIL
+struct TestigoUI {
+    QLabel* image;
+    TestigoState state;
+    TESTIGOS testigo;
 };
 
 
@@ -25,15 +39,14 @@ class TestigoController: public QWidget
 {
     Q_OBJECT
 public:
-    std::vector<Testigo> testigos;
+    std::vector<TestigoUI> testigos;
     QTimer *testigosTimer;
 
     TestigoController(QWidget* parent = nullptr);
 
-    void addTestigo(TESTIGOS testigo, TestigoState state);
-
-private slots:
+public slots:
     void animateTestigos();
+    void addTestigo(TESTIGOS testigo);
 };
 
 #endif // TESTIGOCONTROLLER_H

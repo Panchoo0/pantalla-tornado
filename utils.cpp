@@ -1,5 +1,6 @@
 #include "utils.h"
 #include <QDebug>
+#include <cmath>
 
 // Dado un char retorna su representación como string en formato binario
 QString Utils::toBitString(char byte) {
@@ -37,6 +38,16 @@ QString Utils::toHexString(uchar* bytes, int length) {
     }
 
     return result;
+}
+
+// Dado un int retortna su representación como hex
+QString Utils::toHexString(int number) {
+    uchar b1 = number >> 24;
+    uchar b2 = number >> 16;
+    uchar b3 = number >> 8;
+    uchar b4 = number & 0xFF;
+    uchar bytes[] = {b1, b2, b3, b4};
+    return toHexString(bytes, 4);
 }
 
 
@@ -102,3 +113,6 @@ std::tuple<int, int, int> Utils::fromMsToHoursMinutesSeconds(int ms) {
     return {hours, minutes, seconds};
 }
 
+float Utils::round(int val, float factor, float offset) {
+    return std::ceil(((float)(val * factor)) * 100.0) / 100.0 - offset;;
+}

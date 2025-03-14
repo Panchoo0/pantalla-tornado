@@ -24,7 +24,21 @@
         <file>images/panelConfiguracion/DescIcon.png</file>
         <file>images/panelConfiguracion/AscIcon.png</file>
         <file>images/panelConfiguracion/sim100alert.png</file>
-        <file>images/panelConfiguracion/dcdciconalert.png</file>
         <file>images/panelConfiguracion/hvilalert.png</file>
+        <file>images/panelConfiguracion/tempalert.png</file>
+        <file>images/panelConfiguracion/sensoralert.png</file>
+        <file>images/panelConfiguracion/isolationalert.png</file>
+        <file>images/panelConfiguracion/hoodalert.png</file>
+        <file>images/panelConfiguracion/firelert.png</file>
+        <file>images/panelConfiguracion/estopalert.png</file>
+        <file>images/panelConfiguracion/enginealert.png</file>
+        <file>images/panelConfiguracion/edsalert.png</file>
+        <file>images/panelConfiguracion/dcdcalert.png</file>
+        <file>images/panelConfiguracion/contactoralert.png</file>
+        <file>images/panelConfiguracion/btmsalert.png</file>
+        <file>images/panelConfiguracion/bessalert.png</file>
+        <file>images/panelConfiguracion/batlvalert.png</file>
+        <file>images/panelConfiguracion/bathvalert.png</file>
+        <file>images/panelConfiguracion/atsalert.png</file>
     </qresource>
 </RCC>

@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QDateTime>
+#include <testigocontroller.h>
 
 // Clase que guarda la información de un error DTC recibido a través de un bus CAN
 class DTCCanError
@@ -13,10 +14,10 @@ public:
     QString description;
     QString category;
     QString equipment;
-    bool lightIndicator;
+    TESTIGOS testigo;
 
 public:
-    DTCCanError(int code, QString category, QString equipment, QString description, QDateTime date, bool lightIndicator);
+    DTCCanError(int code, QString category, QString equipment, QString description, QDateTime date, TESTIGOS testigo);
 
     static DTCCanError fromInt(int id);
 };

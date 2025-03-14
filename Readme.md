@@ -1,7 +1,7 @@
 # Acerca del proyecto
 
 Para correr de manera local el proyecto se debe comentar la función run del archivo _*receivecandata.cpp*_ así como los 2 include que hay en este archivo. 
-Lo mismo para el archivo *sendcandata.cpp*.
+Lo mismo para el archivo *UDSCanData.cpp*.
 Por otra parte, en el archivo *main.cpp* debe estar comentada la línea *qputenv("QT_QPA_PLATFORM", QByteArray("wayland-egl"));*.
 
 Para el deploy se siguió las instrucciones del archivo _*C_CPP_Developerguide_BR*_. 
@@ -17,7 +17,7 @@ Para recibir los datos provenientes del bus CAN desde el archivo *mainwindow.cpp
 
 Cada widget encargado de mostrar la información posee métodos denominados *nombreMensaje()* para recibir dicha conexión.
 
-Por otra parte, se puede testear el parseo de los mensajes CAN a través del método presente en el archivo *mainwindow.cpp*.
+Por otra parte, se puede testear el parseo de los mensajes CAN J1939 a través del método presente en el archivo *mainwindow.cpp*.
 
 
 ## Tipos de mensajes
@@ -51,7 +51,7 @@ Además, cuando se cargan los errores recibidos durante el historial del equipo 
 
 ## receivecandata.cpp
 
-Clase descendiente de QThread que se encarga de realizar la conexión con el bus CAN a través del socket.
+Clase descendiente de QThread que se encarga de realizar la conexión con el bus CAN utilizando el protocolo J1939 a través del socket.
 
 Envía una señal al thread principal de *mainwindow.cpp* cada vez que recibe un mensaje. 
 Cada tipo de mensaje envía una señal distinta.
@@ -60,13 +60,13 @@ Cada objeto que maneja alguna interfaz tiene métodos para actualizar la interfa
 En este además se recibe la información de los errores provenientes del bus CAN mediante el protocolo UDS. 
 
 
-## sendcandata.cpp
+## UDSCanData.cpp
 
-Clase descendiente de QObject que se encarga de enviar mensajes desde la pantalla hacia otros ECUs a través del bus CAN.
+Clase descendiente de QThread que se encarga de la conexión UDS con el controlador.
 
-En esta se encuentran métodos para enviar mensajes para obtener los errores DTC utilizando el protocolo UDS.
+En ella se piden los DIDs y se espera a recibirlos, para luego mandar la información raw al objeto de *candata.cpp*.
 
-Aún no probado.
+En este el método receiveUDSMessage es el que se encarga de interpretar el mensaje.
 
 ## Test
 
@@ -137,7 +137,7 @@ Se definieron los siguientes testigos:
 
 # Errores CAN
 
-Tanto en los archivos de *receivecandata* como *sendcandata* se implementó (aún no probado) el protocolo UDS, en el cual la pantalla le pide al controlador los errores que tiene en su pila.
+Tanto en los archivos de *receivecandata* como *sendcandata* se implementó el protocolo UDS, en el cual la pantalla le pide al controlador los errores que tiene en su pila.
 
 Una vez recibidos se envía una señal al resto de componentes de la pantalla para notificar el nuevo error.
 De esta manera se actualiza la tabla de errores,  dejando el log en un archivo (errors.csv).
@@ -148,6 +148,9 @@ Aún no se definen los testigos a utilizar (a priori uno por cada equipo).
 Para los testigos, estos solo se muestran cuando tienen una alerta asociada. Hay 1 por cada equipo y otros varios. 
 Algunos se prender procedientes de los errores obtenidos por UDP y otros por variables de proceso.
 
+## DTCCaneError.cpp
+
+En este archivo se parsea y almacena la información de todos los tipos de errores dado el id correspondiente.
 
 # Otros
 
@@ -177,3 +180,5 @@ El diseño de esta interfaz (aún no implementada) se puede ver en figma.
 # Links
 
 - [Figma](https://www.figma.com/design/DZc9cLo1U9k7Mq8VNClsgY/Pantalla?node-id=234-214&t=iq6gBsp6CmiKzEhb-1)
+- [SocketCan](https://www-kernel-org.translate.goog/doc/html/latest/networking/can.html?_x_tr_sl=en&_x_tr_tl=es&_x_tr_hl=es&_x_tr_pto=tc)
+

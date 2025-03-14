@@ -19,15 +19,14 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     this->setGeometry(0,0, 800, 480);
 
+    this->startDate = QDateTime();
     // Inicializamos el timer que actualiza la hora
     datetimeTimer = new QTimer(this);
     connect(datetimeTimer, SIGNAL(timeout()), this, SLOT(updateDateTime()));
     datetimeTimer->start(100);
 
-    // Inicializamos los threads que tratarán con el bus CAN
+    // Objeto con la información proveniente del bus CAN
     data = new CANData();
-
-
 
     // Configuración para poner el botón de configuración por sobre su ícono
     ui->confIcon->stackUnder(ui->confButton);
@@ -60,9 +59,21 @@ MainWindow::MainWindow(QWidget *parent)
     // Iniciamos la conexión con el bus CAN
     this->startReceivingCAN();
 
+    // Iniciamos el thread que mantiene la comunicación por UDS
+    sender = new UDSCanData();
+    sender->start();
+
     // Conectamos el thread secundario para recibir las señales
     connect(this->receiver, &ReceiveCANData::messageReceived, this, &MainWindow::receiveMessage);
     connect(this->receiver, &ReceiveCANData::debugMessage, this, &MainWindow::receiveDebugMessage);
+    connect(this->data, &CANData::dbgMessage, this, &MainWindow::receiveDebugMessage);
+
+    // Mensajes por uds
+    connect(this->sender, &UDSCanData::dbgMessage, this, &MainWindow::receiveDebugMessage);
+    connect(this->sender, &UDSCanData::udsMessage, this->data, &CANData::receiveUDSMessage);
+
+    // Señal en caso de recibir un error por el protocolo UDS
+    connect(this->data, &CANData::canError, this->adminPanel->errorsPanel, &ErrorsPanel::canError);
 
     // Conectamos las señales de cada tipo de mensaje con sus correspondientes widgets interesados.
 
@@ -90,6 +101,7 @@ MainWindow::MainWindow(QWidget *parent)
     // Message7
     connect(this->data, &CANData::message7, this->adminPanel->processVarsWidget, &ProcessVarsWidget::message7);
     connect(this->data, &CANData::message7, this->adminPanel->batteryPanel, &BatteryPanel::message7);
+    connect(this->data, &CANData::message7, this, &MainWindow::message7);
 
     // Bess1
     connect(this->data, &CANData::bess1, this->adminPanel->batteryPanel, &BatteryPanel::bess1);
@@ -116,50 +128,47 @@ MainWindow::MainWindow(QWidget *parent)
     // Faults2
     connect(this->data, &CANData::faults2, this->adminPanel->processVarsWidget, &ProcessVarsWidget::faults2);
 
-    // Señal en caso de recibir un error por el protocolo UDS
-    connect(this->data, &CANData::canError, this->adminPanel->errorsPanel, &ErrorsPanel::canError);
-
     // this->testCan();
     // this->testCanErrors();
 
     testigos = new TestigoController(ui->testigosWidget);
 
-    // El thread para enviar info se mantiene desocupado hasta que
-    // recibe las señales para enviar
-    sender = new SendCANData();
-    QThread* newThread = new QThread();
-
-    sender->moveToThread(newThread);
-    newThread->start();
-
-    udsTimer = new QTimer(this);
-    connect(udsTimer, SIGNAL(timeout()), this, SLOT(sendUDSMessages()));
-    udsTimer->start(1000);
+    connect(this->data, &CANData::canTestigo, this->testigos, &TestigoController::addTestigo);
+    connect(this->data, &CANData::updateMainWindow, this, &MainWindow::updateMainWindow);
 }
 
-void MainWindow::sendUDSMessages() {
-    // DEBUG
-    this->sender->sendEDS();
-    this->sender->sendChargeStatusBMS();
-    this->sender->sendFaultBess();
-    this->sender->sendFaultDcdc1();
-    this->sender->sendFaultDcdc2();
-    this->sender->sendFaultEmix();
-    this->sender->sendFaultObc();
-    this->sender->sendSIM100();
+
+void MainWindow::updateMainWindow() {
+    QString text;
+
+    if (data->MarchState == 1) {
+        text = "D";
+    } else if (data->MarchState == 2) {
+        text = "N";
+    } else {
+        text = "R";
+    }
+    ui->marcha->setText(text);
+
+    ui->voltageHVValue->setText(QString::number(data->PackVoltage) + " V");
+
+    float maxVoltageLV = std::max(data->LVVoltageDCDC1, data->LVVoltageDCDC2);
+    ui->voltageLVValue->setText(QString::number(maxVoltageLV) + " V");
+}
+
+void MainWindow::message7() {
+    if (this->startDate.isValid() || data->processVars.EMIX_state != 2) return;
+    this->startDate = QDateTime::currentDateTime();
 }
 
 // Función para testear el recibimiento de errores DTC por el protocolo UDS
 void MainWindow::testCanErrors() {
-    uchar data[] = {0, 0x62, 0, 0, 0xD0, 02, 0, 0};
-    this->receiveMessage(0, 0xDA00, data);
-    this->receiveMessage(0, 0xDA00, data);
-    data[4] = 0xD3;
-    data[5] = 0x18;
-    this->receiveMessage(0, 0xDA00, data);
-    this->receiveMessage(0, 0xDA00, data);
-    this->receiveMessage(0, 0xDA00, data);
-    this->receiveMessage(0, 0xDA00, data);
+    uint8_t data[] = {0x05, 0x62, 0xA0, 0xF0, 0x1};
+    uint8_t data2[] = {0x05, 0x62, 0xA0, 0xF0, 0x2};
+    uint8_t data3[] = {0x05, 0x62, 0xA0, 0xF4, 0x12};
+    this->data->receiveUDSMessage(data);
+    this->data->receiveUDSMessage(data2);
+    this->data->receiveUDSMessage(data3);
 }
 
 // Función que recibe la señal por un nuevo mensaje message1
@@ -176,11 +185,12 @@ void MainWindow::message3() {
 
 // Función de debug
 void MainWindow::receiveDebugMessage(QString msg) {
-    // ui->debug_msg->setText(msg);
+    // ui->debug_msg->setText(ui->debug_msg->text() + "\n" + msg);
     qInfo() << msg;
 }
 
 // Función que actualiza el tiempo en el tablero
+// y el trip
 void MainWindow::updateDateTime() {
     QString text = QTime::currentTime().toString("HH:mm");
     ui->time->setText(text);
@@ -191,6 +201,13 @@ void MainWindow::updateDateTime() {
                             QString::number(date.day()) + " de " +
                             locale.monthName(date.month());
     ui->date->setText(formattedDate);
+
+    if (!this->startDate.isValid()) return;
+
+    const qint64 deltaMs = this->startDate.msecsTo(QDateTime::currentDateTime());
+    std::tuple<int, int, int> time = Utils::fromMsToHoursMinutesSeconds(deltaMs);
+
+    ui->tripVal->setText(QString::number(std::get<0>(time)) + ":" + QString::number(std::get<1>(time)));
 }
 
 // Función que actualiza la ui de la velocidad, tanto el número como la rotación de la aguja.
@@ -208,48 +225,48 @@ void MainWindow::updateSpeed()
 // Función que actualiza la ui de la temperatura del motor
 void MainWindow::updateEngineTemp() {
     // Actualizamos el ícono según el valor
-    if (this->data->engineTemp < 30) {
+    if (this->data->eds.motorTemp < 30) {
         ui->engineTempIcon->setPixmap(this->lowTempIcon);
-    } else if (this->data->engineTemp < 50) {
+    } else if (this->data->eds.motorTemp < 50) {
         ui->engineTempIcon->setPixmap(this->regularTempIcon);
     } else {
         ui->engineTempIcon->setPixmap(this->highTempIcon);
     }
 
     // Actualizamos el texto
-    ui->engineTempValue->setText(QString::number(this->data->engineTemp) + "° C");
+    ui->engineTempValue->setText(QString::number(this->data->eds.motorTemp) + "° C");
 }
 
 // Función que actualiza la ui de la temperatura del inversor
 void MainWindow::updateInversorTemp() {
 
     // Actualizamos el ícono según el valor
-    if (this->data->inversorTemp < 30) {
+    if (this->data->eds.invTemp < 30) {
         ui->inversorTempIcon->setPixmap(this->lowTempIcon);
-    } else if (this->data->inversorTemp < 50) {
+    } else if (this->data->eds.invTemp  < 50) {
         ui->inversorTempIcon->setPixmap(this->regularTempIcon);
     } else {
         ui->inversorTempIcon->setPixmap(this->highTempIcon);
     }
 
     // Actualizamos el texto
-    ui->inversorValue->setText(QString::number(this->data->inversorTemp) + "° C");
+    ui->inversorValue->setText(QString::number(this->data->eds.invTemp) + "° C");
 }
 
 // Función que actualiza la ui de la temperatura de la batería
 void MainWindow::updateBatTemp() {
 
     // Actualizamos el ícono según el valor
-    if (this->data->batTemp < 30) {
+    if (this->data->bess.avgTemp < 30) {
         ui->batTempIcon->setPixmap(this->lowTempIcon);
-    } else if (this->data->batTemp < 50) {
+    } else if (this->data->bess.avgTemp < 50) {
         ui->batTempIcon->setPixmap(this->regularTempIcon);
     } else {
         ui->batTempIcon->setPixmap(this->highTempIcon);
     }
 
     // Actualizamos el texto
-    ui->batTempValue->setText(QString::number(this->data->batTemp) + "° C");
+    ui->batTempValue->setText(QString::number(this->data->bess.avgTemp) + "° C");
 }
 
 // Función que actualiza la ui de la carga de la batería.
@@ -258,15 +275,15 @@ void MainWindow::updateBat() {
 
     // Para crear la animación de la batería se corta la parte superior de la imágen
     int iconHeight = this->highBatIcon.height();
-    int croppedY = 100 - this->data->SOC; // Porciento de cuanto se cortará la imágen
+    int croppedY = 100 - this->data->bess.SoC; // Porciento de cuanto se cortará la imágen
     int cropY = (iconHeight * croppedY) / 100; // Cuantos pixeles en el eje Y serán cortados
     int croppedHeight = iconHeight - cropY; // Nueva altura de la imagen
 
     QPixmap croppedPixmap;
     // Se elige la imágen según la carga restante
-    if (this->data->SOC < 30)  {
+    if (this->data->bess.SoC < 30)  {
         croppedPixmap = this->highBatIcon.copy(0, cropY, this->highBatIcon.width(), croppedHeight);
-    } else if (this->data->SOC < 50) {
+    } else if (this->data->bess.SoC < 50) {
         croppedPixmap = this->regularBatIcon.copy(0, cropY, this->highBatIcon.width(), croppedHeight);
     } else {
         croppedPixmap = this->lowBatIcon.copy(0, cropY, this->highBatIcon.width(), croppedHeight);
@@ -278,7 +295,7 @@ void MainWindow::updateBat() {
     ui->batFill->setPixmap(croppedPixmap);
     ui->batFill->setStyleSheet(style);
 
-    ui->batValue->setText(QString::number(this->data->SOC));
+    ui->batValue->setText(QString::number(this->data->bess.SoC));
 }
 
 // Función que recibe un mensaje CAN y actualiza sus valores
@@ -286,10 +303,10 @@ void MainWindow::updateBat() {
 // Se mantiene solo para facilitar el debug
 void MainWindow::receiveMessage(unsigned char sourceAddress, unsigned int pgn, uint8_t* receivedData)
 {
-    // Transformamos a hexadecimal el pgn para debugear
-    std::stringstream ss;
-    ss << std::hex << pgn;
-    std::string pgn_hex = ss.str();
+    // // Transformamos a hexadecimal el pgn para debugear
+    // std::stringstream ss;
+    // ss << std::hex << pgn;
+    // std::string pgn_hex = ss.str();
 
     this->data->receiveMessage(sourceAddress, pgn, receivedData);
 
@@ -334,7 +351,7 @@ void MainWindow::activateCANChannel()
     //txqueulen means Transmit Queue Length - This is the internal message buffer size for CAN port
     //More information on this can be found in C_CPP_Developerguide_BR.pdf
     QString canChannel = "can0";
-    QString bitrate = "250000";
+    QString bitrate = "500000";
     QString txqueulen = "1000";
 
     myProcess->setWorkingDirectory("/opt");
@@ -382,7 +399,7 @@ void MainWindow::activateCANChannel()
 // Test para comprobar si se actualizan correctamente los valores al recibir un mensaje CAN
 void MainWindow::testCan() {
     srand (time(NULL));
-    int iteraciones = 100;
+    int iteraciones = 10;
     for (int i = 0; i < iteraciones; i++) {
         qInfo() << "Iteración: " << i;
         this->testMessage1();
@@ -408,7 +425,7 @@ void MainWindow::testCan() {
 
 // Comprueba si se actualizó el panel tras recibir un message1
 void MainWindow::assertMessage1() {
-    assert(ui->batValue->text() == QString::number(this->data->SOC));
+    assert(ui->batValue->text() == QString::number(this->data->bess.SoC));
 }
 
 
@@ -420,9 +437,9 @@ void MainWindow::testMessage1() {
 
     // Clonamos el objeto y actualizamos sus valores
     CANData *canData = this->data->clone();
-    canData->batteryCurrent = current;
-    canData->batteryVoltage = voltage;
-    canData->SOC = soc;
+    canData->bess.inst_current = Utils::round(current, 0.1, -1000);
+    canData->bess.inst_voltage = Utils::round(voltage, 0.1);
+    canData->bess.SoC = Utils::round(soc, 0.4);
 
     // Transformamos los valores según el protocolo de message1
     uchar b1_current = current >> 8;
@@ -451,15 +468,15 @@ void MainWindow::testMessage2() {
     int engineTorque = rand() % 0xFFF;
     int engineVoltage = rand() % 0xFFF;
     int rpm = rand() % 0xFFF;
-    int setpoint = rand() %0xFFFF;
+    int setpoint = rand() % 0xFFFF;
 
     // Clonamos el objeto y actualizamos sus valores
     CANData *canData = this->data->clone();
-    canData->engineCurrent = engineCurrent;
-    canData->engineTorque = engineTorque;
-    canData->engineVoltage = engineVoltage;
-    canData->rpm = rpm;
-    canData->setpoint = setpoint;
+    canData->eds.instCurr = engineCurrent;
+    canData->eds.instTorque = engineTorque;
+    canData->eds.instVoltage = engineVoltage;
+    canData->eds.instRPM = Utils::round(rpm, 0.0859375, -2750);;
+    canData->eds.txSetpoint = setpoint;
 
     // Transformamos los valores según el protocolo de message2
     uchar b1_current = engineCurrent >> 4;
@@ -493,15 +510,15 @@ void MainWindow::testMessage2() {
 
 void MainWindow::assertMessage3(){
     assert(
-        ui->engineTempValue->text() == (QString::number(data->engineTemp) + "° C")
+        ui->engineTempValue->text() == (QString::number(data->eds.motorTemp) + "° C")
         );
 
     assert(
-        ui->inversorValue->text() == (QString::number(data->inversorTemp) + "° C")
+        ui->inversorValue->text() == (QString::number(data->eds.invTemp) + "° C")
     );
 
     assert(
-        ui->batTempValue->text() == (QString::number(data->batTemp) + "° C")
+        ui->batTempValue->text() == (QString::number(data->bess.avgTemp) + "° C")
         );
 }
 
@@ -515,11 +532,11 @@ void MainWindow::testMessage3() {
 
     // Clonamos el objeto y actualizamos sus valores
     CANData *canData = this->data->clone();
-    canData->engineTemp = engineTemp;
-    canData->inversorTemp = inversorTemp;
-    canData->batTemp = batTemp;
-    canData->batMaxTemp = batMaxTemp;
-    canData->batMinTemp = batMinTemp;
+    canData->eds.motorTemp = engineTemp - 40;
+    canData->eds.invTemp = inversorTemp - 40;
+    canData->bess.avgTemp = batTemp;
+    canData->bess.maxTemp = batMaxTemp;
+    canData->bess.minTemp = batMinTemp;
 
     uchar data[] = {engineTemp, inversorTemp, batTemp, batMaxTemp, batMinTemp};
 
@@ -544,10 +561,10 @@ void MainWindow::testMessage4() {
 
     // Clonamos el objeto y actualizamos sus valores
     CANData *canData = this->data->clone();
-    canData->dcdc1Current = dcdc1Current;
-    canData->dcdc2Current = dcdc2Current;
-    canData->dcdc1HVCurrent = dcdc1HVCurrent;
-    canData->dcdc2HVCurrent = dcdc2HVCurrent;
+    canData->dcdc1.lvCurr = Utils::round(dcdc1Current, 0.1 , 3212.7);
+    canData->dcdc2.lvCurr = Utils::round(dcdc2Current, 0.1 , 3212.7);
+    canData->dcdc1.hvCurr = Utils::round(dcdc1HVCurrent, 0.1 , 3212.7);
+    canData->dcdc2.hvCurr = Utils::round(dcdc2HVCurrent, 0.1 , 3212.7);
 
     // Transformamos los valores según el protocolo de message4
     uchar b1 = dcdc1Current >> 8;
@@ -582,10 +599,10 @@ void MainWindow::testMessage5() {
 
     // Clonamos el objeto y actualizamos sus valores
     CANData *canData = this->data->clone();
-    canData->dcdc1OutputVoltage = dcdc1OutputVoltage;
-    canData->dcdc2OutputVoltage = dcdc2OutputVoltage;
-    canData->dcdc1InputVoltage = dcdc1InputVoltage;
-    canData->dcdc2InputVoltage = dcdc2InputVoltage;
+    canData->dcdc1.VVout = Utils::round(dcdc1OutputVoltage, 0.05);
+    canData->dcdc2.VVout = Utils::round(dcdc2OutputVoltage, 0.05);
+    canData->dcdc1.Vin = Utils::round(dcdc1InputVoltage, 0.05);
+    canData->dcdc2.Vin = Utils::round(dcdc2InputVoltage, 0.05);
 
     // Transformamos los valores según el protocolo de message5
     uchar b1 = dcdc1OutputVoltage >> 8;
@@ -620,10 +637,10 @@ void MainWindow::testMessage6() {
 
     // Clonamos el objeto y actualizamos sus valores
     CANData *canData = this->data->clone();
-    canData->posResistanceSIM100 = posResistanceSIM100;
-    canData->negResistanceSIM100 = negResistanceSIM100;
-    canData->posResistanceBMU = posResistanceBMU;
-    canData->negResistanceBMU = negResistanceBMU;
+    canData->sim100.Rp = posResistanceSIM100;
+    canData->sim100.Rn = negResistanceSIM100;
+    canData->bess.Rp = posResistanceBMU;
+    canData->bess.Rn = negResistanceBMU;
 
     // Transformamos los valores según el protocolo de message6
     uchar b1 = posResistanceSIM100 >> 8;
@@ -694,45 +711,45 @@ void MainWindow::testMessage7() {
 
     // Clonamos el objeto y actualizamos sus valores
     CANData *canData = this->data->clone();
-    canData->lvError = lvError;
-    canData->hvError = hvError;
-    canData->state = state;
-    canData->inhibitState = inhibitState;
-    canData->busHVDischarged = busHVDischarged;
-    canData->pduContactorClose = pduContactorClose;
-    canData->hvOn = hvOn;
-    canData->lvHigh = lvHigh;
-    canData->dcdc1Overtemp = dcdc1Overtemp;
-    canData->dcdc2Overtemp = dcdc2Overtemp;
-    canData->atsFanFault = atsFanFault;
-    canData->atsPumpFault = atsPumpFault;
-    canData->edsOvertemp = edsOvertemp;
-    canData->obcOvertemp = obcOvertemp;
-    canData->edsInError = edsInError;
-    canData->edsCouldntClear = edsCouldntClear;
-    canData->dcdcHighDifference = dcdcHighDifference;
-    canData->batModule1 = batModule1;
-    canData->batModule2 = batModule2;
-    canData->batModule3 = batModule3;
-    canData->batModule4 = batModule4;
-    canData->contactorPdu = contactorPdu;
-    canData->sim100Stucked = sim100Stucked;
-    canData->couldntPowerOnBMS = couldntPowerOnBMS;
-    canData->bessPowerOffHv = bessPowerOffHv;
-    canData->requiredHvOff = requiredHvOff;
-    canData->pedal1Anormal = pedal1Anormal;
-    canData->pedal2Anormal = pedal2Anormal;
-    canData->hvilPdu = hvilPdu;
-    canData->hvilObc = hvilObc;
-    canData->hvilEds = hvilEds;
-    canData->hvilDddc = hvilDddc;
-    canData->termistorLVOutOfRange = termistorLVOutOfRange;
-    canData->termistorHVOutOfRange = termistorHVOutOfRange;
-    canData->pduTempExcess = pduTempExcess;
-    canData->overturn = overturn;
-    canData->doorOpen = doorOpen;
-    canData->parkingState = parkingState;
-    canData->estadoMarcha = estadoMarcha;
+    canData->processVars.LV_Error_Level = lvError;
+    canData->processVars.HV_Error_Level = hvError;
+    canData->processVars.EMIX_state = state;
+    canData->processVars.EMIX_inhibitState = inhibitState;
+    canData->processVars.isHVBusDischarged = busHVDischarged;
+    canData->processVars.IsPDUmainRelayClosed = pduContactorClose;
+    canData->processVars.IsHVOn = hvOn;
+    canData->processVars.LvVoltageTooHigh = lvHigh;
+    canData->processVars.DCDC1Overtemp = dcdc1Overtemp;
+    canData->processVars.DCDC2Overtemp = dcdc2Overtemp;
+    canData->processVars.ATS_Fan_Fault = atsFanFault;
+    canData->processVars.ATS_Pump_Fault = atsPumpFault;
+    canData->processVars.EDSOvertemp = edsOvertemp;
+    canData->processVars.OBCOvertemp = obcOvertemp;
+    canData->processVars.EDSinError = edsInError;
+    canData->processVars.EDScantClearError = edsCouldntClear;
+    canData->processVars.DCDCsPwrDifference2Large = dcdcHighDifference;
+    canData->processVars.BESS_Module1TempTooLarge = batModule1;
+    canData->processVars.BESS_Module2TempTooLarge = batModule2;
+    canData->processVars.BESS_Module3TempTooLarge = batModule3;
+    canData->processVars.BESS_Module4TempTooLarge = batModule4;
+    canData->processVars.PDUMainRelayCantChangeState = contactorPdu;
+    canData->processVars.Sim100Stuck = sim100Stucked;
+    canData->processVars.ImpossibleToSwitchOnBMS = couldntPowerOnBMS;
+    canData->processVars.BMSrequestsHvOff = bessPowerOffHv;
+    canData->processVars.HvOffIsRequired = requiredHvOff;
+    canData->processVars.Pedal2Abnormal = pedal2Anormal;
+    canData->processVars.Pedal1Abnormal = pedal1Anormal;
+    canData->processVars.PDU_HvilAlarm = hvilPdu;
+    canData->processVars.OBC_HvilAlarm = hvilObc;
+    canData->processVars.EDS_HvilAlarm = hvilEds;
+    canData->processVars.DCDCs_HvilAlarm = hvilDddc;
+    canData->processVars.LvThermistorOutOfRange = termistorLVOutOfRange;
+    canData->processVars.HvThermistorOutOfRange = termistorHVOutOfRange;
+    canData->processVars.PDUOvertemp = pduTempExcess;
+    canData->processVars.OverturnEvent = overturn;
+    canData->processVars.CabinDoorOpen = doorOpen;
+    canData->processVars.ParkingRelayState = parkingState;
+    canData->processVars.MarchState = estadoMarcha;
 
     // Transformamos los valores según el protocolo de message6
     uchar b0_4 = lvError << 4;
@@ -808,29 +825,31 @@ void MainWindow::testMessage7() {
 
 void MainWindow::testBess1() {
     // Obtenemos valores aleatorios
-    int trama = rand() % 194;
+    int trama = ((rand() % 63) * 3) + 1;
     int v1 = rand() % 0xFFFF;
     int v2 = rand() % 0xFFFF;
     int v3 = rand() % 0xFFFF;
 
+    float fc = 0.001;
+
     // Clonamos el objeto y actualizamos sus valores
     CANData *canData = this->data->clone();
-    canData->voltageCells[trama * 3] = v1;
-    canData->voltageCells[trama * 3 + 1] = v2;
-    canData->voltageCells[trama * 3 + 2] = v3;
+    canData->voltageCells[trama - 1] = Utils::round(v1, fc);
+    canData->voltageCells[trama] = Utils::round(v2, fc);
+    canData->voltageCells[trama + 1] = Utils::round(v3, fc);
 
     // Transformamos los valores según el protocolo de bess1
-    uchar b1 = trama >> 8;
-    uchar b2 = trama & 0xFF;
+    uchar b2 = trama >> 8;
+    uchar b1 = trama & 0xFF;
 
-    uchar b3 = v1 >> 8;
-    uchar b4 = v1 & 0xFF;
+    uchar b4 = v1 >> 8;
+    uchar b3 = v1 & 0xFF;
 
-    uchar b5 = v2 >> 8;
-    uchar b6 = v2 & 0xFF;
+    uchar b6 = v2 >> 8;
+    uchar b5 = v2 & 0xFF;
 
-    uchar b7 = v3 >> 8;
-    uchar b8 = v3 & 0xFF;
+    uchar b8 = v3 >> 8;
+    uchar b7 = v3 & 0xFF;
 
     uchar data[] = {b1, b2, b3, b4, b5, b6, b7, b8};
 
@@ -840,12 +859,12 @@ void MainWindow::testBess1() {
     // Comprobamos que se actualizó correctamente el objeto con los datos
     assert((*canData) == (*this->data));
 
-    this->adminPanel->batteryPanel->assertBess1(trama, v1, v2, v3);
+    this->adminPanel->batteryPanel->assertBess1(trama, Utils::round(v1, fc), Utils::round(v2, fc), Utils::round(v3, fc));
 }
 
 void MainWindow::testBess2(){
     // Obtenemos valores aleatorios
-    int trama = rand() % 18;
+    int trama = ((rand() % 3) * 6 + 1);
     int t1 = rand() % 0xFF;
     int t2 = rand() % 0xFF;
     int t3 = rand() % 0xFF;
@@ -855,16 +874,16 @@ void MainWindow::testBess2(){
 
     // Clonamos el objeto y actualizamos sus valores
     CANData *canData = this->data->clone();
-    canData->tempCells[trama * 6] = t1;
-    canData->tempCells[trama * 6 + 1] = t2;
-    canData->tempCells[trama * 6 + 2] = t3;
-    canData->tempCells[trama * 6 + 3] = t4;
-    canData->tempCells[trama * 6 + 4] = t5;
-    canData->tempCells[trama * 6 + 5] = t6;
+    canData->tempCells[trama - 1] = t1;
+    canData->tempCells[trama] = t2;
+    canData->tempCells[trama + 1] = t3;
+    canData->tempCells[trama + 2] = t4;
+    canData->tempCells[trama + 3] = t5;
+    canData->tempCells[trama + 4] = t6;
 
     // Transformamos los valores según el protocolo de bess2
-    uchar b1 = trama >> 8;
-    uchar b2 = trama & 0xff;
+    uchar b2 = trama >> 8;
+    uchar b1 = trama & 0xff;
 
     uchar b3 = t1 & 0xff;
     uchar b4 = t2 & 0xff;
@@ -888,15 +907,15 @@ void MainWindow::testBess2(){
 
 void MainWindow::testBess3() {
     // Obtenemos valores aleatorios
-    int chargeEnergyAcumulated = rand() % 0xFFFF;
-    int dischargeEnergyAcumulated = rand() % 0xFFFF;
+    int chargeEnergyAcumulated = rand() % 0xFFFFFF;
+    int dischargeEnergyAcumulated = rand() % 0xFFFFFF;
     int energyOneCharge = rand() % 0xFFFF;
 
     // Clonamos el objeto y actualizamos sus valores
     CANData *canData = this->data->clone();
     canData->chargeEnergyAcumulated = chargeEnergyAcumulated;
     canData->dischargeEnergyAcumulated = dischargeEnergyAcumulated;
-    canData->energyOneCharge = energyOneCharge;
+    canData->energyOneCharge = Utils::round(energyOneCharge, 0.1);
 
     // Transformamos los valores según el protocolo de bess3
     uchar b1 = chargeEnergyAcumulated >> 16;
@@ -918,7 +937,7 @@ void MainWindow::testBess3() {
     // Comprobamos que se actualizó correctamente el objeto con los datos
     assert((*canData) == (*this->data));
 
-    this->adminPanel->batteryPanel->assertBess3(chargeEnergyAcumulated, dischargeEnergyAcumulated, energyOneCharge);
+    this->adminPanel->batteryPanel->assertBess3(chargeEnergyAcumulated, dischargeEnergyAcumulated, Utils::round(energyOneCharge, 0.1));
 }
 
 void MainWindow::testBess4() {
@@ -931,11 +950,11 @@ void MainWindow::testBess4() {
 
     // Clonamos el objeto y actualizamos sus valores
     CANData *canData = this->data->clone();
-    canData->SOC = SOC;
-    canData->SOH = SOH;
-    canData->maxVoltage = maxVoltage;
-    canData->minVoltage = minVoltage;
-    canData->meanVoltage = meanVoltage;
+    canData->bess.SoC = Utils::round(SOC, 0.4);
+    canData->SOH = Utils::round(SOH, 0.4);
+    canData->maxVoltage = Utils::round(maxVoltage, 0.001);
+    canData->minVoltage = Utils::round(minVoltage, 0.001);
+    canData->meanVoltage = Utils::round(meanVoltage, 0.001);
 
     // Transformamos los valores según el protocolo de message5
     uchar b1 = SOC & 0xFF;
@@ -974,8 +993,8 @@ void MainWindow::testBess5() {
 
     // Clonamos el objeto y actualizamos sus valores
     CANData *canData = this->data->clone();
-    canData->posChargeTempDC = posChargeTempDC;
-    canData->negChargeTempDC = negChargeTempDC;
+    canData->posChargeTempDC = posChargeTempDC - 40;
+    canData->negChargeTempDC = negChargeTempDC - 40;
     canData->dcConected = dcConected;
     canData->bmsChargingMode = bmsChargingMode;
     canData->coolingState = coolingState;
